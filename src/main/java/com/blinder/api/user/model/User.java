@@ -16,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "users")
 public class User extends BaseEntity {
     private String name;
 
@@ -29,5 +30,8 @@ public class User extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Gender gender;
 }
 //TO DO add other fields

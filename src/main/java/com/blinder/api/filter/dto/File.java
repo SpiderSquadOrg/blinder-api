@@ -1,4 +1,4 @@
 package com.blinder.api.filter.dto;
 
-public class GetUserRequest {
+public class File {
 }
