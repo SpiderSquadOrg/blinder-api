@@ -4,7 +4,7 @@ package com.blinder.api.image.controller;
 
 import com.blinder.api.image.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +14,7 @@ public class ImageController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("image") MultipartFile image,
                               @RequestParam("publicId") String publicId) {
