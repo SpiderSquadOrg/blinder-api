@@ -26,6 +26,7 @@ public interface ReportMapper {
 
     @Mapping(source = "reporter.id", target = "reporterId")
     ReportResponseDto reportToReportResponseDto(Report report);
+
     @Mapping(source = "reporterId", target = "reporter.id")
     Report reportResponseDtoToReport(ReportResponseDto reportResponseDto);
 
