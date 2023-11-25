@@ -6,6 +6,7 @@ import com.blinder.api.report.dto.UpdateReportRequestDto;
 import com.blinder.api.report.mapper.ReportMapper;
 import com.blinder.api.report.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -60,7 +61,7 @@ public class ReportController {
 
     @PostMapping
     @Operation(summary = "Add new report")
-    public ResponseEntity<CreateReportRequestDto> addReport(@RequestBody CreateReportRequestDto createReportRequestDto) {
+    public ResponseEntity<CreateReportRequestDto> addReport(@RequestBody @Valid  CreateReportRequestDto createReportRequestDto) {
         reportService.addReport(ReportMapper.INSTANCE.createReportRequestDtoToReport(createReportRequestDto));
         return new ResponseEntity<>(createReportRequestDto, HttpStatus.CREATED);
     }
@@ -68,7 +69,8 @@ public class ReportController {
     @PutMapping("/{reportId}")
     @Operation(summary = "Update report")
     public ResponseEntity<UpdateReportRequestDto> updateReport(@PathVariable(name = "reportId") String reportId,
-                                                               @RequestBody UpdateReportRequestDto updateReportRequestDto) {
+                                                               @RequestBody
+                                                               @Valid UpdateReportRequestDto updateReportRequestDto) {
         reportService.updateReport(reportId, ReportMapper.INSTANCE.updateReportRequestDtoToReport(updateReportRequestDto));
         return new ResponseEntity<>(updateReportRequestDto, HttpStatus.CREATED);
     }

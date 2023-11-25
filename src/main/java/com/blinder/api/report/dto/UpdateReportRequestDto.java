@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateReportRequestDto {
-    private String id;
     private String reason;
     private String description;
     private String reporterId;
