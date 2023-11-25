@@ -57,4 +57,6 @@ public class MusicCategoryServiceImpl implements MusicCategoryService {
     public MusicCategory getMusicCategoryById(String musicCategoryId) {
         return this.musicCategoryRepository.findById(musicCategoryId).orElseThrow();
     }
+
+
 }
