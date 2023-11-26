@@ -19,9 +19,26 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Characteristics extends BaseEntity {
-    @OneToMany
-    private List<MusicCategory> musicCategories;
     @OneToOne
     private User user;
-
+    @OneToMany
+    private List<Hobby> hobbies;
+    @OneToMany
+    private List<Movie> movies;
+    @OneToMany
+    private List<MovieCategory> movieCategories;
+    @OneToMany
+    private List<TVSeries> tvSeries;
+    @OneToMany
+    private List<TVSeriesCategory> tvSeriesCategories;
+    @OneToMany
+    private List<Music> musics;
+    @OneToMany
+    private List<MusicCategory> musicCategories;
+    @OneToMany
+    private List<Book> books;
+    @OneToMany
+    private List<BookCategory> bookCategories;
 }
+
+
