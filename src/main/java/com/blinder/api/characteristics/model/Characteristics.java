@@ -1,5 +1,6 @@
 package com.blinder.api.characteristics.model;
 
+import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.User;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Characteristics extends BaseEntity {
     @OneToOne
     private User user;
-    @OneToMany
+    /*@OneToMany
     private List<Hobby> hobbies;
     @OneToMany
     private List<Movie> movies;
@@ -30,15 +31,15 @@ public class Characteristics extends BaseEntity {
     @OneToMany
     private List<TVSeries> tvSeries;
     @OneToMany
-    private List<TVSeriesCategory> tvSeriesCategories;
+    private List<TVSeriesCategory> tvSeriesCategories;*/
     @OneToMany
     private List<Music> musics;
     @OneToMany
     private List<MusicCategory> musicCategories;
-    @OneToMany
+    /*@OneToMany
     private List<Book> books;
     @OneToMany
-    private List<BookCategory> bookCategories;
+    private List<BookCategory> bookCategories;*/
 }
 
 

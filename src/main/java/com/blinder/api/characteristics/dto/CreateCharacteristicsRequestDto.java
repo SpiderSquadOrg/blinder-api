@@ -1,5 +1,6 @@
 package com.blinder.api.characteristics.dto;
 
+import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.common.annotations.MinListSize;
 import com.blinder.api.user.model.User;
@@ -15,9 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateCharacteristicsRequestDto {
     @NotBlank
-    private User userId;
+    private String userId;
 
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
+    /*@MinListSize(minSize = 3, message = "Books list must have at least three elements")
     private List<Hobby> hobbies;
 
     @MinListSize(minSize = 3, message = "Books list must have at least three elements")
@@ -30,7 +31,7 @@ public class CreateCharacteristicsRequestDto {
     private List<TVSeries> tvSeries;
 
     @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<TVSeriesCategory> tvSeriesCategories;
+    private List<TVSeriesCategory> tvSeriesCategories;*/
 
     @MinListSize(minSize = 3, message = "Musics list must have at least three elements")
     private List<Music> musics;
@@ -38,9 +39,9 @@ public class CreateCharacteristicsRequestDto {
     @MinListSize(minSize = 3, message = "Books list must have at least three elements")
     private List<MusicCategory> musicCategories;
 
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
+    /*@MinListSize(minSize = 3, message = "Books list must have at least three elements")
     private List<Book> books;
 
     @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<BookCategory> bookCategories;
+    private List<BookCategory> bookCategories;*/
 }
