@@ -1,6 +1,5 @@
 package com.blinder.api.user.controller;
 
-import com.blinder.api.report.mapper.ReportMapper;
 import com.blinder.api.user.dto.CreateUserRequestDto;
 import com.blinder.api.user.dto.UpdateUserRequestDto;
 import com.blinder.api.user.dto.UserResponseDto;
