@@ -2,6 +2,7 @@ package com.blinder.api.user.controller;
 
 import com.blinder.api.report.mapper.ReportMapper;
 import com.blinder.api.user.dto.CreateUserRequestDto;
+import com.blinder.api.user.dto.UpdateUserRequestDto;
 import com.blinder.api.user.dto.UserResponseDto;
 import com.blinder.api.user.mapper.UserMapper;
 import com.blinder.api.user.service.UserService;
@@ -37,6 +38,13 @@ public class UserController {
     public ResponseEntity<CreateUserRequestDto> addUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         this.userService.addUser(UserMapper.INSTANCE.createUserRequestDtoToUser(createUserRequestDto));
         return new ResponseEntity<>(createUserRequestDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{userId}")
+    @Operation(summary = "Update user by id")
+    public ResponseEntity<UserResponseDto> updateUserById(@PathVariable String userId,
+                                                          @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto) {
+        return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.updateUserById(userId, UserMapper.INSTANCE.updateUserRequestDtoToUser(updateUserRequestDto))), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
