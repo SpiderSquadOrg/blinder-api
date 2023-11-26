@@ -4,4 +4,6 @@ import com.blinder.api.MusicCategory.model.MusicCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MusicCategoryRepository extends JpaRepository<MusicCategory, String> {
+
+    boolean existsByName(String name);
 }
