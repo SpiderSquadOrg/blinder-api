@@ -32,7 +32,7 @@ public interface MusicCategoryMapper {
     MusicCategory createMusicCategoryRequestDtoToMusicCategory(CreateMusicCategoryRequestDto categoryRequestDto);
 
 
-   MusicCategory updateMusicCategoryRequestDtoToMusicCategory(UpdateMusicCategoryRequestDto updateMusicCategoryRequestDto);
+    MusicCategory updateMusicCategoryRequestDtoToMusicCategory(UpdateMusicCategoryRequestDto updateMusicCategoryRequestDto);
 
 
     default Page<MusicCategoryResponseDto> musicCategoryToMusicCategoryResponseDto(Page<MusicCategory> musicCategoryPage) {

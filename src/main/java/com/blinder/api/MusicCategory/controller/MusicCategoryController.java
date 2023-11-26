@@ -32,24 +32,24 @@ public class MusicCategoryController {
         return new ResponseEntity<>(createMusicCategoryRequestDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{musicCategoryId}")
+    @PutMapping("/{id}")
     @Operation(summary = "Update music category")
-    public ResponseEntity<UpdateMusicCategoryRequestDto> updateMusicCategory(@PathVariable(name = "musicCategoryId") String name,
+    public ResponseEntity<UpdateMusicCategoryRequestDto> updateMusicCategory(@PathVariable(name = "id") String id,
                                                                @RequestBody UpdateMusicCategoryRequestDto updateMusicCategoryRequestDto) {
-        musicCategoryService.updateMusicCategory(name, MusicCategoryMapper.INSTANCE.updateMusicCategoryRequestDtoToMusicCategory(updateMusicCategoryRequestDto));
+        musicCategoryService.updateMusicCategory(id, MusicCategoryMapper.INSTANCE.updateMusicCategoryRequestDtoToMusicCategory(updateMusicCategoryRequestDto));
         return new ResponseEntity<>(updateMusicCategoryRequestDto, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{musicCategoryId}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Delete music category")
-    public ResponseEntity<HttpStatus> deleteMusicCategory(@PathVariable(name = "musicCategoryId") String name) {
-        musicCategoryService.deleteMusicCategory(name);
+    public ResponseEntity<HttpStatus> deleteMusicCategory(@PathVariable(name = "id") String id) {
+        musicCategoryService.deleteMusicCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/{musicCategoryId}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get music category by id")
-    public ResponseEntity<MusicCategoryResponseDto> getMusicCategoryById(@PathVariable String musicCategoryId) {
-        return new ResponseEntity<>(MusicCategoryMapper.INSTANCE.musicCategoryToMusicCategoryResponseDto(musicCategoryService.getMusicCategoryById(musicCategoryId)), HttpStatus.OK);
+    public ResponseEntity<MusicCategoryResponseDto> getMusicCategoryById(@PathVariable String id) {
+        return new ResponseEntity<>(MusicCategoryMapper.INSTANCE.musicCategoryToMusicCategoryResponseDto(musicCategoryService.getMusicCategoryById(id)), HttpStatus.OK);
     }
 }
