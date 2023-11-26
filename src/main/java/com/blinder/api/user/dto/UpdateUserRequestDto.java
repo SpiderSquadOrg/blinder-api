@@ -1,16 +1,19 @@
 package com.blinder.api.user.dto;
 
+import com.blinder.api.location.dto.LocationDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateUserRequestDto {
     private String username;
+    private String password;
     private String email;
     private String name;
     private String surname;
@@ -18,9 +21,6 @@ public class UpdateUserRequestDto {
     private String genderId;
     private String roleId;
     private Date birthDate;
-    private String profileImage;
-    private String coverImage;
-    private String region;
-    private String country;
-    private String city;
+    private List<String> images;
+    private LocationDto location;
 }

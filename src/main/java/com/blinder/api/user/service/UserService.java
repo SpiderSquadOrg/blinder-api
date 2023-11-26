@@ -23,4 +23,6 @@ public interface UserService {
     Optional<User> findByUsername(String username);
 
     Page<User> getUsers(Integer page, Integer size);
+
+    User updateUserById(String userId, User user);
 }
