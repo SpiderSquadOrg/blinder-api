@@ -31,13 +31,13 @@ public interface CharacteristicsMapper {
     @Mapping(source = "user.id", target = "userId")
     CharacteristicsResponseDto characteristicsToCharacteristicsResponseDto(Characteristics characteristics);
 
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "userId", target = "user.id")
     Characteristics characteristicsResponseDtoToCharacteristics(CharacteristicsResponseDto characteristicsResponseDto);
 
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "userId", target = "user.id")
     Characteristics createCharacteristicsRequestDtoToCharacteristics(CreateCharacteristicsRequestDto createCharacteristicsRequestDto);
 
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "userId", target = "user.id")
     Characteristics updateCharacteristicsRequestDtoToCharacteristics(UpdateCharacteristicsRequestDto updateCharacteristicsRequestDto);
 
     @Mapping(source = "user.id", target = "userId")

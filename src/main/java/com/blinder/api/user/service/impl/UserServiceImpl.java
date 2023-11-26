@@ -1,9 +1,7 @@
 package com.blinder.api.user.service.impl;
 
 import com.blinder.api.location.model.Location;
-import com.blinder.api.location.repository.LocationRepository;
 import com.blinder.api.location.service.LocationService;
-import com.blinder.api.report.model.Report;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserRepository;
 import com.blinder.api.user.rules.UserBusinessRules;
@@ -46,8 +44,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUserById(String userId, User user) {
         this.userBusinessRules.checkIfUserExists(userId);
-        //TODO: location update by location service
+        boolean isLocationUpdated = (user.getLocation()!=null) && (
+                (user.getLocation().getCity()!=null) || (user.getLocation().getRegion()!=null) || (user.getLocation().getCountry()!=null)
+                );
+
         User userToUpdate = this.userRepository.findById(userId).orElseThrow();
+
+        if (isLocationUpdated) {
+            Location newLocation = this.locationService.updateLocation(userToUpdate.getLocation().getId(),user.getLocation());
+            user.setLocation(newLocation);
+        }
 
         Set<String> nullPropertyNames = getNullPropertyNames(user);
 
