@@ -24,10 +24,15 @@ public interface UserMapper {
     List<UserResponseDto> userToUserResponseDto(List<User> users);
 
     UserResponseDto userToUserResponseDto(User user);
+
     User userResponseDtoToUser(UserResponseDto userResponseDto);
 
+    @Mapping(source = "roleId", target = "role.id")
+    @Mapping(source = "genderId", target = "gender.id")
     User createUserRequestDtoToUser(CreateUserRequestDto createUserRequestDto);
 
+    @Mapping(source = "roleId", target = "role.id")
+    @Mapping(source = "genderId", target = "gender.id")
     User updateUserRequestDtoToUser(UpdateUserRequestDto updateUserRequestDto);
 
     default Page<UserResponseDto> userToUserResponseDto(Page<User> userPage) {

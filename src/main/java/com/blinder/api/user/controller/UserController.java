@@ -32,6 +32,38 @@ public class UserController {
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.getUsers(page, size)), HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    @Operation(summary = "Search users")
+    public ResponseEntity<Page<UserResponseDto>> searchUsers(@RequestParam(name = "page", required = false) Integer page,
+                                                             @RequestParam(name = "size", required = false) Integer size,
+                                                             @RequestParam(name = "email", required = false) String email,
+                                                             @RequestParam(name = "name", required = false) String name,
+                                                             @RequestParam(name = "surname", required = false) String surname,
+                                                             @RequestParam(name = "username", required = false) String username,
+                                                             @RequestParam(name = "roleNames", required = false) String[] roleNames,
+                                                             @RequestParam(name = "genderNames", required = false) String[] genderNames,
+                                                             @RequestParam(name = "ageLowerBound", required = false) String ageLowerBound,
+                                                             @RequestParam(name = "ageUpperBound", required = false) String ageUpperBound,
+                                                             @RequestParam(name = "region", required = false) String region,
+                                                             @RequestParam(name = "country", required = false) String country,
+                                                             @RequestParam(name = "city", required = false) String city,
+                                                             @RequestParam(name = "isMatched", required = false) Boolean isMatched,
+                                                             @RequestParam(name = "isBanned", required = false) Boolean isBanned,
+                                                             @RequestParam(name = "sortBy", required = false) String sortBy,
+                                                             @RequestParam(name = "sortDirection", required = false) String sortDirection
+                                                             ) {
+        return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(
+                this.userService.searchUsers(
+                                page, size,
+                                email, name, surname, username,
+                                roleNames, genderNames,
+                                ageLowerBound, ageUpperBound,
+                                region, country, city,
+                                isMatched, isBanned,
+                                sortBy, sortDirection
+                        )), HttpStatus.OK);
+    }
+
     @PostMapping
     @Operation(summary = "Add user")
     public ResponseEntity<CreateUserRequestDto> addUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {

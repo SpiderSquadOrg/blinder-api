@@ -2,6 +2,8 @@ package com.blinder.api.user.rules;
 
 import com.blinder.api.exception.AlreadyExistsException;
 import com.blinder.api.exception.NotExistsException;
+import com.blinder.api.user.repository.GenderRepository;
+import com.blinder.api.user.repository.RoleRepository;
 import com.blinder.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserBusinessRules {
     private final UserRepository userRepository;
+    private final GenderRepository genderRepository;
+    private final RoleRepository roleRepository;
 
     public void checkIfEmailExists(String email) {
         if (this.userRepository.existsByEmail(email)) {
@@ -52,4 +56,18 @@ public class UserBusinessRules {
             throw new AlreadyExistsException("User is not blocked");
         }
     }
+
+    public void checkIfGenderDoesNotExists(String genderId){
+        if (!this.genderRepository.existsById(genderId)){
+            throw new NotExistsException("Gender does not exist");
+        }
+    }
+
+    public void checkIfRoleDoesNotExists(String roleId){
+        if (!this.roleRepository.existsById(roleId)){
+            throw new NotExistsException("Role does not exist");
+        }
+    }
+
+
 }
