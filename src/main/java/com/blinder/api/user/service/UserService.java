@@ -25,4 +25,6 @@ public interface UserService {
     Page<User> getUsers(Integer page, Integer size);
 
     User updateUserById(String userId, User user);
+
+    Page<User> searchUsers(Integer page, Integer size, String email, String name, String surname, String username, String[] roleNames, String[] genderNames, String ageLowerBound, String ageUpperBound, String region, String country, String city, Boolean isMatched, Boolean isBanned, String sortBy, String sortDirection);
 }

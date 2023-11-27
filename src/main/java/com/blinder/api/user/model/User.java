@@ -32,6 +32,9 @@ public class User extends BaseEntity {
 
     private String password;
 
+    @Column(unique = true)
+    private String phoneNumber;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 

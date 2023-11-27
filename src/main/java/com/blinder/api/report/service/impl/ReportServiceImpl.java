@@ -78,7 +78,7 @@ public class ReportServiceImpl implements ReportService {
         }
         Pageable pageable = PageRequest.of(page, size);
         if (Objects.isNull(sortBy) || sortBy.isEmpty()) {
-            sortBy = "name";
+            sortBy = "createdAt";//TODO: change to default sort field
         }
 
         SortDirection so;

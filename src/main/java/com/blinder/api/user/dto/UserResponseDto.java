@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,14 +20,11 @@ public class UserResponseDto {
     private LocationDto location;
     private boolean isMatched;
     private boolean isBanned;
+    private GenderResponseDto gender;
+    private RoleResponseDto role;
+    private List<String> images;
     /*
-    private String gender;
-    private String role;
-    private String birthDate;
     private String profileImage;
     private String coverImage;
-    private String region;
-    private String country;
-    private String city;
     */
 }
