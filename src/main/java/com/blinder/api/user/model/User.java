@@ -1,5 +1,6 @@
 package com.blinder.api.user.model;
 
+import com.blinder.api.filter.model.Filter;
 import com.blinder.api.location.model.Location;
 import com.blinder.api.model.BaseEntity;
 import jakarta.persistence.*;
@@ -50,7 +51,8 @@ public class User extends BaseEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> images = new ArrayList<>();
 
-  //  private Filter filter;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Filter filter;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<User> blockedUsers = new ArrayList<>();
