@@ -1,66 +1,61 @@
 package com.blinder.api.Music.service.impl;
 
-import com.blinder.api.Music.model.Music;
-import com.blinder.api.Music.repository.MusicRepository;
-import com.blinder.api.Music.rules.MusicBusinessRules;
 import com.blinder.api.Music.service.MusicService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
-
-import static com.blinder.api.util.MappingUtils.getNullPropertyNames;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
 public class MusicServiceImpl implements MusicService {
-    private final MusicRepository musicRepository;
-    private final MusicBusinessRules musicBusinessRules;
 
-    @Override
-    public Page<Music> getMusics(Integer page, Integer size) {
-        boolean isPageable = Objects.nonNull(page) && Objects.nonNull(size);
+    @Value("${spotify.client_id}")
+    private String clientId;
 
-        if (!isPageable) {
-            page = 0;
-            size = Integer.MAX_VALUE;
-        }
-        return this.musicRepository.findAll(PageRequest.of(page, size));
+    @Value("${spotify.client_secret}")
+    private String clientSecret;
+
+
+    public Mono<String> accessToken() throws JsonProcessingException {
+
+        WebClient webClient = WebClient.create("https://api.example.com");
+
+        String jsonString = webClient.post()
+                .uri("https://accounts.spotify.com/api/token")
+                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes()))
+                .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .bodyValue(String.format("grant_type=client_credentials&client_id=%s&client_secret=%s", clientId, clientSecret))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(jsonString);
+        String token = jsonNode.get("access_token").asText();
+        return Mono.just(token);
     }
 
     @Override
-    public Music addMusic(Music music) {
-        musicBusinessRules.checkIfNotMusicCategoryExists(music.getMusicCategory().getId());
-        musicBusinessRules.checkIfMusicNameExists(music.getName());
-        return musicRepository.save(music);
-    }
+    public Mono<String> searchMusic(String musicName, int limit) throws JsonProcessingException {
 
-    @Override
-    public Music updateMusic(String musicId, Music music) {
-        musicBusinessRules.checkIfMusicNameExists(music.getName());
+        WebClient webClient = WebClient.create("https://api.example.com");
 
-        if (music.getMusicCategory().getId()==null) music.setMusicCategory(null);
+        String response = webClient.get()
+                .uri("https://api.spotify.com/v1/search?q=" + musicName + "&type=track&limit=" + limit)
+                .header("Authorization", "Bearer " + accessToken().block())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
 
-        Music musicToUpdate = this.musicRepository.findById(musicId).orElseThrow();
-        Set<String> nullPropertyNames = getNullPropertyNames(music);
-        BeanUtils.copyProperties(music, musicToUpdate, nullPropertyNames.toArray(new String[0]));
 
-        this.musicRepository.save(musicToUpdate);
-        return musicToUpdate;
-    }
-
-    @Override
-    public void deleteMusic(String musicId) {
-        this.musicRepository.deleteById(musicId);
-    }
-
-    @Override
-    public Music getMusicById(String musicId) {
-        return this.musicRepository.findById(musicId).orElseThrow();
+        return Mono.just(response);
     }
 }
