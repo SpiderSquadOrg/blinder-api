@@ -2,6 +2,8 @@ package com.blinder.api.user.service.impl;
 
 import com.blinder.api.common.sort.SortCriteria;
 import com.blinder.api.common.sort.SortDirection;
+import com.blinder.api.filter.model.Filter;
+import com.blinder.api.filter.service.FilterService;
 import com.blinder.api.location.model.Location;
 import com.blinder.api.location.service.LocationService;
 import com.blinder.api.user.model.User;
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private final LocationService locationService;
     private final UserAuthService userAuthService;
     private final UserBusinessRules userBusinessRules;
+    private final FilterService filterService;
+
     @Override
     public User getUserById(String id) {
         this.userBusinessRules.checkIfUserExists(id);
@@ -48,6 +52,9 @@ public class UserServiceImpl implements UserService {
         User newUser = this.userRepository.save(user);
         newLocation.setUser(newUser);
         this.locationService.updateLocation(newLocation.getId(),newLocation);
+
+        this.filterService.createDefaultFilterForUser(newUser.getId());
+
         return newUser;
     }
 

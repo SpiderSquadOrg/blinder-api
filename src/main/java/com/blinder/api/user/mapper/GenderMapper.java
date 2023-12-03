@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Mapper(
@@ -27,6 +28,7 @@ public interface GenderMapper {
 
     Gender genderRequestDtoToGender(GenderRequestDto genderRequestDto);
 
+    //Set<Gender> genderRequestDtoListToGenderSet(List<GenderRequestDto> genderRequestDtos);
 
     default Page<GenderResponseDto> genderToGenderResponseDto(Page<Gender> genderPage) {
         List<GenderResponseDto> responseDtoList = genderToGenderResponseDto(genderPage.getContent());

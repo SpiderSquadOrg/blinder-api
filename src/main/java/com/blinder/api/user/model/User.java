@@ -1,7 +1,11 @@
 package com.blinder.api.user.model;
 
+import com.blinder.api.filter.model.Filter;
 import com.blinder.api.location.model.Location;
 import com.blinder.api.model.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+//@JsonIgnoreProperties({"filter"})
 @Table(name = "users")
 public class User extends BaseEntity {
     private String name;
@@ -50,7 +55,10 @@ public class User extends BaseEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> images = new ArrayList<>();
 
-  //  private Filter filter;
+    //@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "filter_id")
+    private Filter filter;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<User> blockedUsers = new ArrayList<>();
