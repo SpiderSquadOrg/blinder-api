@@ -1,5 +1,6 @@
 package com.blinder.api.filter.dto;
 
+import com.blinder.api.filter.model.LocationType;
 import com.blinder.api.user.dto.GenderRequestDto;
 import com.blinder.api.user.dto.GenderResponseDto;
 import com.blinder.api.user.model.Gender;
@@ -14,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateFilterRequestDto {
     private List<GenderRequestDto> genders;
-    //private LocationFilter locationFilter;
+    private LocationType locationType;
+    private String locationName;
     private int ageLowerBound;
     private int ageUpperBound;
 }

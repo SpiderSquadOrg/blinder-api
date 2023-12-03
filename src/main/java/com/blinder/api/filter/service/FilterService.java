@@ -10,7 +10,7 @@ public interface FilterService {
 
     Filter getFilterById(String id);
 
-    Filter updateFilter(String filterId, Filter updatedFilter);
+    Filter updateFilter(String id, Filter updatedFilter);
 
     void resetFilter(String id);
 
