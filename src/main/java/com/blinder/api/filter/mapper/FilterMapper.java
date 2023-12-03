@@ -1,16 +1,16 @@
 package com.blinder.api.filter.mapper;
 
 import com.blinder.api.filter.model.Filter;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import com.blinder.api.user.dto.GenderRequestDto;
+import com.blinder.api.user.model.Gender;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import com.blinder.api.filter.dto.CreateFilterRequestDto;
 import com.blinder.api.filter.dto.FilterResponseDto;
 import com.blinder.api.filter.dto.UpdateFilterRequestDto;
-
-import java.util.List;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
@@ -21,7 +21,14 @@ public interface FilterMapper {
 
     FilterResponseDto filterToFilterResponseDto(Filter filter);
 
-    Filter createFilterRequestDtoToFilter(CreateFilterRequestDto createFilterRequestDto);
-
+    @Mapping(target = "genders", source = "genders")
     Filter updateFilterRequestDtoToFilter(UpdateFilterRequestDto updateFilterRequestDto);
+
+    default Set<Gender> mapGenderRequestDtoSetToGenderSet(Set<GenderRequestDto> genderRequestDtos) {
+        return genderRequestDtos.stream()
+                .map(this::genderRequestDtoToGender)
+                .collect(Collectors.toSet());
+    }
+
+    Gender genderRequestDtoToGender(GenderRequestDto genderRequestDto);
 }

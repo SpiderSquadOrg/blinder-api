@@ -1,5 +1,6 @@
 package com.blinder.api.filter.dto;
 
+import com.blinder.api.user.dto.GenderResponseDto;
 import com.blinder.api.user.model.Gender;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FilterResponseDto {
     private String id;
-    private List<Gender> genders;
+    private List<GenderResponseDto> genders;
     //private LocationFilter locationFilter;
     private int ageLowerBound;
     private int ageUpperBound;

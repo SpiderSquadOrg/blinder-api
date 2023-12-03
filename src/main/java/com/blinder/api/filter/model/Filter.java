@@ -2,6 +2,9 @@ package com.blinder.api.filter.model;
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +23,10 @@ public class Filter extends BaseEntity {
     private static final int DEFAULT_AGE_UPPER_BOUND = 99;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Gender> genders;
 
     //@OneToOne(mappedBy = "filter", cascade = CascadeType.ALL)
