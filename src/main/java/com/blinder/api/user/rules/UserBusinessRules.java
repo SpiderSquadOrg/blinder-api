@@ -69,5 +69,11 @@ public class UserBusinessRules {
         }
     }
 
+    public void checkIfPhoneNumberExists(String phoneNumber){
+        if (this.userRepository.existsByPhoneNumber(phoneNumber)){
+            throw new AlreadyExistsException("Phone number already exists");
+        }
+    }
+
 
 }
