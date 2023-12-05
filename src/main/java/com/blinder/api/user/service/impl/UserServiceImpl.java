@@ -2,21 +2,23 @@ package com.blinder.api.user.service.impl;
 
 import com.blinder.api.common.sort.SortCriteria;
 import com.blinder.api.common.sort.SortDirection;
-import com.blinder.api.filter.model.Filter;
 import com.blinder.api.filter.service.FilterService;
 import com.blinder.api.location.model.Location;
 import com.blinder.api.location.service.LocationService;
+import com.blinder.api.user.model.Role;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserCustomRepository;
 import com.blinder.api.user.repository.UserRepository;
 import com.blinder.api.user.rules.UserBusinessRules;
 import com.blinder.api.user.security.auth.service.UserAuthService;
+import com.blinder.api.user.service.RoleService;
 import com.blinder.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -34,6 +36,8 @@ public class UserServiceImpl implements UserService {
     private final UserAuthService userAuthService;
     private final UserBusinessRules userBusinessRules;
     private final FilterService filterService;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User getUserById(String id) {
@@ -47,6 +51,9 @@ public class UserServiceImpl implements UserService {
         this.userBusinessRules.checkIfUsernameExists(user.getUsername());
         this.userBusinessRules.checkIfGenderDoesNotExists(user.getGender().getId());
         this.userBusinessRules.checkIfRoleDoesNotExists(user.getRole().getId());
+        this.userBusinessRules.checkIfPhoneNumberExists(user.getPhoneNumber());
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Location newLocation = this.locationService.addLocation(user.getLocation());
         User newUser = this.userRepository.save(user);
@@ -56,6 +63,13 @@ public class UserServiceImpl implements UserService {
         this.filterService.createDefaultFilterForUser(newUser.getId());
 
         return newUser;
+    }
+
+    @Override
+    public User register(User user) {
+        Role normalUserRole = this.roleService.getRoleByName("normal");
+        user.setRole(normalUserRole);
+        return this.addUser(user);
     }
 
     @Override

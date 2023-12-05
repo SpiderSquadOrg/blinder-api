@@ -9,6 +9,7 @@ public interface UserService {
     User getUserById(String id);
 
     User addUser(User user);
+    User register(User user);
 
     void deleteUserById(String userId);
 

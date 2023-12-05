@@ -9,6 +9,7 @@ public interface RoleService {
     Page<Role> getRoles(Integer page, Integer size);
 
     Role getRoleById(String roleId);
+    Role getRoleByName(String roleName);
 
     Role updateRole(String roleId, Role role);
 
