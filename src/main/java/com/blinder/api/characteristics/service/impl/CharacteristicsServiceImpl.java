@@ -1,5 +1,7 @@
 package com.blinder.api.characteristics.service.impl;
 
+import com.blinder.api.Movie.model.Movie;
+import com.blinder.api.Movie.repository.MovieRepository;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.Music.repository.MusicRepository;
 import com.blinder.api.MusicCategory.model.MusicCategory;
@@ -28,7 +30,9 @@ import static com.blinder.api.util.MappingUtils.getNullPropertyNames;
 public class CharacteristicsServiceImpl implements CharacteristicsService {
     private final CharacteristicsRepository characteristicsRepository;
     private final MusicCategoryRepository musicCategoryRepository;
+    //private final MovieCategoryRepository movieCategoryRepository;
     private final MusicRepository musicRepository;
+    private final MovieRepository movieRepository;
 
     @Override
     public Characteristics addCharacteristics(Characteristics characteristics) {
@@ -102,6 +106,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         return characteristics;
     }
 
+    /*
     @Override
     public Characteristics addToMovieCategoryList(String userId, MovieCategory movieCategory) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
@@ -109,7 +114,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         characteristics.addToMovieCategoryList(addedMovieCategory);
         characteristicsRepository.save(characteristics);
         return characteristics;
-    }
+    }*/
 
     @Override
     public Characteristics removeFromMusicList(String userId, String musicId) {
@@ -134,13 +139,14 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics removeFromMovieList(String userId, String movieId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        Movie removedMovie = musicCategoryRepository.findById(movieId).orElseThrow();
+        Movie removedMovie = movieRepository.findById(movieId).orElseThrow();
         characteristics.removeFromMovieList(removedMovie);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(movieId);
         return characteristics;
     }
 
+    /*
     @Override
     public Characteristics removeFromMovieCategoryList(String userId, String movieCategoryId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
@@ -149,5 +155,5 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         characteristicsRepository.save(characteristics);
         movieCategoryRepository.deleteById(movieCategoryId);
         return characteristics;
-    }
+    }*/
 }

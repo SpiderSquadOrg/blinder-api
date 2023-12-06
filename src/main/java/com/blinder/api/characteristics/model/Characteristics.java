@@ -1,5 +1,6 @@
 package com.blinder.api.characteristics.model;
 
+import com.blinder.api.Movie.model.Movie;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.model.BaseEntity;
@@ -25,9 +26,10 @@ public class Characteristics extends BaseEntity {
     private User user;
     @OneToMany
     private List<Movie> movies;
-    @OneToMany
-    private List<MovieCategory> movieCategories;
+
     /*@OneToMany
+    private List<MovieCategory> movieCategories;
+    @OneToMany
     private List<Hobby> hobbies;
 
     @OneToMany
@@ -53,9 +55,10 @@ public class Characteristics extends BaseEntity {
     public void addToMovieList(Movie movie){
         movies.add(movie);
     }
-    public void addToMovieCategoryList(MovieCategory movieCategory){
+
+    /*public void addToMovieCategoryList(MovieCategory movieCategory){
         movieCategories.add(movieCategory);
-    }
+    }*/
 
     public void removeFromMusicList(Music music){
         musics.remove(music);
@@ -67,9 +70,10 @@ public class Characteristics extends BaseEntity {
     public void removeFromMovieList(Movie movie){
         movies.remove(movie);
     }
-    public void removeFromMovieCategoryList(MovieCategory movieCategory){
+
+    /*public void removeFromMovieCategoryList(MovieCategory movieCategory){
         movieCategories.remove(movieCategory);
-    }
+    }*/
 }
 
 
