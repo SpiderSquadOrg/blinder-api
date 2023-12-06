@@ -1,13 +1,11 @@
 package com.blinder.api.MusicCategory.service;
 
 import com.blinder.api.MusicCategory.model.MusicCategory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
+import reactor.core.publisher.Mono;
 
 public interface MusicCategoryService {
-    Page<MusicCategory> getMusicCategories(Integer page, Integer size);
-    MusicCategory addMusicCategory(MusicCategory musicCategory);
-    MusicCategory updateMusicCategory(String musicCategoryId, MusicCategory musicCategory);
-    void deleteMusicCategory(String musicCategoryId);
-    MusicCategory getMusicCategoryById(String musicCategoryId);
+    Mono<String> getMusicCategories() throws JsonProcessingException;
 
 }

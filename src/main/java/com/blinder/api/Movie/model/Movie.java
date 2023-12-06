@@ -1,9 +1,8 @@
-package com.blinder.api.Music.model;
+package com.blinder.api.Movie.model;
 
-import com.blinder.api.MusicCategory.model.MusicCategory;
+import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.model.BaseEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -16,7 +15,8 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @NoArgsConstructor
 @SuperBuilder
-public class Music extends BaseEntity {
-    private String spotifyId;
+public class Movie extends BaseEntity {
+
+    private String moviesDatabaseId;
 
 }
