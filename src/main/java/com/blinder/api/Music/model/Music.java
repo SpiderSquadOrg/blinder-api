@@ -22,5 +22,4 @@ public class Music extends BaseEntity {
 
     @ManyToOne
     private MusicCategory musicCategory;
-
 }
