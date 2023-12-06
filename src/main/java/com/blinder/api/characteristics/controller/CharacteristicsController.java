@@ -1,5 +1,7 @@
 package com.blinder.api.characteristics.controller;
 
+import com.blinder.api.Movie.dto.CreateMovieRequestDto;
+import com.blinder.api.Movie.mapper.MovieMapper;
 import com.blinder.api.Music.dto.CreateMusicRequestDto;
 import com.blinder.api.Music.mapper.MusicMapper;
 import com.blinder.api.MusicCategory.dto.CreateMusicCategoryRequestDto;
@@ -79,12 +81,13 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
+    /*
     @PatchMapping("/movies/categories/{userId}")
     @Operation(summary = "Add movie category to user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> addToMovieCategoryList(@PathVariable String userId, @RequestBody CreateMovieCategoryRequestDto createMovieCategoryRequestDto){
         Characteristics characteristics = characteristicsService.addToMovieCategoryList(userId, MovieCategoryMapper.INSTANCE.createMovieCategoryRequestDtoToMusicCategory(createMovieCategoryRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
-    }
+    }*/
 
     @PatchMapping("/musics/{musicId}/{userId}")
     @Operation(summary = "Remove music from user's characteristics")
