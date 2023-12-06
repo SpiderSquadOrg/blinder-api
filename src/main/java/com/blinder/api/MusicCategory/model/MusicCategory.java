@@ -18,6 +18,5 @@ import java.util.List;
 @SuperBuilder
 public class MusicCategory extends BaseEntity {
     private String name;
-    @ManyToMany
-    private List<Characteristics> characteristics;
+
 }

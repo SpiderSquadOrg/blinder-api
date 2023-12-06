@@ -17,10 +17,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class Music extends BaseEntity {
-
-    private String name;
-
-    @ManyToOne
-    private MusicCategory musicCategory;
-
+    private String spotifyId;
 }

@@ -24,7 +24,7 @@ public class MusicCustomMapper {
 
         items.forEach((item) -> {
             MusicResponseDto musicResponseDto = new MusicResponseDto();
-            musicResponseDto.setId(item.get("id").asText());
+            musicResponseDto.setSpotifyId(item.get("id").asText());
             musicResponseDto.setName(item.get("name").asText());
 
             List<String> artists = new ArrayList<>();

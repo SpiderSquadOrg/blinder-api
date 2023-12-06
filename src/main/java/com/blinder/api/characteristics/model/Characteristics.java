@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,24 +23,53 @@ import java.util.List;
 public class Characteristics extends BaseEntity {
     @OneToOne
     private User user;
-    /*@OneToMany
-    private List<Hobby> hobbies;
     @OneToMany
     private List<Movie> movies;
     @OneToMany
     private List<MovieCategory> movieCategories;
+    /*@OneToMany
+    private List<Hobby> hobbies;
+
     @OneToMany
     private List<TVSeries> tvSeries;
     @OneToMany
     private List<TVSeriesCategory> tvSeriesCategories;*/
     @OneToMany
-    private List<Music> musics;
+    private List<Music> musics = new ArrayList<>();
     @OneToMany
-    private List<MusicCategory> musicCategories;
+    private List<MusicCategory> musicCategories = new ArrayList<>();
     /*@OneToMany
     private List<Book> books;
     @OneToMany
     private List<BookCategory> bookCategories;*/
+
+    public void addToMusicList(Music music){
+        musics.add(music);
+    }
+    public void addToMusicCategoryList(MusicCategory musicCategory){
+        musicCategories.add(musicCategory);
+    }
+
+    public void addToMovieList(Movie movie){
+        movies.add(movie);
+    }
+    public void addToMovieCategoryList(MovieCategory movieCategory){
+        movieCategories.add(movieCategory);
+    }
+
+    public void removeFromMusicList(Music music){
+        musics.remove(music);
+    }
+    public void removeFromMusicCategoryList(MusicCategory musicCategory){
+        musicCategories.remove(musicCategory);
+    }
+
+    public void removeFromMovieList(Movie movie){
+        movies.remove(movie);
+    }
+    public void removeFromMovieCategoryList(MovieCategory movieCategory){
+        movieCategories.remove(movieCategory);
+    }
 }
 
 
