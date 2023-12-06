@@ -1,13 +1,17 @@
 package com.blinder.api.Movie.service.impl;
 
+import com.blinder.api.Movie.service.MovieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-public class MovieServiceImpl {
-    public Mono<String> searchMovie(String movieName) throws JsonProcessingException {
+@RequiredArgsConstructor
+
+public class MovieServiceImpl implements MovieService {
+    public Mono<String> searchMovie(String movieName, int limit) throws JsonProcessingException {
 
         WebClient webClient = WebClient.create("moviesdatabase.p.rapidapi.com");
 

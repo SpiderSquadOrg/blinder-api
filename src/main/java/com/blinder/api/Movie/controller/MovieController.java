@@ -1,30 +1,25 @@
 package com.blinder.api.Movie.controller;
 
-import com.blinder.api.Movie.service.impl.MovieServiceImpl;
+import com.blinder.api.Movie.dto.MovieResponseDto;
+import com.blinder.api.Movie.mapper.MovieCustomMapper;
+import com.blinder.api.Movie.service.MovieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequestMapping("/movies")
 @RestController
-@RequestMapping("/api/search")
+@RequiredArgsConstructor
 public class MovieController {
+    private final MovieService movieService;
+    private final MovieCustomMapper movieCustomMapper;
 
-    private final MovieServiceImpl movieServiceImpl;
-
-    @Autowired
-    public MovieController(MovieServiceImpl movieServiceImpl) {
-        this.movieServiceImpl = movieServiceImpl;
-    }
-
-    @GetMapping("/{movieName}")
-    public Mono<ResponseEntity<String>> searchMovie(@PathVariable String movieName) throws JsonProcessingException {
-        return movieServiceImpl.searchMovie(movieName)
-                .map(movie -> ResponseEntity.ok().body(movie))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieResponseDto>> searchMovie(@RequestParam(name = "movieName") String movieName, @RequestParam(name = "limit", defaultValue = "50") int limit) throws JsonProcessingException {
+        return new ResponseEntity<>(movieCustomMapper.movieDataToMovieResponseDto(movieService.searchMovie(movieName, limit)), HttpStatus.OK);
     }
 }
