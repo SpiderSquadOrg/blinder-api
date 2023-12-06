@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateMusicCategoryRequestDto {
-
     @NotBlank
     private String name;
 }

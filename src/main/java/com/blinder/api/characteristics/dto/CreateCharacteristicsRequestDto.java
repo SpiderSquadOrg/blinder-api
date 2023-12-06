@@ -1,5 +1,6 @@
 package com.blinder.api.characteristics.dto;
 
+import com.blinder.api.Music.dto.CreateMusicRequestDto;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.common.annotations.MinListSize;
@@ -34,10 +35,10 @@ public class CreateCharacteristicsRequestDto {
     private List<TVSeriesCategory> tvSeriesCategories;*/
 
     @MinListSize(minSize = 3, message = "Musics list must have at least three elements")
-    private List<Music> musics;
+    private List<CreateMusicRequestDto> musics;
 
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<MusicCategory> musicCategories;
+    //@MinListSize(minSize = 3, message = "Books list must have at least three elements")
+    //private List<MusicCategory> musicCategories;
 
     /*@MinListSize(minSize = 3, message = "Books list must have at least three elements")
     private List<Book> books;
