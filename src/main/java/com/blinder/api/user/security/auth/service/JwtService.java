@@ -1,5 +1,6 @@
 package com.blinder.api.user.security.auth.service;
 
+import com.blinder.api.user.security.UserAuthDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -36,11 +37,13 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        /*
+
         if(userDetails instanceof UserAuthDetails) {
             extraClaims.put("userId", ((UserAuthDetails) userDetails).getUser().getId());
+            extraClaims.put("email", ((UserAuthDetails) userDetails).getUser().getEmail());
+            extraClaims.put("username", ((UserAuthDetails) userDetails).getUser().getUsername());
         }
-        */
+
         extraClaims.put("role", userDetails.getAuthorities().stream().findFirst().get().getAuthority());
 
         return Jwts
@@ -76,7 +79,6 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 }
