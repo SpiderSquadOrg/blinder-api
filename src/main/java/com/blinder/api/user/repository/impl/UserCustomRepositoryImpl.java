@@ -2,6 +2,8 @@ package com.blinder.api.user.repository.impl;
 
 import com.blinder.api.common.sort.SortCriteria;
 import com.blinder.api.common.sort.SortDirection;
+import com.blinder.api.filter.model.LocationType;
+import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserCustomRepository;
 import jakarta.persistence.EntityManager;
@@ -14,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -120,6 +119,47 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         List<User> resultList = typedQuery.getResultList();
 
         return new PageImpl<>(resultList, pageable, totalItems);
+    }
+
+    @Override
+    public List<User> findFilteredUsers(
+            Set<Gender> genders, int ageLowerBound, int ageUpperBound,
+            LocationType locationType, String locationName) {
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        //Filtering conditions
+        predicates.add(cb.and(root.get("gender").in(genders)));
+        predicates.add(cb.and(
+                cb.between(root.get("birthDate"), ageLowerBound, ageUpperBound)
+        ));
+
+        if (locationType != null) {
+            switch (locationType) {
+                case COUNTRY:
+                    predicates.add(cb.equal(root.get("location").get("country"), locationName));
+                    break;
+                case REGION:
+                    predicates.add(cb.equal(root.get("location").get("region"), locationName));
+                    break;
+                case CITY:
+                    predicates.add(cb.equal(root.get("location").get("city"), locationName));
+                    break;
+            }
+        }
+
+        query.where(predicates.toArray(new Predicate[0]));
+
+        // Paging
+        TypedQuery<User> typedQuery = entityManager.createQuery(query);
+        //typedQuery.setFirstResult((int) pageable.getOffset());
+        //typedQuery.setMaxResults(pageable.getPageSize());
+
+        return typedQuery.getResultList();
     }
 
     private Date calculateBirthDate(String age) {

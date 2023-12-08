@@ -2,9 +2,12 @@ package com.blinder.api.user.service.impl;
 
 import com.blinder.api.common.sort.SortCriteria;
 import com.blinder.api.common.sort.SortDirection;
+import com.blinder.api.filter.model.Filter;
+import com.blinder.api.filter.model.LocationType;
 import com.blinder.api.filter.service.FilterService;
 import com.blinder.api.location.model.Location;
 import com.blinder.api.location.service.LocationService;
+import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.Role;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserCustomRepository;
@@ -21,9 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.blinder.api.util.MappingUtils.getNullPropertyNames;
 
@@ -199,5 +200,24 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findAll(PageRequest.of(page, size));
     }
 
+    @Override
+    public List<User> getFilteredUsers(User user) {
+        Filter userFilter = user.getFilter();
 
+        Set<Gender> allowedGenders = userFilter.getGenders();
+        int ageLowerBound = userFilter.getAgeLowerBound();
+        int ageUpperBound = userFilter.getAgeUpperBound();
+        LocationType locationType = userFilter.getLocationType();
+        String locationName = userFilter.getLocationName();
+
+        return userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, locationType, locationName);
+    }
+
+    @Override
+    public List<User> getRandomUsers(int howManyUser) {
+        List<User> allUsers = userRepository.findAll();
+        Collections.shuffle(allUsers);
+
+        return allUsers.subList(0, Math.min(howManyUser, allUsers.size()));
+    }
 }
