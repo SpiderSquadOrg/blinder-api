@@ -13,7 +13,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class Movie extends BaseEntity {
-
-    private String moviesDatabaseId;
-
+    private String imdbId;
 }
