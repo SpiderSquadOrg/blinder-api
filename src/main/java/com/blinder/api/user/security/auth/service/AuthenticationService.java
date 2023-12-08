@@ -19,7 +19,6 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -33,8 +32,4 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public UserAuthDetails activeUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserAuthDetails) authentication.getPrincipal();
-    }
 }

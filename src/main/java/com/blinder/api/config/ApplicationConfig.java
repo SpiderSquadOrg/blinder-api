@@ -1,6 +1,8 @@
 package com.blinder.api.config;
 
+import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserRepository;
+import com.blinder.api.user.security.UserAuthDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +24,11 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        return username -> {
+            User user = repository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+            return new UserAuthDetails(user);
+        };
     }
 
     @Bean
