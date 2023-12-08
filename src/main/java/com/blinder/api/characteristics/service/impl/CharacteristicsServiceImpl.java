@@ -146,6 +146,11 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         return characteristics;
     }
 
+    @Override
+    public Characteristics removeFromMovieCategoryList(String userId, String movieCategoryId) {
+        return null;
+    }
+
     /*
     @Override
     public Characteristics removeFromMovieCategoryList(String userId, String movieCategoryId) {
