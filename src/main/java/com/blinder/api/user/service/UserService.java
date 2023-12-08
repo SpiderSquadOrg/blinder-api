@@ -3,6 +3,7 @@ package com.blinder.api.user.service;
 import com.blinder.api.user.model.User;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -24,6 +25,10 @@ public interface UserService {
     Optional<User> findByUsername(String username);
 
     Page<User> getUsers(Integer page, Integer size);
+
+    List<User> getFilteredUsers(User user);
+
+    List<User> getRandomUsers(int howManyUser);
 
     User updateUserById(String userId, User user);
 

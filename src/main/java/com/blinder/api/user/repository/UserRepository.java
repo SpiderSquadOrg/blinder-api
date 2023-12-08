@@ -1,9 +1,16 @@
 package com.blinder.api.user.repository;
 
+import com.blinder.api.filter.model.LocationType;
+import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, String> {
     boolean existsByUsername(String username);

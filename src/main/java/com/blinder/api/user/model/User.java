@@ -1,8 +1,10 @@
 package com.blinder.api.user.model;
 
+import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.filter.model.Filter;
 import com.blinder.api.location.model.Location;
 import com.blinder.api.model.BaseEntity;
+import com.blinder.api.possibleMatch.model.PossibleMatch;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -63,9 +65,11 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     private List<User> blockedUsers = new ArrayList<>();
 
-   // private List<PossibleMatches> possibleMatches = new ArrayList<>();
+    @OneToMany
+    private List<PossibleMatch> possibleMatches = new ArrayList<>();
 
-   // private Characteristics characteristics;
+    @OneToOne
+    private Characteristics characteristics;
 
     private boolean isMatched;
     private boolean isBanned;
