@@ -81,9 +81,7 @@ public class UserServiceImpl implements UserService {
         this.userBusinessRules.checkIfGenderDoesNotExists(user.getGender().getId());
         this.userBusinessRules.checkIfRoleDoesNotExists(user.getRole().getId());
 
-        boolean isLocationUpdated = (user.getLocation()!=null) && (
-                (user.getLocation().getCity()!=null) || (user.getLocation().getRegion()!=null) || (user.getLocation().getCountry()!=null)
-                );
+        boolean isLocationUpdated = false;
 
         User userToUpdate = this.userRepository.findById(userId).orElseThrow();
 
