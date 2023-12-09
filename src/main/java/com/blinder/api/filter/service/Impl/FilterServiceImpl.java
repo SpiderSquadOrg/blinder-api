@@ -3,6 +3,7 @@ package com.blinder.api.filter.service.Impl;
 import com.blinder.api.filter.model.Filter;
 import com.blinder.api.filter.model.LocationType;
 import com.blinder.api.filter.repository.FilterRepository;
+import com.blinder.api.filter.rules.FilterBusinessRules;
 import com.blinder.api.filter.service.FilterService;
 import com.blinder.api.user.dto.GenderRequestDto;
 import com.blinder.api.user.model.Gender;
@@ -29,12 +30,10 @@ public class FilterServiceImpl implements FilterService {
     private final FilterRepository filterRepository;
     private final GenderRepository genderRepository;
     private final UserRepository userRepository;
-    private final UserAuthService userAuthService;
+    private final FilterBusinessRules filterBusinessRules;
 
     @Override
     public Filter createDefaultFilterForUser(String userId) {
-        //String activeUserId = this.userAuthService.getActiveUser().getId();
-        //userService.getUserById(activeUserId).getGender();
         User user = userRepository.findById(userId).orElseThrow();
         Set<Gender> allGenders = new HashSet<>(genderRepository.findAll());
         Filter filter = filterRepository.save(new Filter(user, allGenders));
@@ -49,23 +48,23 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public Filter getFilterById(String id) {
-        return this.filterRepository.findById(id).orElseThrow();
+    public Filter getFilterById(String filterId) {
+        return this.filterRepository.findById(filterId).orElseThrow();
     }
 
     @Override
     @Transactional
     public Filter updateFilter(String id, Filter updatedFilter) {
         Filter filterToUpdate = this.filterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Filter not found with id: " + id));
-        updateGenders(filterToUpdate, updatedFilter.getGenders());
+        updateFilterGenders(filterToUpdate, updatedFilter.getGenders());
 
-        if (updatedFilter.getLocationType() != null && isValidLocationType(updatedFilter.getLocationType())) {
+        if (filterBusinessRules.checkLocationTypeIsValid(updatedFilter.getLocationType())) {
             if(!updatedFilter.getLocationName().equals("")){ // TO DO: && Name doğru mu kontrol edilmeli!!!
                 filterToUpdate.setLocationType(updatedFilter.getLocationType());
                 filterToUpdate.setLocationName(updatedFilter.getLocationName());
             }
         }
-        if((updatedFilter.getAgeLowerBound() >= 18) && (updatedFilter.getAgeLowerBound() < updatedFilter.getAgeUpperBound())){
+        if(filterBusinessRules.checkAgeRangeIsValid(updatedFilter.getAgeLowerBound(), updatedFilter.getAgeUpperBound())){
             filterToUpdate.setAgeUpperBound(updatedFilter.getAgeUpperBound());
             filterToUpdate.setAgeLowerBound(updatedFilter.getAgeLowerBound());
 
@@ -88,7 +87,7 @@ public class FilterServiceImpl implements FilterService {
         filterRepository.save(filter);
     }
 
-    private void updateGenders(Filter filterToUpdate, Set<Gender> updatedGenders) {
+    private void updateFilterGenders(Filter filterToUpdate, Set<Gender> updatedGenders) {
         Set<Gender> existingGenders = filterToUpdate.getGenders();
 
         if (updatedGenders != null && !updatedGenders.isEmpty()) {
@@ -104,12 +103,5 @@ public class FilterServiceImpl implements FilterService {
         }
     }
 
-    private boolean isValidLocationType(LocationType locationType) {
-        for (LocationType validType : LocationType.values()) {
-            if (validType.equals(locationType)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 }

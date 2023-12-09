@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface PossibleMatchRepository extends JpaRepository<PossibleMatch, String> {
 
-    Optional<PossibleMatch> findPossibleMatchByToAndFrom(User to, User from);
+    Optional<PossibleMatch> findPossibleMatchByFromAndTo(User from, User to);
 
     @Query("SELECT pm.to FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'MATCHED')")
     List<User> findMatchedUsers(@Param("user") User user);

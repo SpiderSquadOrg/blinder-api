@@ -6,6 +6,8 @@ import com.blinder.api.filter.model.Filter;
 import com.blinder.api.filter.service.FilterService;
 import com.blinder.api.user.mapper.GenderMapper;
 import com.blinder.api.user.model.Gender;
+import com.blinder.api.user.model.User;
+import com.blinder.api.user.security.auth.service.UserAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,18 +22,21 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class FilterController {
     private final FilterService filterService;
+    private final UserAuthService userAuthService;
 
-    @GetMapping("/byUserId/{userId}")
+    @GetMapping("/byUser")
     @Operation(summary = "Get filter by userId")
-    public ResponseEntity<FilterResponseDto> getFilterByUserId(@PathVariable String userId) {
-        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterByUserId(userId)), HttpStatus.OK);
+    public ResponseEntity<FilterResponseDto> getFilterByUserId() {
+        User currentUser = userAuthService.getActiveUser().getUser();
+        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterByUserId(currentUser.getId())), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get filter by id")
-    public ResponseEntity<FilterResponseDto> getFilterById(@PathVariable String id) {
-        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(id)), HttpStatus.OK);
+    @GetMapping("/{filterId}")
+    @Operation(summary = "Get filter by filter id")
+    public ResponseEntity<FilterResponseDto> getFilterById(@PathVariable String filterId) {
+        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(filterId)), HttpStatus.OK);
     }
+
     @PutMapping("/{id}")
     @Operation(summary = "Update filter for user")
     public ResponseEntity<FilterResponseDto> updateFilter(@PathVariable String id,

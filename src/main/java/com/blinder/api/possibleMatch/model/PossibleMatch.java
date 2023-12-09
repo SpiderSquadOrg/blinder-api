@@ -15,13 +15,14 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Table(name = "possible_matches")
 public class PossibleMatch extends BaseEntity {
-    @ManyToOne
-    @JoinColumn(name = "to_user_id", nullable = false)
-    private User to;
 
     @ManyToOne
     @JoinColumn(name = "from_user_id", nullable = false)
     private User from;
+
+    @ManyToOne
+    @JoinColumn(name = "to_user_id", nullable = false)
+    private User to;
 
     private double similarityScore;
 
