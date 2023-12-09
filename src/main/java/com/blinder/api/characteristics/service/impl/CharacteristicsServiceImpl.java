@@ -9,6 +9,8 @@ import com.blinder.api.MusicCategory.repository.MusicCategoryRepository;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.characteristics.repository.CharacteristicsRepository;
 import com.blinder.api.characteristics.service.CharacteristicsService;
+import com.blinder.api.hobby.model.Hobby;
+import com.blinder.api.hobby.repository.HobbyRepository;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserRepository;
 import com.blinder.api.user.service.UserService;
@@ -29,10 +31,13 @@ import static com.blinder.api.util.MappingUtils.getNullPropertyNames;
 @RequiredArgsConstructor
 public class CharacteristicsServiceImpl implements CharacteristicsService {
     private final CharacteristicsRepository characteristicsRepository;
-    private final MusicCategoryRepository musicCategoryRepository;
-    //private final MovieCategoryRepository movieCategoryRepository;
     private final MusicRepository musicRepository;
+    private final MusicCategoryRepository musicCategoryRepository;
     private final MovieRepository movieRepository;
+    private final MovieCategoryRepository movieCategoryRepository;
+    private final TvSeriesRepository tvSeriesRepository;
+    private final TvSeriesCategoryRepository tvSeriesCategoryRepository;
+    private final HobbyRepository hobbyRepository;
 
     @Override
     public Characteristics addCharacteristics(Characteristics characteristics) {
@@ -79,6 +84,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         this.characteristicsRepository.deleteById(characteristicsId);
     }
 
+    //Music
     @Override
     public Characteristics addToMusicList(String userId, Music music) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
@@ -89,6 +95,17 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     }
 
     @Override
+    public Characteristics removeFromMusicList(String userId, String musicId) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        Music musicToRemove = musicRepository.findById(musicId).orElseThrow();
+        characteristics.removeFromMusicList(musicToRemove);
+        characteristicsRepository.save(characteristics);
+        musicRepository.deleteById(musicId);
+        return characteristics;
+    }
+
+    //Music category
+    @Override
     public Characteristics addToMusicCategoryList(String userId, MusicCategory musicCategory) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
         MusicCategory addedMusicCategory = musicCategoryRepository.save(musicCategory);
@@ -98,6 +115,17 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     }
 
     @Override
+    public Characteristics removeFromMusicCategoryList(String userId, String musicCategoryId) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        MusicCategory musicCategoryToRemove = musicCategoryRepository.findById(musicCategoryId).orElseThrow();
+        characteristics.removeFromMusicCategoryList(musicCategoryToRemove);
+        characteristicsRepository.save(characteristics);
+        musicCategoryRepository.deleteById(musicCategoryId);
+        return characteristics;
+    }
+
+    //Movie
+    @Override
     public Characteristics addToMovieList(String userId, Movie movie) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
         Movie addedMovie = movieRepository.save(movie);
@@ -106,7 +134,17 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         return characteristics;
     }
 
-    /*
+    @Override
+    public Characteristics removeFromMovieList(String userId, String movieId) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        Movie movieToRemove = movieRepository.findById(movieId).orElseThrow();
+        characteristics.removeFromMovieList(movieToRemove);
+        characteristicsRepository.save(characteristics);
+        movieRepository.deleteById(movieId);
+        return characteristics;
+    }
+
+    //Movie category
     @Override
     public Characteristics addToMovieCategoryList(String userId, MovieCategory movieCategory) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
@@ -114,51 +152,75 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         characteristics.addToMovieCategoryList(addedMovieCategory);
         characteristicsRepository.save(characteristics);
         return characteristics;
-    }*/
-
-    @Override
-    public Characteristics removeFromMusicList(String userId, String musicId) {
-        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        Music removedMusic = musicRepository.findById(musicId).orElseThrow();
-        characteristics.removeFromMusicList(removedMusic);
-        characteristicsRepository.save(characteristics);
-        musicRepository.deleteById(musicId);
-        return characteristics;
-    }
-
-    @Override
-    public Characteristics removeFromMusicCategoryList(String userId, String musicCategoryId) {
-        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        MusicCategory removedMusicCategory = musicCategoryRepository.findById(musicCategoryId).orElseThrow();
-        characteristics.removeFromMusicCategoryList(removedMusicCategory);
-        characteristicsRepository.save(characteristics);
-        musicCategoryRepository.deleteById(musicCategoryId);
-        return characteristics;
-    }
-
-    @Override
-    public Characteristics removeFromMovieList(String userId, String movieId) {
-        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        Movie removedMovie = movieRepository.findById(movieId).orElseThrow();
-        characteristics.removeFromMovieList(removedMovie);
-        characteristicsRepository.save(characteristics);
-        movieRepository.deleteById(movieId);
-        return characteristics;
     }
 
     @Override
     public Characteristics removeFromMovieCategoryList(String userId, String movieCategoryId) {
-        return null;
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        MovieCategory movieCategoryToRemove = movieRepository.findById(movieCategoryId).orElseThrow();
+        characteristics.removeFromMovieCategoryList(movieCategoryToRemove);
+        characteristicsRepository.save(characteristics);
+        movieRepository.deleteById(movieCategoryId);
+        return characteristics;
     }
 
-    /*
+    //Tv series
     @Override
-    public Characteristics removeFromMovieCategoryList(String userId, String movieCategoryId) {
+    public Characteristics addToTvSeriesList(String userId, TvSeries tvSeries) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        MovieCategory removedMovieCategory = musicCategoryRepository.findById(movieCategoryId).orElseThrow();
-        characteristics.removeFromMovieCategoryList(removedMovieCategory);
+        TvSeries addedTvSeries = tvSeriesRepository.save(tvSeries);
+        characteristics.addToTvSeriesList(addedTvSeries);
         characteristicsRepository.save(characteristics);
-        movieCategoryRepository.deleteById(movieCategoryId);
         return characteristics;
-    }*/
+    }
+
+    @Override
+    public Characteristics removeFromTvSeriesList(String userId, String tvSeriesId) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        TvSeries tvSeriesToRemove = tvSeriesRepository.findById(tvSeriesId).orElseThrow();
+        characteristics.removeFromTvSeriesList(tvSeriesToRemove);
+        characteristicsRepository.save(characteristics);
+        movieRepository.deleteById(tvSeriesId);
+        return characteristics;
+    }
+
+    //Tv series category
+    @Override
+    public Characteristics addToTvSeriesCategoryList(String userId, TvSeriesCategory tvSeriesCategory) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        TvSeriesCategory addedTvSeriesCategory = tvSeriesCategoryRepository.save(tvSeriesCategory);
+        characteristics.addToTvSeriesCategoryList(addedTvSeriesCategory);
+        characteristicsRepository.save(characteristics);
+        return characteristics;
+    }
+
+    @Override
+    public Characteristics removeFromTvSeriesCategoryList(String userId, String tvSeriesCategoryId) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        TvSeriesCategory tvSeriesCategoryToRemove = tvSeriesCategoryRepository.findById(tvSeriesCategoryId).orElseThrow();
+        characteristics.removeFromTvSeriesCategoryList(tvSeriesCategoryToRemove);
+        characteristicsRepository.save(characteristics);
+        movieRepository.deleteById(tvSeriesCategoryId);
+        return characteristics;
+    }
+
+    //Hobby
+    @Override
+    public Characteristics addToHobbyList(String userId, Hobby hobby) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        Hobby addedHobby = hobbyRepository.save(hobby);
+        characteristics.addToHobbyList(addedHobby);
+        characteristicsRepository.save(characteristics);
+        return characteristics;
+    }
+
+    @Override
+    public Characteristics removeFromHobbyList(String userId, String hobbyId) {
+        Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        Hobby hobbyToRemove = hobbyRepository.findById(hobbyId).orElseThrow();
+        characteristics.removeFromHobbyList(hobbyToRemove);
+        characteristicsRepository.save(characteristics);
+        movieRepository.deleteById(hobbyId);
+        return characteristics;
+    }
 }

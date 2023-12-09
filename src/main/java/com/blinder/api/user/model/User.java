@@ -25,7 +25,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-//@JsonIgnoreProperties({"filter"})
 @Table(name = "users")
 public class User extends BaseEntity {
     private String name;
@@ -66,13 +65,14 @@ public class User extends BaseEntity {
     private List<User> blockedUsers = new ArrayList<>();
 
     @OneToMany
+    @JoinColumn(name = "from_user_id")
     private List<PossibleMatch> possibleMatches = new ArrayList<>();
 
     @OneToOne
     private Characteristics characteristics;
 
-    private boolean isMatched;
-    private boolean isBanned;
+    private boolean isMatched = false;
+    private boolean isBanned = false;
 
     @Override
     public void onPrePersist() {
