@@ -20,10 +20,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Mono<String> searchMovie(String movieName, int limit) throws JsonProcessingException {
 
-
-
         WebClient webClient = WebClient.create("https://api.example.com");
-
 
         String response = webClient.get()
                 .uri("https://moviesdatabase.p.rapidapi.com/titles/search/title/" + movieName + "?exact=false&titleType=movie&limit=" + limit)
@@ -32,8 +29,6 @@ public class MovieServiceImpl implements MovieService {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-
-
 
         return Mono.just(response);
     }

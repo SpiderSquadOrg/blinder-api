@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface PossibleMatchRepository extends JpaRepository<PossibleMatch, String> {
 
-    Optional<PossibleMatch> findFromPossibleMatches(User to, User from);
+    Optional<PossibleMatch> findPossibleMatchByToAndFrom(User to, User from);
 
     @Query("SELECT pm.to FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'MATCHED')")
     List<User> findMatchedUsers(@Param("user") User user);
@@ -23,15 +23,8 @@ public interface PossibleMatchRepository extends JpaRepository<PossibleMatch, St
     @Query("SELECT pm.to FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'DISLIKED')")
     List<User> findDislikedUsers(@Param("user") User user);
 
-    List<PossibleMatch> findAllPossibleMatches(User from);
+    List<PossibleMatch> findAllPossibleMatchesByFrom(User from);
 
-    List<PossibleMatch> findAllPossibleMatchesByStatus(User from, PossibleMatchStatus status);
+    List<PossibleMatch> findAllPotentialMatchesByFromAndStatus(User from, PossibleMatchStatus status);
 
-    /*
-    // Check if the possible match already exists
-        Optional<PossibleMatch> existingMatch = possibleMatches.stream()
-                .filter(match -> match.hasSameUsers(user1, user2))
-                .findFirst();
-
-     */
 }
