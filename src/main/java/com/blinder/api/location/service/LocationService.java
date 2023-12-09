@@ -2,6 +2,7 @@ package com.blinder.api.location.service;
 
 import com.blinder.api.location.model.Location;
 import org.springframework.data.domain.Page;
+import reactor.core.publisher.Mono;
 
 public interface LocationService {
     Location addLocation(Location location);
@@ -11,4 +12,7 @@ public interface LocationService {
     Location updateLocation(String locationId, Location location);
 
     void deleteLocation(String locationId);
+    Mono<String> getAllCountries();
+
+    Mono<String> getStatesByCountry(String iso2);
 }
