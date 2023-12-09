@@ -50,7 +50,7 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     @Override
     public void addOrUpdatePossibleMatch(User user1, User user2, double similarityScore) {
 
-        Optional<PossibleMatch> existingMatch = possibleMatchRepository.findFromPossibleMatches(user1, user2);
+        Optional<PossibleMatch> existingMatch = possibleMatchRepository.findPossibleMatchByToAndFrom(user1, user2);
 
         if (existingMatch.isPresent()) {
             // Update the existing match if the new score is higher
@@ -118,10 +118,10 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
 
     @Override
     public void updateMatchStatus(User user1, User user2) {
-        Optional<PossibleMatch> match1 = possibleMatchRepository.findFromPossibleMatches(user1, user2)
+        Optional<PossibleMatch> match1 = possibleMatchRepository.findPossibleMatchByToAndFrom(user1, user2)
                 .filter(match -> match.getStatus() == PossibleMatchStatus.LIKED);
 
-        Optional<PossibleMatch> match2 = possibleMatchRepository.findFromPossibleMatches(user2, user1)
+        Optional<PossibleMatch> match2 = possibleMatchRepository.findPossibleMatchByToAndFrom(user2, user1)
                 .filter(match -> match.getStatus() == PossibleMatchStatus.LIKED);
 
         if (match1.isPresent() && match2.isPresent()) {
@@ -134,11 +134,11 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
 
     @Override
     public List<PossibleMatch> getAllPossibleMatches(User currentUser) {
-        List<PossibleMatch> usersPossibleMatches = possibleMatchRepository.findAllPossibleMatches(currentUser);
+        List<PossibleMatch> usersPossibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
 
         if(usersPossibleMatches.size() == 0){
             findAndAddPotentialMatches(currentUser, 100);
-            usersPossibleMatches = possibleMatchRepository.findAllPossibleMatches(currentUser);
+            usersPossibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
         }
 
         return usersPossibleMatches;
@@ -146,7 +146,7 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
 
     @Override
     public List<PossibleMatch> getAllPossibleMatchesByStatus(User currentUser, PossibleMatchStatus status) {
-        return possibleMatchRepository.findAllPossibleMatchesByStatus(currentUser, status);
+        return possibleMatchRepository.findAllPotentialMatchesByFromAndStatus(currentUser, status);
     }
 
     @Override
