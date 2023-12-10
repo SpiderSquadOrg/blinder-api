@@ -25,7 +25,13 @@ public interface UserMapper {
 
     List<UserResponseDto> userToUserResponseDto(List<User> users);
 
+    @Mapping(target = "age", ignore = true) // Ignore the age field in the main mapping
     UserResponseDto userToUserResponseDto(User user);
+
+    @AfterMapping // This method will be called after the main mapping
+    default void calculateAge(@MappingTarget UserResponseDto dto, User user) {
+        dto.setAge(user.getAge()); // Set the age field using the getAge() method of the User object
+    }
 
     User userResponseDtoToUser(UserResponseDto userResponseDto);
 
