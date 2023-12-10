@@ -23,6 +23,7 @@ public class UserResponseDto {
     private GenderResponseDto gender;
     private RoleResponseDto role;
     private List<String> images;
+    private int age;
     /*
     private String profileImage;
     private String coverImage;
