@@ -62,20 +62,17 @@ public class PossibleMatchController {
                 possibleMatchService.getDislikedUsers(currentUser)), HttpStatus.OK);
     }
 
-    @PostMapping("/like/{userId}")
-    @Operation(summary = "")
-    public ResponseEntity<String> likeUser(@PathVariable Long userId) {
-        // Kullanıcının diğer kullanıcıyı beğenmesi işlemi
-        // ...
-
-        return new ResponseEntity<>("User liked successfully", HttpStatus.OK);
+    @PostMapping("/like/{possibleMatchId}")
+    @Operation(summary = "Like possible match")
+    public ResponseEntity<PossibleMatchResponseDto> likeUser(@PathVariable String possibleMatchId) {
+        return new ResponseEntity<>(PossibleMatchMapper.INSTANCE.possibleMatchToPossibleMatchResponseDto(
+                possibleMatchService.likePossibleMatch(possibleMatchId)), HttpStatus.OK);
     }
 
-    @PostMapping("/dislike/{userId}")
-    public ResponseEntity<String> dislikeUser(@PathVariable Long userId) {
-        // Kullanıcının diğer kullanıcıyı beğenmemesi işlemi
-        // ...
-
+    @PostMapping("/dislike/{possibleMatchId}")
+    @Operation(summary = "Dislike possible match")
+    public ResponseEntity<String> dislikeUser(@PathVariable String possibleMatchId) {
+        possibleMatchService.dislikePossibleMatch(possibleMatchId);
         return new ResponseEntity<>("User disliked successfully", HttpStatus.OK);
     }
 }

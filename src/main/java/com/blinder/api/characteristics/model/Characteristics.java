@@ -1,8 +1,11 @@
 package com.blinder.api.characteristics.model;
 
 import com.blinder.api.Movie.model.Movie;
+import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
+import com.blinder.api.TVSeries.model.TVSeries;
+import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.User;
 import jakarta.persistence.Entity;
@@ -22,58 +25,55 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Characteristics extends BaseEntity {
+
     @OneToOne
     private User user;
-    @OneToMany
-    private List<Movie> movies;
-
-    /*@OneToMany
-    private List<MovieCategory> movieCategories;
-    @OneToMany
-    private List<Hobby> hobbies;
 
     @OneToMany
-    private List<TVSeries> tvSeries;
+    private List<Movie> movies = new ArrayList<>();
     @OneToMany
-    private List<TVSeriesCategory> tvSeriesCategories;*/
+    private List<MovieCategory> movieCategories = new ArrayList<>();
+
     @OneToMany
     private List<Music> musics = new ArrayList<>();
     @OneToMany
     private List<MusicCategory> musicCategories = new ArrayList<>();
+
+    @OneToMany
+    private List<TVSeries> tvSeriesList = new ArrayList<>();
+    @OneToMany
+    private List<MovieCategory> tvSeriesCategories = new ArrayList<>();
+
+    @OneToMany
+    private List<Hobby> hobbies = new ArrayList<>();
+
     /*@OneToMany
     private List<Book> books;
     @OneToMany
     private List<BookCategory> bookCategories;*/
 
-    public void addToMusicList(Music music){
-        musics.add(music);
-    }
-    public void addToMusicCategoryList(MusicCategory musicCategory){
-        musicCategories.add(musicCategory);
-    }
+    //Music and music category
+    public void addToMusicList(Music music){ musics.add(music); }
+    public void removeFromMusicList(Music music){ musics.remove(music); }
+    public void addToMusicCategoryList(MusicCategory musicCategory){ musicCategories.add(musicCategory); }
+    public void removeFromMusicCategoryList(MusicCategory musicCategory){ musicCategories.remove(musicCategory); }
 
-    public void addToMovieList(Movie movie){
-        movies.add(movie);
-    }
+    //Movie and movie category
+    public void addToMovieList(Movie movie){ movies.add(movie); }
+    public void removeFromMovieList(Movie movie){ movies.remove(movie); }
+    public void addToMovieCategoryList(MovieCategory movieCategory){ movieCategories.add(movieCategory); }
+    public void removeFromMovieCategoryList(MovieCategory movieCategory){ movieCategories.remove(movieCategory); }
 
-    /*public void addToMovieCategoryList(MovieCategory movieCategory){
-        movieCategories.add(movieCategory);
-    }*/
+    //Tv series and tv series category
+    public void addToTvSeriesList(TVSeries tvSeries){ tvSeriesList.add(tvSeries); }
+    public void removeFromTvSeriesList(TVSeries tvSeries){ tvSeriesList.remove(tvSeries); }
+    public void addToTvSeriesCategoryList(MovieCategory tvSeriesCategory){ tvSeriesCategories.add(tvSeriesCategory); }
+    public void removeFromTvSeriesCategoryList(MovieCategory tvSeriesCategory){ tvSeriesCategories.remove(tvSeriesCategory); }
 
-    public void removeFromMusicList(Music music){
-        musics.remove(music);
-    }
-    public void removeFromMusicCategoryList(MusicCategory musicCategory){
-        musicCategories.remove(musicCategory);
-    }
+    //Hobby
+    public void addToHobbyList(Hobby hobby){ hobbies.add(hobby); }
+    public void removeFromHobbyList(Hobby hobby){ hobbies.remove(hobby); }
 
-    public void removeFromMovieList(Movie movie){
-        movies.remove(movie);
-    }
-
-    /*public void removeFromMovieCategoryList(MovieCategory movieCategory){
-        movieCategories.remove(movieCategory);
-    }*/
 }
 
 

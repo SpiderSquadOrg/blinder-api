@@ -1,7 +1,6 @@
 package com.blinder.api.TVSeries.mapper;
 
-import com.blinder.api.Movie.dto.MovieResponseDto;
-import com.blinder.api.TVSeries.dto.TVSeriesDto;
+import com.blinder.api.TVSeries.dto.TVSeriesResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,8 +12,8 @@ import java.util.List;
 
 @Component
 public class TVSeriesCustomMapper {
-    public List<TVSeriesDto> tvSeriesDataToTvSeriesResponseDto(Mono<String> tvSeriesData) throws JsonProcessingException {
-        List<TVSeriesDto> tvSeriesDtos = new ArrayList<>();
+    public List<TVSeriesResponseDto> tvSeriesDataToTvSeriesResponseDto(Mono<String> tvSeriesData) throws JsonProcessingException {
+        List<TVSeriesResponseDto> tvSeriesResponseDtos = new ArrayList<>();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = tvSeriesData.block();
@@ -24,19 +23,19 @@ public class TVSeriesCustomMapper {
         JsonNode items = jsonNode.get("results");
 
         items.forEach((item) -> {
-            TVSeriesDto tvSeriesDto = new TVSeriesDto();
-            tvSeriesDto.setImdbId(item.get("_id").asText());
-            tvSeriesDto.setName(item.get("titleText").get("text").asText());
+            TVSeriesResponseDto tvSeriesResponseDto = new TVSeriesResponseDto();
+            tvSeriesResponseDto.setImdbId(item.get("_id").asText());
+            tvSeriesResponseDto.setName(item.get("titleText").get("text").asText());
             try{
-                tvSeriesDto.setYear(item.get("releaseYear").get("year").asInt());
-                tvSeriesDto.setImage(item.get("primaryImage").get("url").asText());
-                tvSeriesDtos.add(tvSeriesDto);
+                tvSeriesResponseDto.setYear(item.get("releaseYear").get("year").asInt());
+                tvSeriesResponseDto.setImage(item.get("primaryImage").get("url").asText());
+                tvSeriesResponseDtos.add(tvSeriesResponseDto);
             }catch (NullPointerException ignored){
 
             }
         });
 
-        return tvSeriesDtos;
+        return tvSeriesResponseDtos;
 
     }
 }

@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
 public class MovieServiceImpl implements MovieService {
 
     @Value("${rapidapi.key}")

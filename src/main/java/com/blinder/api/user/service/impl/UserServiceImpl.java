@@ -5,7 +5,6 @@ import com.blinder.api.common.sort.SortDirection;
 import com.blinder.api.filter.model.Filter;
 import com.blinder.api.filter.model.LocationType;
 import com.blinder.api.filter.service.FilterService;
-import com.blinder.api.location.model.Location;
 import com.blinder.api.location.service.LocationService;
 import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.Role;
@@ -56,10 +55,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Location newLocation = this.locationService.addLocation(user.getLocation());
         User newUser = this.userRepository.save(user);
-        newLocation.setUser(newUser);
-        this.locationService.updateLocation(newLocation.getId(),newLocation);
 
         this.filterService.createDefaultFilterForUser(newUser.getId());
 
@@ -81,14 +77,8 @@ public class UserServiceImpl implements UserService {
         this.userBusinessRules.checkIfGenderDoesNotExists(user.getGender().getId());
         this.userBusinessRules.checkIfRoleDoesNotExists(user.getRole().getId());
 
-        boolean isLocationUpdated = false;
 
         User userToUpdate = this.userRepository.findById(userId).orElseThrow();
-
-        if (isLocationUpdated) {
-            Location newLocation = this.locationService.updateLocation(userToUpdate.getLocation().getId(),user.getLocation());
-            user.setLocation(newLocation);
-        }
 
         Set<String> nullPropertyNames = getNullPropertyNames(user);
 
@@ -125,11 +115,9 @@ public class UserServiceImpl implements UserService {
         this.userBusinessRules.checkIfUserExists(userId);
 
         User userToDelete = this.userRepository.findById(userId).orElseThrow();
-        String locationId = userToDelete.getLocation().getId();
         userToDelete.setLocation(null);
 
         this.userRepository.save(userToDelete);
-        this.locationService.deleteLocation(locationId);
         this.userRepository.deleteById(userId);
     }
 
@@ -206,7 +194,7 @@ public class UserServiceImpl implements UserService {
         int ageLowerBound = userFilter.getAgeLowerBound();
         int ageUpperBound = userFilter.getAgeUpperBound();
         LocationType locationType = userFilter.getLocationType();
-        String locationName = userFilter.getLocationName();
+        String locationName = userFilter.getLocationId();
 
         return userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, locationType, locationName);
     }

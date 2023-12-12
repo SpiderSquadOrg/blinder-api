@@ -1,10 +1,12 @@
 package com.blinder.api.characteristics.dto;
 
-import com.blinder.api.Music.dto.CreateMusicRequestDto;
+import com.blinder.api.Movie.model.Movie;
+import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
+import com.blinder.api.TVSeries.model.TVSeries;
 import com.blinder.api.common.annotations.MinListSize;
-import com.blinder.api.user.model.User;
+import com.blinder.api.hobby.model.Hobby;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,11 +18,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCharacteristicsRequestDto {
+
     @NotBlank
     private String userId;
 
-    /*@MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<Hobby> hobbies;
+    @MinListSize(minSize = 3, message = "Musics list must have at least three elements")
+    private List<Music> musics;
+
+    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
+    private List<MusicCategory> musicCategories;
 
     @MinListSize(minSize = 3, message = "Books list must have at least three elements")
     private List<Movie> movies;
@@ -32,13 +38,10 @@ public class CreateCharacteristicsRequestDto {
     private List<TVSeries> tvSeries;
 
     @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<TVSeriesCategory> tvSeriesCategories;*/
+    private List<MovieCategory> tvSeriesCategories;
 
-    @MinListSize(minSize = 3, message = "Musics list must have at least three elements")
-    private List<CreateMusicRequestDto> musics;
-
-    //@MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    //private List<MusicCategory> musicCategories;
+    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
+    private List<Hobby> hobbies;
 
     /*@MinListSize(minSize = 3, message = "Books list must have at least three elements")
     private List<Book> books;

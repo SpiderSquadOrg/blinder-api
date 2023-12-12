@@ -1,7 +1,6 @@
 package com.blinder.api.MusicCategory.mapper;
 
-import com.blinder.api.Music.mapper.MusicMapper;
-import com.blinder.api.MusicCategory.dto.CreateMusicCategoryRequestDto;
+import com.blinder.api.MusicCategory.dto.MusicCategoryRequestDto;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
@@ -15,5 +14,5 @@ import org.mapstruct.factory.Mappers;
 public interface MusicCategoryMapper {
     MusicCategoryMapper INSTANCE = Mappers.getMapper(MusicCategoryMapper.class);
 
-    MusicCategory createMusicCategoryRequestDtoToMusicCategory(CreateMusicCategoryRequestDto createMusicCategoryRequestDto);
+    MusicCategory musicCategoryRequestDtoToMusicCategory(MusicCategoryRequestDto musicCategoryRequestDto);
 }

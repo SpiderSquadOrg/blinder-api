@@ -31,7 +31,7 @@ public class Filter extends BaseEntity {
     private int ageLowerBound = DEFAULT_AGE_LOWER_BOUND;
     private int ageUpperBound = DEFAULT_AGE_UPPER_BOUND;
     private LocationType locationType = DEFAULT_LOCATION_TYPE;
-    private String locationName = DEFAULT_LOCATION_NAME;
+    private String locationId = DEFAULT_LOCATION_NAME;
 
     public Filter(User user, Set<Gender> allGenders) {
         this.user = user;
@@ -48,5 +48,5 @@ public class Filter extends BaseEntity {
 
     public static LocationType getDefaultLocationType(){ return DEFAULT_LOCATION_TYPE; }
 
-    public static String getDefaultLocationName(){ return DEFAULT_LOCATION_NAME; }
+    public static String getDefaultLocationId(){ return DEFAULT_LOCATION_NAME; }
 }

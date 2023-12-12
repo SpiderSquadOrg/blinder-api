@@ -24,7 +24,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     private final EntityManager entityManager;
 
     //TODO: Implement your logic to search users by filter
-    @Override
+    @Override //For admin
     public Page<User> searchUsersByFilter(
             String email, String name, String surname, String username,
             String[] roleNames, String[] genderNames, String ageLowerBound, String ageUpperBound,
@@ -134,20 +134,20 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
         //Filtering conditions
         predicates.add(cb.and(root.get("gender").in(genders)));
-        predicates.add(cb.and(
-                cb.between(root.get("birthDate"), ageLowerBound, ageUpperBound)
-        ));
+
+        Expression<Date> birthDate = root.get("birthDate");
+        Expression<Integer> birthYear = cb.function("YEAR", Integer.class, birthDate);
+        Expression<Integer> currentYear = cb.function("YEAR", Integer.class, cb.currentDate());
+        Expression<Integer> userAge = cb.diff(currentYear, birthYear);
+        predicates.add(cb.and(cb.between(userAge, ageLowerBound, ageUpperBound)));
 
         if (locationType != null) {
             switch (locationType) {
                 case COUNTRY:
                     predicates.add(cb.equal(root.get("location").get("country"), locationName));
                     break;
-                case REGION:
-                    predicates.add(cb.equal(root.get("location").get("region"), locationName));
-                    break;
-                case CITY:
-                    predicates.add(cb.equal(root.get("location").get("city"), locationName));
+                case STATE:
+                    predicates.add(cb.equal(root.get("location").get("state"), locationName));
                     break;
             }
         }

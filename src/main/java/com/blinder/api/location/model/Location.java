@@ -19,8 +19,9 @@ import lombok.experimental.SuperBuilder;
 public class Location extends BaseEntity {
     @OneToOne
     private User user;
-    private String countryName;
     private String countryId;
-    private String countryIso2;
-    private String state;
+    private String countryName;
+    private String iso2;
+    private String stateId;
+    private String stateName;
 }

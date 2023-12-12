@@ -1,19 +1,16 @@
-package com.blinder.api.Movie.dto;
+package com.blinder.api.Music.dto;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class CreateMovieRequestDto {
+public class MusicRequestDto {
     @NotBlank
     @NotNull
-    private String moviesDatabaseId;
-
+    private String spotifyId;
 }
