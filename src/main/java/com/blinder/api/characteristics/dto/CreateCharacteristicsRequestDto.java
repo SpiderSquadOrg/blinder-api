@@ -22,27 +22,6 @@ public class CreateCharacteristicsRequestDto {
     @NotBlank
     private String userId;
 
-    @MinListSize(minSize = 3, message = "Musics list must have at least three elements")
-    private List<Music> musics;
-
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<MusicCategory> musicCategories;
-
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<Movie> movies;
-
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<MovieCategory> movieCategories;
-
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<TVSeries> tvSeries;
-
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<MovieCategory> tvSeriesCategories;
-
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<Hobby> hobbies;
-
     /*@MinListSize(minSize = 3, message = "Books list must have at least three elements")
     private List<Book> books;
 

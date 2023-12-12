@@ -37,9 +37,13 @@ public interface UserMapper {
 
     @Mapping(source = "roleId", target = "role.id")
     @Mapping(source = "genderId", target = "gender.id")
+    @Mapping(source = "countryId", target = "location.countryId")
+    @Mapping(source = "stateId", target = "location.stateId")
     User createUserRequestDtoToUser(CreateUserRequestDto createUserRequestDto);
 
     @Mapping(source = "genderId", target = "gender.id")
+    @Mapping(source = "countryId", target = "location.countryId")
+    @Mapping(source = "stateId", target = "location.stateId")
     User registerRequestDtoToUser(RegisterRequestDto registerRequestDto);
 
     @Mapping(source = "roleId", target = "role.id")

@@ -22,5 +22,6 @@ public class CreateUserRequestDto {
     private String roleId;
     private Date birthDate;
     private List<String> images;
-    private LocationDto location;
+    private String countryId;
+    private String stateId;
 }

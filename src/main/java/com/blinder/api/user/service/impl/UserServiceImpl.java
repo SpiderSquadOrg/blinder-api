@@ -5,6 +5,7 @@ import com.blinder.api.common.sort.SortDirection;
 import com.blinder.api.filter.model.Filter;
 import com.blinder.api.filter.model.LocationType;
 import com.blinder.api.filter.service.FilterService;
+import com.blinder.api.location.model.Location;
 import com.blinder.api.location.service.LocationService;
 import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.Role;
@@ -55,7 +56,10 @@ public class UserServiceImpl implements UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        Location newLocation = this.locationService.addLocation(user.getLocation());
         User newUser = this.userRepository.save(user);
+        newLocation.setUser(newUser);
+        this.locationService.updateLocation(newLocation.getId(),newLocation);
 
         this.filterService.createDefaultFilterForUser(newUser.getId());
 

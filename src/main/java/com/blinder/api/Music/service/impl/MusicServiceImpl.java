@@ -58,4 +58,18 @@ public class MusicServiceImpl implements MusicService {
 
         return Mono.just(response);
     }
+
+    public Mono<String> getMusicById(String id) throws JsonProcessingException {
+
+        WebClient webClient = WebClient.create("https://api.example.com");
+
+        String response = webClient.get()
+                .uri("https://api.spotify.com/v1/tracks/" + id)
+                .header("Authorization", "Bearer " + accessToken().block())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        return Mono.just(response);
+    }
 }
