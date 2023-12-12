@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateMusicCategoryRequestDto {
+public class MusicCategoryRequestDto {
     @NotBlank
     private String name;
+
 }

@@ -1,7 +1,9 @@
 package com.blinder.api.possibleMatch.service.impl;
 import com.blinder.api.Movie.model.Movie;
+import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
+import com.blinder.api.TVSeries.model.TVSeries;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.possibleMatch.model.PossibleMatch;
@@ -20,7 +22,6 @@ import java.util.*;
 public class PossibleMatchServiceImpl implements PossibleMatchService {
     private final UserService userService;
     private final PossibleMatchRepository possibleMatchRepository;
-    private final UserRepository userRepository;
 
     @Override
     public void findAndAddPotentialMatches(User currentUser, int howManyUser) {
@@ -116,12 +117,12 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         List<MusicCategory> musicCategories2 = characteristics2.getMusicCategories();
         List<Movie> movies1 = characteristics1.getMovies();
         List<Movie> movies2 = characteristics2.getMovies();
-        List<MovieCategory> movieCategories1 = characteristics1.getMusicCategories();
-        List<MovieCategory> movieCategories2 = characteristics2.getMusicCategories();
-        List<TvSeries> tvSeries1 = characteristics1.getTvSeries();
-        List<TvSeries> tvSeries2 = characteristics2.getTvSeries();
-        List<TvSeriesCategory> tvSeriesCategories1 = characteristics1.getTvSeriesCategories();
-        List<TvSeriesCategory> tvSeriesCategories2 = characteristics2.getTvSeriesCategories();
+        List<MovieCategory> movieCategories1 = characteristics1.getMovieCategories();
+        List<MovieCategory> movieCategories2 = characteristics2.getMovieCategories();
+        List<TVSeries> tvSeries1 = characteristics1.getTvSeriesList();
+        List<TVSeries> tvSeries2 = characteristics2.getTvSeriesList();
+        List<MovieCategory> tvSeriesCategories1 = characteristics1.getTvSeriesCategories();
+        List<MovieCategory> tvSeriesCategories2 = characteristics2.getTvSeriesCategories();
         List<Hobby> hobbies1 = characteristics1.getHobbies();
         List<Hobby> hobbies2 = characteristics2.getHobbies();
 

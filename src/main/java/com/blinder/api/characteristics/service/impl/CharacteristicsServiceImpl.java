@@ -2,10 +2,14 @@ package com.blinder.api.characteristics.service.impl;
 
 import com.blinder.api.Movie.model.Movie;
 import com.blinder.api.Movie.repository.MovieRepository;
+import com.blinder.api.MovieCategory.model.MovieCategory;
+import com.blinder.api.MovieCategory.repository.MovieCategoryRepository;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.Music.repository.MusicRepository;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.MusicCategory.repository.MusicCategoryRepository;
+import com.blinder.api.TVSeries.model.TVSeries;
+import com.blinder.api.TVSeries.repository.TVSeriesRepository;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.characteristics.repository.CharacteristicsRepository;
 import com.blinder.api.characteristics.service.CharacteristicsService;
@@ -35,8 +39,8 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     private final MusicCategoryRepository musicCategoryRepository;
     private final MovieRepository movieRepository;
     private final MovieCategoryRepository movieCategoryRepository;
-    private final TvSeriesRepository tvSeriesRepository;
-    private final TvSeriesCategoryRepository tvSeriesCategoryRepository;
+    private final TVSeriesRepository tvSeriesRepository;
+    private final MovieCategoryRepository tvSeriesCategoryRepository;
     private final HobbyRepository hobbyRepository;
 
     @Override
@@ -157,7 +161,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics removeFromMovieCategoryList(String userId, String movieCategoryId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        MovieCategory movieCategoryToRemove = movieRepository.findById(movieCategoryId).orElseThrow();
+        MovieCategory movieCategoryToRemove = movieCategoryRepository.findById(movieCategoryId).orElseThrow();
         characteristics.removeFromMovieCategoryList(movieCategoryToRemove);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(movieCategoryId);
@@ -166,9 +170,9 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
 
     //Tv series
     @Override
-    public Characteristics addToTvSeriesList(String userId, TvSeries tvSeries) {
+    public Characteristics addToTvSeriesList(String userId, TVSeries tvSeries) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        TvSeries addedTvSeries = tvSeriesRepository.save(tvSeries);
+        TVSeries addedTvSeries = tvSeriesRepository.save(tvSeries);
         characteristics.addToTvSeriesList(addedTvSeries);
         characteristicsRepository.save(characteristics);
         return characteristics;
@@ -177,7 +181,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics removeFromTvSeriesList(String userId, String tvSeriesId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        TvSeries tvSeriesToRemove = tvSeriesRepository.findById(tvSeriesId).orElseThrow();
+        TVSeries tvSeriesToRemove = tvSeriesRepository.findById(tvSeriesId).orElseThrow();
         characteristics.removeFromTvSeriesList(tvSeriesToRemove);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(tvSeriesId);
@@ -186,9 +190,9 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
 
     //Tv series category
     @Override
-    public Characteristics addToTvSeriesCategoryList(String userId, TvSeriesCategory tvSeriesCategory) {
+    public Characteristics addToTvSeriesCategoryList(String userId, MovieCategory tvSeriesCategory) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        TvSeriesCategory addedTvSeriesCategory = tvSeriesCategoryRepository.save(tvSeriesCategory);
+        MovieCategory addedTvSeriesCategory = tvSeriesCategoryRepository.save(tvSeriesCategory);
         characteristics.addToTvSeriesCategoryList(addedTvSeriesCategory);
         characteristicsRepository.save(characteristics);
         return characteristics;
@@ -197,7 +201,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics removeFromTvSeriesCategoryList(String userId, String tvSeriesCategoryId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        TvSeriesCategory tvSeriesCategoryToRemove = tvSeriesCategoryRepository.findById(tvSeriesCategoryId).orElseThrow();
+        MovieCategory tvSeriesCategoryToRemove = tvSeriesCategoryRepository.findById(tvSeriesCategoryId).orElseThrow();
         characteristics.removeFromTvSeriesCategoryList(tvSeriesCategoryToRemove);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(tvSeriesCategoryId);

@@ -1,8 +1,10 @@
 package com.blinder.api.characteristics.model;
 
 import com.blinder.api.Movie.model.Movie;
+import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
+import com.blinder.api.TVSeries.model.TVSeries;
 import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.User;
@@ -38,9 +40,9 @@ public class Characteristics extends BaseEntity {
     private List<MusicCategory> musicCategories = new ArrayList<>();
 
     @OneToMany
-    private List<TVSeries> tvSeries = new ArrayList<>();
+    private List<TVSeries> tvSeriesList = new ArrayList<>();
     @OneToMany
-    private List<TVSeriesCategory> tvSeriesCategories = new ArrayList<>();
+    private List<MovieCategory> tvSeriesCategories = new ArrayList<>();
 
     @OneToMany
     private List<Hobby> hobbies = new ArrayList<>();
@@ -63,10 +65,10 @@ public class Characteristics extends BaseEntity {
     public void removeFromMovieCategoryList(MovieCategory movieCategory){ movieCategories.remove(movieCategory); }
 
     //Tv series and tv series category
-    public void addToTvSeriesList(TvSeries tvSeries){ tvSeries.add(tvSeries); }
-    public void removeFromTvSeriesList(TvSeries tvSeries){ tvSeries.remove(tvSeries); }
-    public void addToTvSeriesCategoryList(TvSeriesCategory tvSeriesCategory){ tvSeriesCategories.add(tvSeriesCategory); }
-    public void removeFromTvSeriesCategoryList(TvSeriesCategory tvSeriesCategory){ tvSeriesCategories.remove(tvSeriesCategory); }
+    public void addToTvSeriesList(TVSeries tvSeries){ tvSeriesList.add(tvSeries); }
+    public void removeFromTvSeriesList(TVSeries tvSeries){ tvSeriesList.remove(tvSeries); }
+    public void addToTvSeriesCategoryList(MovieCategory tvSeriesCategory){ tvSeriesCategories.add(tvSeriesCategory); }
+    public void removeFromTvSeriesCategoryList(MovieCategory tvSeriesCategory){ tvSeriesCategories.remove(tvSeriesCategory); }
 
     //Hobby
     public void addToHobbyList(Hobby hobby){ hobbies.add(hobby); }

@@ -1,6 +1,6 @@
 package com.blinder.api.MovieCategory.mapper;
 
-import com.blinder.api.MovieCategory.dto.CreateMovieCategoryRequestDto;
+import com.blinder.api.MovieCategory.dto.MovieCategoryRequestDto;
 import com.blinder.api.MovieCategory.model.MovieCategory;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
@@ -14,5 +14,5 @@ import org.mapstruct.factory.Mappers;
 public interface MovieCategoryMapper {
     MovieCategoryMapper INSTANCE = Mappers.getMapper(MovieCategoryMapper.class);
 
-    MovieCategory createMovieCategoryRequestDtoToMovieCategory(CreateMovieCategoryRequestDto createMovieCategoryRequestDto);
+    MovieCategory movieCategoryRequestDtoToMovieCategory(MovieCategoryRequestDto movieCategoryRequestDto);
 }

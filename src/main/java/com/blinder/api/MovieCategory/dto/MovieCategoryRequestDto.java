@@ -1,4 +1,4 @@
-package com.blinder.api.MusicCategory.dto;
+package com.blinder.api.MovieCategory.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateMusicCategoryRequestDto {
+public class MovieCategoryRequestDto {
     @NotBlank
-    String name;
+    private String name;
 }

@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TVSeriesDto {
+public class TVSeriesRequestDto {
     private String imdbId;
-    private String name;
-    private int year;
-    private String image;
 }

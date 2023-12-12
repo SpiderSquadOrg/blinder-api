@@ -1,19 +1,22 @@
 package com.blinder.api.characteristics.controller;
-
-import com.blinder.api.Movie.dto.CreateMovieRequestDto;
+import com.blinder.api.Movie.dto.MovieRequestDto;
 import com.blinder.api.Movie.mapper.MovieMapper;
-import com.blinder.api.Music.dto.CreateMusicRequestDto;
+import com.blinder.api.MovieCategory.dto.MovieCategoryRequestDto;
+import com.blinder.api.MovieCategory.mapper.MovieCategoryMapper;
+import com.blinder.api.Music.dto.MusicRequestDto;
 import com.blinder.api.Music.mapper.MusicMapper;
-import com.blinder.api.MusicCategory.dto.CreateMusicCategoryRequestDto;
+import com.blinder.api.MusicCategory.dto.MusicCategoryRequestDto;
 import com.blinder.api.MusicCategory.mapper.MusicCategoryMapper;
+import com.blinder.api.TVSeries.dto.TVSeriesRequestDto;
+import com.blinder.api.TVSeries.mapper.TVSeriesMapper;
 import com.blinder.api.characteristics.dto.CharacteristicsResponseDto;
 import com.blinder.api.characteristics.dto.CreateCharacteristicsRequestDto;
 import com.blinder.api.characteristics.dto.UpdateCharacteristicsRequestDto;
 import com.blinder.api.characteristics.mapper.CharacteristicsMapper;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.characteristics.service.CharacteristicsService;
-import com.blinder.api.hobby.dto.CreateHobbyRequestDto;
-import com.blinder.api.hobby.mapper.HobbyMapper;
+import com.blinder.api.hobby.model.Hobby;
+import com.blinder.api.hobby.service.HobbyService;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.security.auth.service.UserAuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 public class CharacteristicsController {
     private final CharacteristicsService characteristicsService;
     private final UserAuthService userAuthService;
+    private final HobbyService hobbyService;
 
     @GetMapping
     @Operation(summary = "Get all characteristics")
@@ -46,7 +50,7 @@ public class CharacteristicsController {
 
     @PostMapping
     @Operation(summary = "Add new characteristics")
-    public ResponseEntity<CreateCharacteristicsRequestDto> addReport(@RequestBody CreateCharacteristicsRequestDto createCharacteristicsRequestDto) {
+    public ResponseEntity<CreateCharacteristicsRequestDto> addNewCharacteristic(@RequestBody CreateCharacteristicsRequestDto createCharacteristicsRequestDto) {
         characteristicsService.addCharacteristics(CharacteristicsMapper.INSTANCE.createCharacteristicsRequestDtoToCharacteristics(createCharacteristicsRequestDto));
         return new ResponseEntity<>(createCharacteristicsRequestDto, HttpStatus.CREATED);
     }
@@ -69,9 +73,9 @@ public class CharacteristicsController {
     //Music
     @PatchMapping("/musics")
     @Operation(summary = "Add music to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToMusicList(@RequestBody CreateMusicRequestDto createMusicRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToMusicList(@RequestBody MusicRequestDto musicRequestDto){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToMusicList(currentUser.getId(), MusicMapper.INSTANCE.createMusicRequestDtoToMusic(createMusicRequestDto));
+        Characteristics characteristics = characteristicsService.addToMusicList(currentUser.getId(), MusicMapper.INSTANCE.musicRequestDtoToMusic(musicRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
@@ -86,9 +90,9 @@ public class CharacteristicsController {
     //Music category
     @PatchMapping("/musics/categories")
     @Operation(summary = "Add music category to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToMusicCategoryList(@RequestBody CreateMusicCategoryRequestDto createMusicCategoryRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToMusicCategoryList(@RequestBody MusicCategoryRequestDto musicCategoryRequestDto){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToMusicCategoryList(currentUser.getId(), MusicCategoryMapper.INSTANCE.createMusicCategoryRequestDtoToMusicCategory(createMusicCategoryRequestDto));
+        Characteristics characteristics = characteristicsService.addToMusicCategoryList(currentUser.getId(), MusicCategoryMapper.INSTANCE.musicCategoryRequestDtoToMusicCategory(musicCategoryRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
@@ -103,9 +107,9 @@ public class CharacteristicsController {
     //Movie
     @PatchMapping("/movies")
     @Operation(summary = "Add movie to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToMovieList(@RequestBody CreateMovieRequestDto createMovieRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToMovieList(@RequestBody MovieRequestDto movieRequestDto){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToMovieList(currentUser.getId(), MovieMapper.INSTANCE.createMovieRequestDtoToMovie(createMovieRequestDto));
+        Characteristics characteristics = characteristicsService.addToMovieList(currentUser.getId(), MovieMapper.INSTANCE.movieRequestDtoToMovie(movieRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
@@ -120,9 +124,9 @@ public class CharacteristicsController {
     //Movie category
     @PatchMapping("/movies/categories")
     @Operation(summary = "Add movie category to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToMovieCategoryList(@RequestBody CreateMovieCategoryRequestDto createMovieCategoryRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToMovieCategoryList(@RequestBody MovieCategoryRequestDto movieCategoryRequestDto){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToMovieCategoryList(currentUser.getId(), MovieCategoryMapper.INSTANCE.createMovieCategoryRequestDtoToMusicCategory(createMovieCategoryRequestDto));
+        Characteristics characteristics = characteristicsService.addToMovieCategoryList(currentUser.getId(), MovieCategoryMapper.INSTANCE.movieCategoryRequestDtoToMovieCategory(movieCategoryRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
@@ -137,9 +141,9 @@ public class CharacteristicsController {
     //Tv series
     @PatchMapping("/tvSeries")
     @Operation(summary = "Add tv series to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToTvSeriesList(@RequestBody CreateTvSeriesRequestDto createTvSeriesRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToTvSeriesList(@RequestBody TVSeriesRequestDto tvSeriesRequestDto){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToTvSeriesList(currentUser.getId(), TvSeriesMapper.INSTANCE.createTvSeriesRequestDtoToTvSeries(createTvSeriesDto));
+        Characteristics characteristics = characteristicsService.addToTvSeriesList(currentUser.getId(), TVSeriesMapper.INSTANCE.tvSeriesRequestDtoToTVSeries(tvSeriesRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
@@ -154,9 +158,9 @@ public class CharacteristicsController {
     //Tv series category
     @PatchMapping("/tvSeries/categories")
     @Operation(summary = "Add tv series category to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToTvSeriesCategoryList(@RequestBody CreateTvSeriesCategoryRequestDto createTvSeriesCategoryRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToTvSeriesCategoryList(@RequestBody MovieCategoryRequestDto tvSeriesCategoryRequestDto){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToTvSeriesCategoryList(currentUser.getId(), TvSeriesCategoryMapper.INSTANCE.createTvSeriesCategoryRequestDtoToTvSeriesCategory(createTvSeriesCategoryRequestDto));
+        Characteristics characteristics = characteristicsService.addToTvSeriesCategoryList(currentUser.getId(), MovieCategoryMapper.INSTANCE.movieCategoryRequestDtoToMovieCategory(tvSeriesCategoryRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
@@ -169,19 +173,20 @@ public class CharacteristicsController {
     }
 
     //Hobby
-    @PatchMapping("/hobbies")
+    @PatchMapping("/add/hobby/{hobbyId}")
     @Operation(summary = "Add tv series to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToHobbyList(@RequestBody CreateHobbyRequestDto createHobbyRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToHobbyList(@PathVariable String hobbyId){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToHobbyList(currentUser.getId(), HobbyMapper.INSTANCE.createHobbyRequestDtoToHobby(createHobbyRequestDto));
+        Hobby hobby = hobbyService.getHobbyById(hobbyId);
+        Characteristics characteristics = characteristicsService.addToHobbyList(currentUser.getId(), hobby);
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/hobbies/{hobbiesId}")
+    @PatchMapping("/remove/hobby/{hobbyId}")
     @Operation(summary = "Remove tv series from user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> removeFromHobbyList(@PathVariable String hobbiesId){
+    public ResponseEntity<CharacteristicsResponseDto> removeFromHobbyList(@PathVariable String hobbyId){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.removeFromHobbyList(currentUser.getId(), hobbiesId);
+        Characteristics characteristics = characteristicsService.removeFromHobbyList(currentUser.getId(), hobbyId);
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.NO_CONTENT);
     }
 }

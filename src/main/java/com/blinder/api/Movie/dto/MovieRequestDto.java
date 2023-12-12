@@ -1,5 +1,4 @@
-package com.blinder.api.Music.dto;
-
+package com.blinder.api.Movie.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,8 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateMusicRequestDto {
+
+public class MovieRequestDto {
     @NotBlank
     @NotNull
-    private String spotifyId;
+    private String imdbId;
+
 }

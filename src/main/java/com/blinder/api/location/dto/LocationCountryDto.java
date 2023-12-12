@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocationDto {
-    private LocationCountryDto country;
-    private LocationStateDto state;
+public class LocationCountryDto {
+    private String countryId;
+    private String countryName;
+    private String iso2;
 }

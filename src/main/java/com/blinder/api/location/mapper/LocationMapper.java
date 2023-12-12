@@ -1,11 +1,7 @@
 package com.blinder.api.location.mapper;
-
-import com.blinder.api.location.dto.LocationDto;
+import com.blinder.api.location.dto.LocationCountryDto;
+import com.blinder.api.location.dto.LocationStateDto;
 import com.blinder.api.location.model.Location;
-import com.blinder.api.user.dto.CreateUserRequestDto;
-import com.blinder.api.user.dto.UpdateUserRequestDto;
-import com.blinder.api.user.dto.UserResponseDto;
-import com.blinder.api.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -22,14 +18,23 @@ import java.util.List;
 public interface LocationMapper {
     LocationMapper INSTANCE = Mappers.getMapper(LocationMapper.class);
 
-    List<LocationDto> locationToLocationDto(List<Location> locations);
+    List<LocationCountryDto> locationToLocationCountryDto(List<Location> locations);
+    List<LocationStateDto> locationToLocationStateDto(List<Location> locations);
 
-    LocationDto locationToLocationDto(Location location);
-    Location locationDtoToLocation(LocationDto locationDto);
+    LocationCountryDto locationToLocationCountryDto(Location location);
+    LocationStateDto locationToLocationStateDto(Location location);
+
+    Location locationCountryDtoToLocation(LocationCountryDto locationCountryDto);
+    Location locationStateDtoToLocation(LocationStateDto locationStateDto);
 
 
-    default Page<LocationDto> locationToLocationDto(Page<Location> locationPage) {
-        List<LocationDto> responseDtoList = locationToLocationDto(locationPage.getContent());
+    default Page<LocationCountryDto> locationToLocationCountryDto(Page<Location> locationPage) {
+        List<LocationCountryDto> responseDtoList = locationToLocationCountryDto(locationPage.getContent());
+        return new PageImpl<>(responseDtoList, locationPage.getPageable(), locationPage.getTotalElements());
+    }
+
+    default Page<LocationStateDto> locationToLocationStateDto(Page<Location> locationPage) {
+        List<LocationStateDto> responseDtoList = locationToLocationStateDto(locationPage.getContent());
         return new PageImpl<>(responseDtoList, locationPage.getPageable(), locationPage.getTotalElements());
     }
 }

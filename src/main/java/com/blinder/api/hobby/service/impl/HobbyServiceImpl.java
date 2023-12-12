@@ -41,8 +41,8 @@ public class HobbyServiceImpl implements HobbyService {
     }
 
     @Override
-    public Hobby updateHobby(String hobbId, UpdateHobbyRequestDto updateHobbyRequestDto) {
-        Hobby hobbyToUpdate = this.hobbyRepository.findById(hobbId).orElseThrow();
+    public Hobby updateHobby(String hobbyId, UpdateHobbyRequestDto updateHobbyRequestDto) {
+        Hobby hobbyToUpdate = this.hobbyRepository.findById(hobbyId).orElseThrow();
 
         Set<String> nullPropertyNames = getNullPropertyNames(updateHobbyRequestDto);
 

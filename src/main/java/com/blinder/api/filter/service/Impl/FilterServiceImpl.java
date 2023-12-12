@@ -1,28 +1,20 @@
 package com.blinder.api.filter.service.Impl;
 
 import com.blinder.api.filter.model.Filter;
-import com.blinder.api.filter.model.LocationType;
 import com.blinder.api.filter.repository.FilterRepository;
 import com.blinder.api.filter.rules.FilterBusinessRules;
 import com.blinder.api.filter.service.FilterService;
-import com.blinder.api.user.dto.GenderRequestDto;
 import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.GenderRepository;
 import com.blinder.api.user.repository.UserRepository;
-import com.blinder.api.user.security.auth.service.UserAuthService;
-import com.blinder.api.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.blinder.api.util.MappingUtils.getNullPropertyNames;
 
 @Service
 @RequiredArgsConstructor
@@ -59,9 +51,9 @@ public class FilterServiceImpl implements FilterService {
         updateFilterGenders(filterToUpdate, updatedFilter.getGenders());
 
         if (filterBusinessRules.checkLocationTypeIsValid(updatedFilter.getLocationType())) {
-            if(!updatedFilter.getLocationName().equals("")){ // TO DO: && Name doğru mu kontrol edilmeli!!!
+            if(!updatedFilter.getLocationId().equals("")){
                 filterToUpdate.setLocationType(updatedFilter.getLocationType());
-                filterToUpdate.setLocationName(updatedFilter.getLocationName());
+                filterToUpdate.setLocationId(updatedFilter.getLocationId());
             }
         }
         if(filterBusinessRules.checkAgeRangeIsValid(updatedFilter.getAgeLowerBound(), updatedFilter.getAgeUpperBound())){
@@ -82,7 +74,7 @@ public class FilterServiceImpl implements FilterService {
         filter.setAgeLowerBound(Filter.getDefaultAgeLowerBound());
         filter.setAgeUpperBound(Filter.getDefaultAgeUpperBound());
         filter.setLocationType(Filter.getDefaultLocationType());
-        filter.setLocationName(Filter.getDefaultLocationName());
+        filter.setLocationId(Filter.getDefaultLocationId());
 
         filterRepository.save(filter);
     }

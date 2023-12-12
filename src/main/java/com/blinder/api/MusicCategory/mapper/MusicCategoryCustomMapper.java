@@ -11,14 +11,10 @@ import reactor.core.publisher.Mono;
 public class MusicCategoryCustomMapper {
     public JsonNode musicCategoryDataToList(Mono<String> musicData) throws JsonProcessingException {
 
-
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = musicData.block();
-
         JsonNode jsonNode = objectMapper.readTree(jsonString);
 
         return jsonNode.get("genres");
-
-
     }
 }
