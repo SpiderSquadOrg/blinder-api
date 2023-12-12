@@ -5,4 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface MusicService {
     Mono<String> searchMusic(String musicName, int limit) throws JsonProcessingException;
+    Mono<String> getMusicById(String id) throws JsonProcessingException;
+
 }

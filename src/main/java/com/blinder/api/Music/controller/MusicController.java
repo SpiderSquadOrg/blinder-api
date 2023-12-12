@@ -20,6 +20,11 @@ public class MusicController {
 
     @GetMapping("/search")
     public ResponseEntity<List<MusicResponseDto>> searchMusic(@RequestParam(name = "musicName") String musicName, @RequestParam(name = "limit", defaultValue = "50") int limit) throws JsonProcessingException {
-        return new ResponseEntity<>(musicCustomMapper.musicDataToMusicResponseDto(musicService.searchMusic(musicName, limit)), HttpStatus.OK);
+        return new ResponseEntity<>(musicCustomMapper.musicDataToMusicResponseDtos(musicService.searchMusic(musicName, limit)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MusicResponseDto> getMusicById(@PathVariable String id) throws JsonProcessingException {
+        return new ResponseEntity<>(musicCustomMapper.musicDataToMusicResponseDto(musicService.getMusicById(id)), HttpStatus.OK);
     }
 }

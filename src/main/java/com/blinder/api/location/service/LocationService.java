@@ -8,4 +8,12 @@ public interface LocationService {
 
     Mono<String> getAllCountries();
     Mono<String> getStatesByCountry(String iso2);
+    Location addLocation(Location location);
+
+    Location getLocationById(String locationId);
+
+    Location updateLocation(String locationId, Location location);
+
+    void deleteLocation(String locationId);
+
 }

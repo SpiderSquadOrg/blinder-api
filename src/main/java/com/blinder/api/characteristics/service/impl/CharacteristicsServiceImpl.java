@@ -42,17 +42,18 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     private final TVSeriesRepository tvSeriesRepository;
     private final MovieCategoryRepository tvSeriesCategoryRepository;
     private final HobbyRepository hobbyRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Characteristics addCharacteristics(Characteristics characteristics) {
-        List<Music> musics = new ArrayList<>();
+        User user = userRepository.findById(characteristics.getUser().getId()).orElseThrow();
+        Characteristics newCharacteristics = characteristicsRepository.save(characteristics);
 
-        characteristics.getMusics().forEach((music) -> {
-            Music newMusic = musicRepository.save(music);
-            musics.add(newMusic);
-        });
-        characteristics.setMusics(musics);
-        return characteristicsRepository.save(characteristics);
+        user.setCharacteristics(newCharacteristics);
+        userRepository.save(user);
+        characteristicsRepository.save(newCharacteristics);
+
+        return newCharacteristics;
     }
 
     @Override
