@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.6</version>
+		<version>3.2.0</version> <!-- Update to the latest Spring Boot version -->
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.blinder</groupId>
@@ -19,6 +19,7 @@
 	</properties>
 	<dependencies>
 
+		<!-- Update version to the latest available -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -49,7 +50,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webflux</artifactId>
-			<version>6.1.1</version>
+			<version>6.1.1</version> <!-- Update to the latest version -->
 		</dependency>
 
 		<dependency>
@@ -71,7 +72,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
+			<version>2.3.0</version> <!-- Update to the latest version -->
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -83,14 +84,17 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
+
+
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
+			<artifactId>jjwt-impl</artifactId>
 			<version>0.11.5</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
+			<artifactId>jjwt-api</artifactId>
 			<version>0.11.5</version>
 		</dependency>
 		<dependency>
@@ -101,7 +105,7 @@
 		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
-			<version>1.27.0</version>
+			<version>1.36.0</version> <!-- Update to the latest version -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -110,7 +114,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.16.0</version>
+			<version>2.16.0</version> <!-- Update to the latest version -->
 		</dependency>
 
 	</dependencies>
