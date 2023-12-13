@@ -19,7 +19,7 @@ public class MusicController {
     private final MusicCustomMapper musicCustomMapper;
 
     @GetMapping("/search")
-    public ResponseEntity<List<MusicResponseDto>> searchMusic(@RequestParam(name = "musicName") String musicName, @RequestParam(name = "limit", defaultValue = "50") int limit) throws JsonProcessingException {
+    public ResponseEntity<List<MusicResponseDto>> searchMusic(@RequestParam(name = "musicName", required = false) String musicName, @RequestParam(name = "limit", defaultValue = "50") int limit) throws JsonProcessingException {
         return new ResponseEntity<>(musicCustomMapper.musicDataToMusicResponseDtos(musicService.searchMusic(musicName, limit)), HttpStatus.OK);
     }
 
