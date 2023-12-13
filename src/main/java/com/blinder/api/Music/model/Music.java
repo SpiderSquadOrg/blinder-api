@@ -20,5 +20,8 @@ import java.util.List;
 @SuperBuilder
 public class Music extends BaseEntity {
     private String spotifyId;
-
+    private String name;
+    private List<String> artists;
+    private String album;
+    private String image;
 }

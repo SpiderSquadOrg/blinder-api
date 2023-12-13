@@ -9,4 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TVSeriesRequestDto {
     private String imdbId;
+    private String name;
+    private int year;
+    private String image;
 }

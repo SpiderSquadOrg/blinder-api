@@ -24,7 +24,7 @@ public class MovieCustomMapper {
 
         items.forEach((item) -> {
             MovieResponseDto movieResponseDto = new MovieResponseDto();
-            movieResponseDto.setImdbId(item.get("_id").asText());
+            movieResponseDto.setImdbId(item.get("id").asText());
             movieResponseDto.setName(item.get("titleText").get("text").asText());
             try{
                 movieResponseDto.setYear(item.get("releaseYear").get("year").asInt());
