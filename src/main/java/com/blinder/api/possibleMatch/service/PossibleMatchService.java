@@ -19,6 +19,7 @@ public interface PossibleMatchService {
 
     List<User> getMatchedUsers(User currentUser);
     List<User> getLikedUsers(User currentUser);
+    List<User> getUsersWhoLike(User currentUser);
     List<User> getDislikedUsers(User currentUser);
 
 }
