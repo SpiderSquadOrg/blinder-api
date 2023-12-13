@@ -31,16 +31,19 @@ public class Characteristics extends BaseEntity {
 
     @OneToMany
     private List<Movie> movies = new ArrayList<>();
+
     @OneToMany
     private List<MovieCategory> movieCategories = new ArrayList<>();
 
     @OneToMany
     private List<Music> musics = new ArrayList<>();
+
     @OneToMany
     private List<MusicCategory> musicCategories = new ArrayList<>();
 
     @OneToMany
     private List<TVSeries> tvSeriesList = new ArrayList<>();
+
     @OneToMany
     private List<MovieCategory> tvSeriesCategories = new ArrayList<>();
 

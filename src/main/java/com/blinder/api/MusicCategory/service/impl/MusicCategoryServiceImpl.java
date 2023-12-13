@@ -31,8 +31,6 @@ public class MusicCategoryServiceImpl implements MusicCategoryService {
 
     private final MusicServiceImpl musicService;
 
-
-
     @Override
     public Mono<String> getMusicCategories() throws JsonProcessingException {
         WebClient webClient = WebClient.create("https://api.example.com");

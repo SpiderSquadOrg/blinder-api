@@ -24,7 +24,7 @@ public class TVSeriesCustomMapper {
 
         items.forEach((item) -> {
             TVSeriesResponseDto tvSeriesResponseDto = new TVSeriesResponseDto();
-            tvSeriesResponseDto.setImdbId(item.get("_id").asText());
+            tvSeriesResponseDto.setImdbId(item.get("id").asText());
             tvSeriesResponseDto.setName(item.get("titleText").get("text").asText());
             try{
                 tvSeriesResponseDto.setYear(item.get("releaseYear").get("year").asInt());

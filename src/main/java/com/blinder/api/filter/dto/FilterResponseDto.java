@@ -15,7 +15,7 @@ public class FilterResponseDto {
     private String id;
     private List<GenderResponseDto> genders;
     private LocationType locationType;
-    private String locationName;
+    private String locationId;
     private int ageLowerBound;
     private int ageUpperBound;
 }

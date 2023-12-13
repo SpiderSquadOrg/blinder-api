@@ -24,11 +24,10 @@ public class FilterController {
     private final FilterService filterService;
     private final UserAuthService userAuthService;
 
-    @GetMapping("/byUser")
+    @GetMapping("/byUser/{userId}")
     @Operation(summary = "Get filter by userId")
-    public ResponseEntity<FilterResponseDto> getFilterByUserId() {
-        User currentUser = userAuthService.getActiveUser().getUser();
-        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterByUserId(currentUser.getId())), HttpStatus.OK);
+    public ResponseEntity<FilterResponseDto> getFilterByUserId(@PathVariable String userId) {
+        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterByUserId(userId)), HttpStatus.OK);
     }
 
     @GetMapping("/{filterId}")
@@ -37,19 +36,18 @@ public class FilterController {
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(filterId)), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{filterId}")
     @Operation(summary = "Update filter for user")
-    public ResponseEntity<FilterResponseDto> updateFilter(@PathVariable String id,
-                                                          @RequestBody UpdateFilterRequestDto updateFilterRequestDto) {
+    public ResponseEntity<FilterResponseDto> updateFilter(@PathVariable String filterId, @RequestBody UpdateFilterRequestDto updateFilterRequestDto) {
         Filter updatedFilter = FilterMapper.INSTANCE.updateFilterRequestDtoToFilter(updateFilterRequestDto);
-        Filter updatedFilterResult = filterService.updateFilter(id, updatedFilter);
+        Filter updatedFilterResult = filterService.updateFilter(filterId, updatedFilter);
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(updatedFilterResult), HttpStatus.OK);
     }
 
-    @PutMapping("/reset/{id}")
+    @PutMapping("/reset/{filterId}")
     @Operation(summary = "Reset filter for user")
-    public ResponseEntity<FilterResponseDto> resetFilter(@PathVariable String id) {
-        filterService.resetFilter(id);
-        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(id)), HttpStatus.OK);
+    public ResponseEntity<FilterResponseDto> resetFilter(@PathVariable String filterId) {
+        filterService.resetFilter(filterId);
+        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(filterId)), HttpStatus.OK);
     }
 }

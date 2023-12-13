@@ -1,4 +1,5 @@
 package com.blinder.api.characteristics.controller;
+
 import com.blinder.api.Movie.dto.MovieRequestDto;
 import com.blinder.api.Movie.mapper.MovieMapper;
 import com.blinder.api.MovieCategory.dto.MovieCategoryRequestDto;
@@ -46,28 +47,6 @@ public class CharacteristicsController {
     public ResponseEntity<CharacteristicsResponseDto> getCharacteristicsByUserId() {
         User currentUser = userAuthService.getActiveUser().getUser();
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristicsService.getCharacteristicsByUserId(currentUser.getId())), HttpStatus.OK);
-    }
-
-    @PostMapping
-    @Operation(summary = "Add new characteristics")
-    public ResponseEntity<CreateCharacteristicsRequestDto> addNewCharacteristic(@RequestBody CreateCharacteristicsRequestDto createCharacteristicsRequestDto) {
-        characteristicsService.addCharacteristics(CharacteristicsMapper.INSTANCE.createCharacteristicsRequestDtoToCharacteristics(createCharacteristicsRequestDto));
-        return new ResponseEntity<>(createCharacteristicsRequestDto, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{characteristicsId}")
-    @Operation(summary = "Update characteristics")
-    public ResponseEntity<UpdateCharacteristicsRequestDto> updateCharacteristics(@PathVariable(name = "characteristicsId") String characteristicsId,
-                                                                        @RequestBody UpdateCharacteristicsRequestDto updateCharacteristicsRequestDto) {
-        characteristicsService.updateCharacteristics(characteristicsId, CharacteristicsMapper.INSTANCE.updateCharacteristicsRequestDtoToCharacteristics(updateCharacteristicsRequestDto));
-        return new ResponseEntity<>(updateCharacteristicsRequestDto, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{characteristicsId}")
-    @Operation(summary = "Delete characteristics")
-    public ResponseEntity<HttpStatus> deleteCharacteristics(@PathVariable(name = "characteristicsId") String characteristicsId) {
-        characteristicsService.deleteCharacteristics(characteristicsId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //Music
@@ -174,7 +153,7 @@ public class CharacteristicsController {
 
     //Hobby
     @PatchMapping("/add/hobby/{hobbyId}")
-    @Operation(summary = "Add tv series to user's characteristics")
+    @Operation(summary = "Add hobby to user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> addToHobbyList(@PathVariable String hobbyId){
         User currentUser = userAuthService.getActiveUser().getUser();
         Hobby hobby = hobbyService.getHobbyById(hobbyId);
@@ -183,10 +162,33 @@ public class CharacteristicsController {
     }
 
     @PatchMapping("/remove/hobby/{hobbyId}")
-    @Operation(summary = "Remove tv series from user's characteristics")
+    @Operation(summary = "Remove hobby from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromHobbyList(@PathVariable String hobbyId){
         User currentUser = userAuthService.getActiveUser().getUser();
         Characteristics characteristics = characteristicsService.removeFromHobbyList(currentUser.getId(), hobbyId);
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.NO_CONTENT);
     }
+
+    /*
+    @PostMapping
+    @Operation(summary = "Add new characteristics")
+    public ResponseEntity<CreateCharacteristicsRequestDto> addNewCharacteristic(@RequestBody CreateCharacteristicsRequestDto createCharacteristicsRequestDto) {
+        characteristicsService.addCharacteristics(CharacteristicsMapper.INSTANCE.createCharacteristicsRequestDtoToCharacteristics(createCharacteristicsRequestDto));
+        return new ResponseEntity<>(createCharacteristicsRequestDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{characteristicsId}")
+    @Operation(summary = "Update characteristics")
+    public ResponseEntity<UpdateCharacteristicsRequestDto> updateCharacteristics(@PathVariable(name = "characteristicsId") String characteristicsId,
+                                                                        @RequestBody UpdateCharacteristicsRequestDto updateCharacteristicsRequestDto) {
+        characteristicsService.updateCharacteristics(characteristicsId, CharacteristicsMapper.INSTANCE.updateCharacteristicsRequestDtoToCharacteristics(updateCharacteristicsRequestDto));
+        return new ResponseEntity<>(updateCharacteristicsRequestDto, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{characteristicsId}")
+    @Operation(summary = "Delete characteristics")
+    public ResponseEntity<HttpStatus> deleteCharacteristics(@PathVariable(name = "characteristicsId") String characteristicsId) {
+        characteristicsService.deleteCharacteristics(characteristicsId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }*/
 }

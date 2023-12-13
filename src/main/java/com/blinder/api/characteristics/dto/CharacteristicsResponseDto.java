@@ -22,7 +22,7 @@ public class CharacteristicsResponseDto {
     private List<MusicCategory> musicCategories;
     private List<Movie> movies;
     private List<MovieCategory> movieCategories;
-    private List<TVSeries> tvSeries;
+    private List<TVSeries> tvSeriesList;
     private List<MovieCategory> tvSeriesCategories;
     private List<Hobby> hobbies;
 

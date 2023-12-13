@@ -1,5 +1,7 @@
 package com.blinder.api.user.service.impl;
 
+import com.blinder.api.characteristics.model.Characteristics;
+import com.blinder.api.characteristics.repository.CharacteristicsRepository;
 import com.blinder.api.common.sort.SortCriteria;
 import com.blinder.api.common.sort.SortDirection;
 import com.blinder.api.filter.model.Filter;
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final FilterService filterService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final CharacteristicsRepository characteristicsRepository;
 
     @Override
     public User getUserById(String id) {
@@ -60,6 +63,11 @@ public class UserServiceImpl implements UserService {
         User newUser = this.userRepository.save(user);
         newLocation.setUser(newUser);
         this.locationService.updateLocation(newLocation.getId(),newLocation);
+
+        Characteristics characteristics = new Characteristics();
+        characteristics.setUser(newUser);
+        newUser.setCharacteristics(characteristics);
+        this.characteristicsRepository.save(characteristics);
 
         this.filterService.createDefaultFilterForUser(newUser.getId());
 

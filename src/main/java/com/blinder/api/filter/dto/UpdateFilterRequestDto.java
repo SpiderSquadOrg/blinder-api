@@ -16,7 +16,7 @@ import java.util.List;
 public class UpdateFilterRequestDto {
     private List<GenderRequestDto> genders;
     private LocationType locationType;
-    private String locationName;
+    private String locationId;
     private int ageLowerBound;
     private int ageUpperBound;
 }
