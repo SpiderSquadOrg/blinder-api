@@ -8,14 +8,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class TVSeriesServiceImpl implements TVSeriesService {
     @Value("${rapidapi.key}")
     private String api_key;
+
     @Override
     public Mono<String> searchTVSeries(String tvSeriesName, int limit) {
-
+        tvSeriesName = Optional.ofNullable(tvSeriesName).orElse("");
+        tvSeriesName = tvSeriesName.trim().replaceAll("[^a-zA-Z0-9-:, ]", "");
         WebClient webClient = WebClient.create("https://api.example.com");
 
         String response = webClient.get()
@@ -28,4 +32,6 @@ public class TVSeriesServiceImpl implements TVSeriesService {
 
         return Mono.just(response);
     }
+
+
 }

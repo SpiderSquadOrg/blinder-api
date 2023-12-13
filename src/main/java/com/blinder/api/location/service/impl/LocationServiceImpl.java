@@ -1,5 +1,6 @@
 package com.blinder.api.location.service.impl;
 
+import com.blinder.api.exception.NotExistsException;
 import com.blinder.api.location.model.Location;
 import com.blinder.api.location.repository.LocationRepository;
 import com.blinder.api.location.service.LocationService;
@@ -36,14 +37,63 @@ public class LocationServiceImpl implements LocationService {
     public Mono<String> getStatesByCountry(String iso2) {
         WebClient webClient = WebClient.create("https://api.example.com");
 
-        String response = webClient.get()
-                .uri("https://api.countrystatecity.in/v1/countries/" + iso2 + "/states")
-                .header("X-CSCAPI-KEY", "NWRsOExDZUU4ZVJid0N4RG5lUGFhcHEwS0pwWTFtMDdPTnZIamdIVQ==")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String response;
 
-        return Mono.just(response);
+        try{
+            response = webClient.get()
+                    .uri("https://api.countrystatecity.in/v1/countries/" + iso2 + "/states")
+                    .header("X-CSCAPI-KEY", "NWRsOExDZUU4ZVJid0N4RG5lUGFhcHEwS0pwWTFtMDdPTnZIamdIVQ==")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        }
+        catch (Exception e){
+            throw new NotExistsException("Entered country does not exist");
+        }
+
+        return Mono.justOrEmpty(response);
+    }
+
+    @Override
+    public Mono<String> getStateById(String ciso, String siso) {
+        WebClient webClient = WebClient.create("https://api.example.com");
+
+        String response;
+
+        try{
+            response = webClient.get()
+                    .uri("https://api.countrystatecity.in/v1/countries/" + ciso + "/states/" + siso)
+                    .header("X-CSCAPI-KEY", "NWRsOExDZUU4ZVJid0N4RG5lUGFhcHEwS0pwWTFtMDdPTnZIamdIVQ==")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        }
+        catch (Exception e){
+            throw new NotExistsException("Entered state or country does not exist");
+        }
+
+        return Mono.justOrEmpty(response);
+    }
+
+    @Override
+    public Mono<String> getCountryById(String ciso) {
+        WebClient webClient = WebClient.create("https://api.example.com");
+
+        String response;
+
+        try{
+            response = webClient.get()
+                    .uri("https://api.countrystatecity.in/v1/countries/" + ciso )
+                    .header("X-CSCAPI-KEY", "NWRsOExDZUU4ZVJid0N4RG5lUGFhcHEwS0pwWTFtMDdPTnZIamdIVQ==")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        }
+        catch (Exception e){
+            throw new NotExistsException("Entered country does not exist");
+        }
+
+        return Mono.justOrEmpty(response);
     }
 
     @Override

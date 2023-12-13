@@ -8,6 +8,8 @@ public interface LocationService {
 
     Mono<String> getAllCountries();
     Mono<String> getStatesByCountry(String iso2);
+    Mono<String> getStateById(String ciso, String siso);
+    Mono<String> getCountryById(String ciso);
     Location addLocation(Location location);
 
     Location getLocationById(String locationId);

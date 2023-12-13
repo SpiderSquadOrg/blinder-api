@@ -1,5 +1,6 @@
 package com.blinder.api.user.dto;
 
+import com.blinder.api.location.dto.CreateLocationDto;
 import com.blinder.api.location.dto.LocationDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,5 @@ public class CreateUserRequestDto {
     private String roleId;
     private Date birthDate;
     private List<String> images;
-    private String countryId;
-    private String stateId;
+    private CreateLocationDto location;
 }

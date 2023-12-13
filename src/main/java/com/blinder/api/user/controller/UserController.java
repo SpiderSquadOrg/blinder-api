@@ -1,10 +1,13 @@
 package com.blinder.api.user.controller;
 
+import com.blinder.api.location.mapper.LocationCustomMapper;
 import com.blinder.api.user.dto.CreateUserRequestDto;
 import com.blinder.api.user.dto.UpdateUserRequestDto;
 import com.blinder.api.user.dto.UserResponseDto;
 import com.blinder.api.user.mapper.UserMapper;
+import com.blinder.api.user.model.User;
 import com.blinder.api.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final LocationCustomMapper locationCustomMapper;
 
     @GetMapping("/{userId}")
     @Operation(summary = "Get user by id")
@@ -66,8 +70,10 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Add user")
-    public ResponseEntity<CreateUserRequestDto> addUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        this.userService.addUser(UserMapper.INSTANCE.createUserRequestDtoToUser(createUserRequestDto));
+    public ResponseEntity<CreateUserRequestDto> addUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) throws JsonProcessingException {
+        User user =UserMapper.INSTANCE.createUserRequestDtoToUser(createUserRequestDto);
+        user.setLocation(locationCustomMapper.createLocationDtoToLocation(createUserRequestDto.getLocation()));
+        this.userService.addUser(user);
         return new ResponseEntity<>(createUserRequestDto, HttpStatus.CREATED);
     }
 
