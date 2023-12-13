@@ -54,6 +54,14 @@ public class PossibleMatchController {
                 possibleMatchService.getLikedUsers(currentUser)), HttpStatus.OK);
     }
 
+    @GetMapping("/users_who_like")
+    @Operation(summary = "Get users who like")
+    public ResponseEntity<List<UserResponseDto>> getUsersWhoLike(){
+        User currentUser = userAuthService.getActiveUser().getUser();
+        return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(
+                possibleMatchService.getUsersWhoLike(currentUser)), HttpStatus.OK);
+    }
+
     @GetMapping("/disliked")
     @Operation(summary = "Get disliked users")
     public ResponseEntity<List<UserResponseDto>> getDislikedUsers(){

@@ -108,6 +108,9 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     public List<User> getLikedUsers(User currentUser) { return possibleMatchRepository.findLikedUsers(currentUser);}
 
     @Override
+    public List<User> getUsersWhoLike(User currentUser) { return possibleMatchRepository.findUsersWhoLike(currentUser);}
+
+    @Override
     public List<User> getDislikedUsers(User currentUser) {return possibleMatchRepository.findDislikedUsers(currentUser);}
 
     private double calculateSimilarityScore(Characteristics characteristics1, Characteristics characteristics2) {
