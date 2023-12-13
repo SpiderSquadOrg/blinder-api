@@ -40,4 +40,4 @@ public class LocationController {
         return new ResponseEntity<>(locationCustomMapper.locationCountryDataToLocationResponseDtoById(locationService.getCountryById(ciso)), HttpStatus.OK);
     }
 
-
+}
