@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,4 +15,8 @@ public class MusicRequestDto {
     @NotBlank
     @NotNull
     private String spotifyId;
+    private String name;
+    private List<String> artists;
+    private String album;
+    private String image;
 }

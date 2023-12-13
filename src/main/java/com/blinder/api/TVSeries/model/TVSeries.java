@@ -14,4 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class TVSeries extends BaseEntity {
     private String imdbId;
+    private String name;
+    private int year;
+    private String image;
 }

@@ -13,5 +13,8 @@ public class MovieRequestDto {
     @NotBlank
     @NotNull
     private String imdbId;
+    private String name;
+    private int year;
+    private String image;
 
 }
