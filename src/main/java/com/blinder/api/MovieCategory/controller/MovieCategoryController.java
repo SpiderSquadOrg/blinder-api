@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequestMapping("/movieCategories")
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class MovieCategoryController {
 
     @GetMapping
     @Operation(summary = "Get all movie categories")
-    public ResponseEntity<JsonNode> getMovieCategories() throws JsonProcessingException {
+    public ResponseEntity<List<String>> getMovieCategories() throws JsonProcessingException {
         return new ResponseEntity<>(movieCategoryCustomMapper.movieCategoryDataToList(movieCategoryService.getMovieCategories()), HttpStatus.OK);
     }
 }
