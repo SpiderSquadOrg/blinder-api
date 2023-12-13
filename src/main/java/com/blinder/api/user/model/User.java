@@ -68,7 +68,8 @@ public class User extends BaseEntity {
     @JoinColumn(name = "from_user_id")
     private List<PossibleMatch> possibleMatches = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "characteristics_id")
     private Characteristics characteristics;
 
     private boolean isMatched = false;

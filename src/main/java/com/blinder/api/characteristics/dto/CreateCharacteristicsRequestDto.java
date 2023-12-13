@@ -22,9 +22,4 @@ public class CreateCharacteristicsRequestDto {
     @NotBlank
     private String userId;
 
-    /*@MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<Book> books;
-
-    @MinListSize(minSize = 3, message = "Books list must have at least three elements")
-    private List<BookCategory> bookCategories;*/
 }

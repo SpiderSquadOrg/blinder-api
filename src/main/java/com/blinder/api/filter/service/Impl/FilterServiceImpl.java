@@ -51,7 +51,7 @@ public class FilterServiceImpl implements FilterService {
         updateFilterGenders(filterToUpdate, updatedFilter.getGenders());
 
         if (filterBusinessRules.checkLocationTypeIsValid(updatedFilter.getLocationType())) {
-            if(!updatedFilter.getLocationId().equals("")){
+            if(!updatedFilter.getLocationId().isEmpty()){
                 filterToUpdate.setLocationType(updatedFilter.getLocationType());
                 filterToUpdate.setLocationId(updatedFilter.getLocationId());
             }
