@@ -21,7 +21,8 @@ public class Location extends BaseEntity {
     private User user;
     private String countryId;
     private String countryName;
-    private String iso2;
+    private String countryIso2;
     private String stateId;
     private String stateName;
+    private String stateIso2;
 }

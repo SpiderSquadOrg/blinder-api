@@ -37,13 +37,13 @@ public interface UserMapper {
 
     @Mapping(source = "roleId", target = "role.id")
     @Mapping(source = "genderId", target = "gender.id")
-    @Mapping(source = "countryId", target = "location.countryId")
-    @Mapping(source = "stateId", target = "location.stateId")
+    @Mapping(source = "location.countryIso2", target = "location.countryIso2")
+    @Mapping(source = "location.stateIso2", target = "location.stateIso2")
     User createUserRequestDtoToUser(CreateUserRequestDto createUserRequestDto);
 
     @Mapping(source = "genderId", target = "gender.id")
-    @Mapping(source = "countryId", target = "location.countryId")
-    @Mapping(source = "stateId", target = "location.stateId")
+    @Mapping(source = "location.countryIso2", target = "location.countryIso2")
+    @Mapping(source = "location.stateIso2", target = "location.stateIso2")
     User registerRequestDtoToUser(RegisterRequestDto registerRequestDto);
 
     @Mapping(source = "roleId", target = "role.id")

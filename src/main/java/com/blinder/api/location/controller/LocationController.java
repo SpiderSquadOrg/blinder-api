@@ -20,15 +20,24 @@ public class LocationController {
     private final LocationService locationService;
     private final LocationCustomMapper locationCustomMapper;
 
-    @GetMapping("/getAllCountries")
+    @GetMapping("/countries")
     public ResponseEntity<List<LocationCountryDto>> getAllCountries() throws JsonProcessingException {
         return new ResponseEntity<>(locationCustomMapper.locationCountryDataToLocationResponseDto(locationService.getAllCountries()), HttpStatus.OK);
     }
 
-    @GetMapping("/getStatesByCountry/{iso2}")
+    @GetMapping("/states/country/{iso2}")
     public ResponseEntity<List<LocationStateDto>> getStatesByCountry(@PathVariable String iso2) throws JsonProcessingException {
         return new ResponseEntity<>(locationCustomMapper.locationStateByCountryDataToLocationResponseDto(locationService.getStatesByCountry(iso2)), HttpStatus.OK);
     }
 
-    // TO DO: Update
-}
+    @GetMapping("/countries/{ciso}/states/{siso}")
+    public ResponseEntity<LocationStateDto> getStateById(@PathVariable String ciso, @PathVariable String siso) throws JsonProcessingException {
+        return new ResponseEntity<>(locationCustomMapper.locationStateByCountryDataToLocationResponseDtoById(locationService.getStateById(ciso, siso)), HttpStatus.OK);
+    }
+
+    @GetMapping("/countries/{ciso}")
+    public ResponseEntity<LocationCountryDto> getCountryById(@PathVariable String ciso) throws JsonProcessingException {
+        return new ResponseEntity<>(locationCustomMapper.locationCountryDataToLocationResponseDtoById(locationService.getCountryById(ciso)), HttpStatus.OK);
+    }
+
+

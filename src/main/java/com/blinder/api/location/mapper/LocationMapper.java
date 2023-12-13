@@ -1,8 +1,10 @@
 package com.blinder.api.location.mapper;
 import com.blinder.api.location.dto.LocationCountryDto;
+import com.blinder.api.location.dto.LocationDto;
 import com.blinder.api.location.dto.LocationStateDto;
 import com.blinder.api.location.model.Location;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -21,8 +23,16 @@ public interface LocationMapper {
     List<LocationCountryDto> locationToLocationCountryDto(List<Location> locations);
     List<LocationStateDto> locationToLocationStateDto(List<Location> locations);
 
+
+    @Mapping(source = "countryIso2", target = "iso2")
     LocationCountryDto locationToLocationCountryDto(Location location);
+
+    @Mapping(source = "stateIso2", target = "iso2")
     LocationStateDto locationToLocationStateDto(Location location);
+
+    Location locationDtoToLocation(LocationDto locationDto);
+
+    LocationDto locationToLocationDto(Location location);
 
     Location locationCountryDtoToLocation(LocationCountryDto locationCountryDto);
     Location locationStateDtoToLocation(LocationStateDto locationStateDto);

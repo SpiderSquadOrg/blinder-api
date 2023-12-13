@@ -1,5 +1,6 @@
 package com.blinder.api.user.controller;
 
+import com.blinder.api.location.mapper.LocationCustomMapper;
 import com.blinder.api.user.mapper.UserMapper;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.security.auth.service.AuthenticationService;
@@ -9,6 +10,7 @@ import com.blinder.api.user.security.dto.AuthenticationResponse;
 import com.blinder.api.user.security.dto.RegisterRequestDto;
 import com.blinder.api.user.security.dto.UserAuthDto;
 import com.blinder.api.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +24,11 @@ public class AuthController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final UserAuthService userAuthService;
+    private final LocationCustomMapper locationCustomMapper;
 
     @GetMapping("/active")
     @Operation(summary = "Get active user")
-    public ResponseEntity<UserAuthDto> activeUser(){
+    public ResponseEntity<UserAuthDto> activeUser() {
         return ResponseEntity.ok(UserMapper.INSTANCE.userToUserDto(userAuthService.getActiveUser()));
     }
 
@@ -41,13 +44,16 @@ public class AuthController {
     @Operation(summary = "Register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody @Valid RegisterRequestDto registerRequestDto
-    ) {
-        this.userService.register(UserMapper.INSTANCE.registerRequestDtoToUser(registerRequestDto));
+    ) throws JsonProcessingException {
+
+        User user = UserMapper.INSTANCE.registerRequestDtoToUser(registerRequestDto);
+        user.setLocation(locationCustomMapper.createLocationDtoToLocation(registerRequestDto.getLocation()));
+        this.userService.register(user);
 
         return ResponseEntity.ok(authenticationService.authenticate(
                 AuthenticationRequest.builder()
-                .username(registerRequestDto.getUsername())
-                .password(registerRequestDto.getPassword())
-                .build()));
+                        .username(registerRequestDto.getUsername())
+                        .password(registerRequestDto.getPassword())
+                        .build()));
     }
 }

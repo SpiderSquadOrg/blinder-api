@@ -1,5 +1,6 @@
 package com.blinder.api.user.security.dto;
 
+import com.blinder.api.location.dto.CreateLocationDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,5 @@ public class RegisterRequestDto {
     private String genderId;
     private Date birthDate;
     private List<String> images;
-    private String countryId;
-    private String stateId;
+    private CreateLocationDto location;
 }
