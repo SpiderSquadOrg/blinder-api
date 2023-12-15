@@ -27,12 +27,12 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     public void findAndAddPotentialMatches(User currentUser, int howManyUser) {
         Characteristics userCharacteristics = currentUser.getCharacteristics();
         List<User> randomUsers = userService.getRandomUsers(howManyUser);
-        List<User> filteredUsers = userService.getFilteredUsers(currentUser);
+        //List<User> filteredUsers = userService.getFilteredUsers(currentUser);
 
-        // Intersection of randomUsers and filteredUsers
-        filteredUsers.retainAll(randomUsers);
+        //Intersection of randomUsers and filteredUsers
+        //filteredUsers.retainAll(randomUsers);
 
-        for (User potentialMatchUser : filteredUsers) {
+        for (User potentialMatchUser : randomUsers) {
             if (!currentUser.equals(potentialMatchUser)) {
                 double similarityScore = calculateSimilarityScore(userCharacteristics, potentialMatchUser.getCharacteristics());
                 addOrUpdatePossibleMatch(currentUser, potentialMatchUser, similarityScore);
@@ -174,8 +174,8 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         Optional<PossibleMatch> existingMatch = possibleMatchRepository.findPossibleMatchByFromAndTo(userFrom, userTo);
 
         if (existingMatch.isPresent()) {
-            // Update the existing match if the new score is higher
-            if (similarityScore > existingMatch.get().getSimilarityScore()) {
+            // Update the existing match if the new score is higher or lower
+            if (similarityScore != existingMatch.get().getSimilarityScore()) {
                 existingMatch.get().setSimilarityScore(similarityScore);
             }
         } else {

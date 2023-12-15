@@ -133,22 +133,13 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         List<Predicate> predicates = new ArrayList<>();
 
         //Filtering conditions
-        predicates.add(cb.and(root.get("gender").in(genders)));
+        Expression<Integer> userBirthYear = cb.function("date_part", Integer.class, cb.literal("year"), root.get("birthDate"));
+        predicates.add(cb.between(userBirthYear, calculateBirthYear(ageLowerBound), calculateBirthYear(ageUpperBound)));
 
-        Expression<Date> birthDate = root.get("birthDate");
-        Expression<Integer> birthYear = cb.function("YEAR", Integer.class, birthDate);
-        Expression<Integer> currentYear = cb.function("YEAR", Integer.class, cb.currentDate());
-        Expression<Integer> userAge = cb.diff(currentYear, birthYear);
-        predicates.add(cb.and(cb.between(userAge, ageLowerBound, ageUpperBound)));
-
-        if (locationType != null) {
+        if (locationType != LocationType.NONE) {
             switch (locationType) {
-                case COUNTRY:
-                    predicates.add(cb.equal(root.get("location").get("country"), locationName));
-                    break;
-                case STATE:
-                    predicates.add(cb.equal(root.get("location").get("state"), locationName));
-                    break;
+                case COUNTRY -> predicates.add(cb.equal(root.join("location").get("countryName"), locationName));
+                case STATE -> predicates.add(cb.equal(root.join("location").get("stateName"), locationName));
             }
         }
 
@@ -160,6 +151,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         //typedQuery.setMaxResults(pageable.getPageSize());
 
         return typedQuery.getResultList();
+    }
+
+    private int calculateBirthYear(int age) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -age);
+        return cal.get(Calendar.YEAR);
     }
 
     private Date calculateBirthDate(String age) {
