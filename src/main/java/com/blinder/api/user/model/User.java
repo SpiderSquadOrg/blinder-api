@@ -64,11 +64,12 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     private List<User> blockedUsers = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn(name = "from_user_id")
     private List<PossibleMatch> possibleMatches = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "characteristics_id")
     private Characteristics characteristics;
 

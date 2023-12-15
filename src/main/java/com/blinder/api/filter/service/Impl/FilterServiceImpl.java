@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -69,8 +70,15 @@ public class FilterServiceImpl implements FilterService {
     public void resetFilter(String id) {
         Filter filter = filterRepository.findById(id).orElseThrow();
         Set<Gender> allGenders = new HashSet<>(genderRepository.findAll());
+        Set<Gender> filterGenders = filter.getGenders();
 
-        filter.setGenders(allGenders);
+        for (Gender gender : allGenders) {
+            if (!filterGenders.contains(gender)) {
+                filterGenders.add(gender);
+            }
+        }
+
+        filter.setGenders(filterGenders);
         filter.setAgeLowerBound(Filter.getDefaultAgeLowerBound());
         filter.setAgeUpperBound(Filter.getDefaultAgeUpperBound());
         filter.setLocationType(Filter.getDefaultLocationType());

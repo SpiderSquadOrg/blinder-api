@@ -9,6 +9,7 @@ import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -29,25 +30,25 @@ public class Characteristics extends BaseEntity {
     @OneToOne
     private User user;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Movie> movies = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<MovieCategory> movieCategories = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Music> musics = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<MusicCategory> musicCategories = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<TVSeries> tvSeriesList = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<MovieCategory> tvSeriesCategories = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Hobby> hobbies = new ArrayList<>();
 
     /*@OneToMany
