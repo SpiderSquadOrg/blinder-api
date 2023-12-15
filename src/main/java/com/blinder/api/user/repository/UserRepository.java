@@ -19,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     boolean existsByPhoneNumber(String phoneNumber);
 
     Optional<User> findByUsername(String username);
+
+    @Query("SELECT u.images FROM User u WHERE u.id = :id")
+    List<String> getImagesById(@Param("id") String id);
 }

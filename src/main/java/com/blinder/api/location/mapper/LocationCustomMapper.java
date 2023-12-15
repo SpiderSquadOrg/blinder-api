@@ -93,14 +93,17 @@ public class LocationCustomMapper {
     public Location createLocationDtoToLocation(CreateLocationDto createLocationDto) throws JsonProcessingException {
         Location location = new Location();
         LocationCountryDto country =  locationCountryDataToLocationResponseDtoById(locationService.getCountryById(createLocationDto.getCountryIso2()));
-        LocationStateDto state = locationStateByCountryDataToLocationResponseDtoById(locationService.getStateById(createLocationDto.getCountryIso2(), createLocationDto.getStateIso2()));
+
+        if(createLocationDto.getStateIso2()!=null){
+            LocationStateDto state = locationStateByCountryDataToLocationResponseDtoById(locationService.getStateById(createLocationDto.getCountryIso2(), createLocationDto.getStateIso2()));
+            location.setStateId(state.getStateId());
+            location.setStateIso2(state.getIso2());
+            location.setStateName(state.getStateName());
+        }
 
         location.setCountryId(country.getCountryId());
         location.setCountryIso2(country.getIso2());
         location.setCountryName(country.getCountryName());
-        location.setStateId(state.getStateId());
-        location.setStateIso2(state.getIso2());
-        location.setStateName(state.getStateName());
 
         return location;
     }

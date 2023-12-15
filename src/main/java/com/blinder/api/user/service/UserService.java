@@ -1,6 +1,7 @@
 package com.blinder.api.user.service;
 
 import com.blinder.api.user.model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -33,4 +34,8 @@ public interface UserService {
     User updateUserById(String userId, User user);
 
     Page<User> searchUsers(Integer page, Integer size, String email, String name, String surname, String username, String[] roleNames, String[] genderNames, String ageLowerBound, String ageUpperBound, String region, String country, String city, Boolean isMatched, Boolean isBanned, String sortBy, String sortDirection);
+
+    List<String> getUserImagesByChatInfo(String userId, String chatId, String token) throws JsonProcessingException;
+
+    String getRemainingChatTime(String chatId, String token) throws JsonProcessingException;
 }

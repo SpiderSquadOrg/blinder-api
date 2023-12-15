@@ -17,6 +17,7 @@ public class RegisterRequestDto {
     private String email;
     private String name;
     private String surname;
+    private String nickname;
     private String phoneNumber;
     private String genderId;
     private Date birthDate;
