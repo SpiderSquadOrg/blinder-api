@@ -2,6 +2,7 @@ package com.blinder.api.user.service.impl;
 
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.characteristics.repository.CharacteristicsRepository;
+import com.blinder.api.common.Constants;
 import com.blinder.api.common.sort.SortCriteria;
 import com.blinder.api.common.sort.SortDirection;
 import com.blinder.api.filter.model.Filter;
@@ -18,6 +19,10 @@ import com.blinder.api.user.rules.UserBusinessRules;
 import com.blinder.api.user.security.auth.service.UserAuthService;
 import com.blinder.api.user.service.RoleService;
 import com.blinder.api.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -25,7 +30,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.blinder.api.util.MappingUtils.getNullPropertyNames;
@@ -120,6 +129,116 @@ public class UserServiceImpl implements UserService {
 
         SortCriteria sortCriteria = new SortCriteria(sortBy, so);
         return this.userCustomRepository.searchUsersByFilter(email, name, surname, username, roleNames, genderNames, ageLowerBound, ageUpperBound, region, country, city, isMatched, isBanned, pageable, sortCriteria);
+    }
+
+    private JsonNode fetchChatMessages(String chatId, String token) throws JsonProcessingException {
+        WebClient webClient = WebClient.create("https://api.example.com");
+
+        String response = webClient.get()
+                .uri(Constants.CHAT_API_URL+ "/messages/"+chatId )
+                .header("Authorization",  token)
+                .header("ChatAuthorization",  Constants.CHAT_TOKEN)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        Mono<String> messagesData = Mono.justOrEmpty(response);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = messagesData.block();
+        return objectMapper.readTree(jsonString);
+    }
+
+    @Override
+    public List<String> getUserImagesByChatInfo(String userId, String chatId, String token) throws JsonProcessingException {
+        JsonNode jsonNode = fetchChatMessages(chatId, token);
+
+        List<String> userChatIds = new ArrayList<>();
+        String dateAsString = null;
+        for(JsonNode node : jsonNode){
+            JsonNode users = node.get("chat").get("users");
+            for (JsonNode userNode : users) {
+                userChatIds.add(userNode.asText());
+            }
+            break;
+        }
+
+        for(JsonNode node : jsonNode){
+            String senderId = node.get("sender").get("_id").asText();
+            userChatIds.remove(senderId);
+
+            if(userChatIds.isEmpty()){
+                dateAsString = node.get("createdAt").asText();
+                break;
+            }
+        }
+
+        //If userChatIds is empty, it means both users sent message each other.
+        if(userChatIds.isEmpty() && Objects.nonNull(dateAsString)){
+            //String date to milliseconds
+            Instant instant = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(dateAsString));
+            long milliseconds = instant.toEpochMilli();
+
+            Date now = new Date();
+            long nowMilliseconds = now.getTime();
+
+            long diff = nowMilliseconds - milliseconds;
+
+            if(diff > Constants.SEVEN_DAYS){
+                return this.userRepository.getImagesById(userId);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getRemainingChatTime(String chatId, String token) throws JsonProcessingException {
+        JsonNode jsonNode = fetchChatMessages(chatId, token);
+
+        List<String> userChatIds = new ArrayList<>();
+        String dateAsString = null;
+        for(JsonNode node : jsonNode){
+            JsonNode users = node.get("chat").get("users");
+            for (JsonNode userNode : users) {
+                userChatIds.add(userNode.asText());
+            }
+            break;
+        }
+
+        for(JsonNode node : jsonNode){
+            String senderId = node.get("sender").get("_id").asText();
+            userChatIds.remove(senderId);
+
+            if(userChatIds.isEmpty()){
+                dateAsString = node.get("createdAt").asText();
+                break;
+            }
+        }
+
+        //If userChatIds is empty, it means both users sent message each other.
+        if(userChatIds.isEmpty() && Objects.nonNull(dateAsString)){
+            //String date to milliseconds
+            Instant instant = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(dateAsString));
+            long milliseconds = instant.toEpochMilli();
+
+            Date now = new Date();
+            long nowMilliseconds = now.getTime();
+
+            long diff = nowMilliseconds - milliseconds;
+
+            if(diff > Constants.SEVEN_DAYS){
+                return "00:00";
+            }else{
+                long remainingTime = Constants.SEVEN_DAYS - diff;
+                long remainingTimeInSeconds = remainingTime / 1000;
+                long remainingTimeInMinutes = remainingTimeInSeconds / 60;
+                long remainingTimeInHours = remainingTimeInMinutes / 60;
+
+                remainingTimeInMinutes = remainingTimeInMinutes % 60; // get the remaining minutes
+
+                return String.format("%03d:%02d", remainingTimeInHours, remainingTimeInMinutes);
+            }
+        }
+        return null;
     }
 
     @Override

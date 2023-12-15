@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
@@ -113,5 +115,17 @@ public class UserController {
     @Operation(summary = "Unblock user by id")
     public ResponseEntity<UserResponseDto> unblockUserById(@PathVariable String userId) {
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.unblockUserById(userId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/images")
+    @Operation(summary = "Get user images by id")
+    public ResponseEntity<List<String>> getUserImagesByChatInfo(@PathVariable String userId, @RequestParam String chatId, @RequestHeader("Authorization") String token) throws JsonProcessingException {
+        return new ResponseEntity<>(this.userService.getUserImagesByChatInfo(userId, chatId, token), HttpStatus.OK);
+    }
+
+    @GetMapping("/chats/{chatId}")
+    @Operation(summary = "Get remaining chat time")
+    public ResponseEntity<String> getRemainingChatTime(@PathVariable String chatId, @RequestHeader("Authorization") String token) throws JsonProcessingException {
+        return new ResponseEntity<>(this.userService.getRemainingChatTime(chatId, token), HttpStatus.OK);
     }
 }

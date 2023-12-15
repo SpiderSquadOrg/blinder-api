@@ -29,6 +29,7 @@ import java.util.List;
 public class User extends BaseEntity {
     private String name;
     private String surname;
+    private String nickname;
 
     @Column(unique = true)
     private String username;
