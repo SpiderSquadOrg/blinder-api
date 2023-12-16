@@ -5,6 +5,7 @@ import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.TVSeries.model.TVSeries;
+import com.blinder.api.TVSeriesCategories.model.TVSeriesCategory;
 import com.blinder.api.hobby.model.Hobby;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class CharacteristicsResponseDto {
     private List<Movie> movies;
     private List<MovieCategory> movieCategories;
     private List<TVSeries> tvSeriesList;
-    private List<MovieCategory> tvSeriesCategories;
+    private List<TVSeriesCategory> tvSeriesCategories;
     private List<Hobby> hobbies;
 
     /*private List<Book> books;

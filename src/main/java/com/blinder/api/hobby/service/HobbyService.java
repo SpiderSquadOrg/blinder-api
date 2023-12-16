@@ -13,4 +13,5 @@ public interface HobbyService {
 
     public void deleteHobby(String hobbyId);
     public Hobby getHobbyById(String hobbyId);
+    public Hobby getHobbyByName(String name);
 }

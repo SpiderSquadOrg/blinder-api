@@ -1,7 +1,5 @@
 package com.blinder.api.hobby.rules;
 
-import com.blinder.api.Music.repository.MusicRepository;
-import com.blinder.api.MusicCategory.repository.MusicCategoryRepository;
 import com.blinder.api.exception.AlreadyExistsException;
 import com.blinder.api.exception.NotExistsException;
 import com.blinder.api.hobby.repository.HobbyRepository;
@@ -13,10 +11,21 @@ import org.springframework.stereotype.Service;
 public class HobbyBusinessRules {
     private final HobbyRepository hobbyRepository;
 
-
-    public void checkIfHobbyNameExists(String name) {
+    public void checkIfHobbyAlreadyExists(String name) {
         if (this.hobbyRepository.existsByName(name)) {
-            throw new AlreadyExistsException("This hobby name already exists");
+            throw new AlreadyExistsException("This hobby is already added");
+        }
+    }
+
+    public void checkIfHobbyExistsById(String hobbyId) {
+        if (!this.hobbyRepository.existsById(hobbyId)) {
+            throw new NotExistsException("Hobby couldn't find");
+        }
+    }
+
+    public void checkIfHobbyExistsByName(String name) {
+        if (!this.hobbyRepository.existsByName(name)) {
+            throw new NotExistsException("Hobby couldn't find");
         }
     }
 }

@@ -95,8 +95,8 @@ public class CharacteristicsBusinessRules {
         }
     }
 
-    public void checkIfHobbyExistsInList(Characteristics characteristics, String hobbyId) {
-        if (characteristics.getHobbies().stream().noneMatch(existingHobby -> existingHobby.getId().equals(hobbyId))) {
+    public void checkIfHobbyExistsInList(Characteristics characteristics, String hobbyName) {
+        if (characteristics.getHobbies().stream().noneMatch(existingHobby -> existingHobby.getName().equals(hobbyName))) {
             throw new NotExistsException("Hobby couldn't find in your list");
         }
     }

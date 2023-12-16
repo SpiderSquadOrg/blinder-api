@@ -4,6 +4,7 @@ import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.TVSeries.model.TVSeries;
+import com.blinder.api.TVSeriesCategories.model.TVSeriesCategory;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.possibleMatch.model.PossibleMatch;
@@ -124,8 +125,8 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         List<MovieCategory> movieCategories2 = characteristics2.getMovieCategories();
         List<TVSeries> tvSeries1 = characteristics1.getTvSeriesList();
         List<TVSeries> tvSeries2 = characteristics2.getTvSeriesList();
-        List<MovieCategory> tvSeriesCategories1 = characteristics1.getTvSeriesCategories();
-        List<MovieCategory> tvSeriesCategories2 = characteristics2.getTvSeriesCategories();
+        List<TVSeriesCategory> tvSeriesCategories1 = characteristics1.getTvSeriesCategories();
+        List<TVSeriesCategory> tvSeriesCategories2 = characteristics2.getTvSeriesCategories();
         List<Hobby> hobbies1 = characteristics1.getHobbies();
         List<Hobby> hobbies2 = characteristics2.getHobbies();
 
