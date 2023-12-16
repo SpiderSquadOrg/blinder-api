@@ -7,6 +7,6 @@ public interface FilterService {
     Filter createDefaultFilterForUser(String userId);
     Filter getFilterByUserId(String userId);
     Filter getFilterById(String filterId);
-    Filter updateFilter(String id, Filter updatedFilter);
-    void resetFilter(String id);
+    Filter updateFilter(String userId, Filter updatedFilter);
+    void resetFilter(String userId);
 }
