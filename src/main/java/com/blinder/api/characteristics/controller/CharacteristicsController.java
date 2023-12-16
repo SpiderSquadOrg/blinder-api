@@ -56,7 +56,7 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/musics/{musicId}")
+    @DeleteMapping("/musics/{musicId}")
     @Operation(summary = "Remove music from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromMusicList(@PathVariable String musicId){
         User currentUser = userAuthService.getActiveUser().getUser();
@@ -73,7 +73,7 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/musics/categories/{musicCategoryId}")
+    @DeleteMapping("/musics/categories/{musicCategoryId}")
     @Operation(summary = "Remove music category from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromMusicCategoryList(@PathVariable String musicCategoryId){
         User currentUser = userAuthService.getActiveUser().getUser();
@@ -90,7 +90,7 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/movies/{movieId}")
+    @DeleteMapping("/movies/{movieId}")
     @Operation(summary = "Remove movie from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromMovieList(@PathVariable String movieId){
         User currentUser = userAuthService.getActiveUser().getUser();
@@ -107,7 +107,7 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/movies/categories/{movieCategoryId}")
+    @DeleteMapping("/movies/categories/{movieCategoryId}")
     @Operation(summary = "Remove movie category from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromMovieCategoryList(@PathVariable String movieCategoryId){
         User currentUser = userAuthService.getActiveUser().getUser();
@@ -124,7 +124,7 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/tvSeries/{tvSeriesId}")
+    @DeleteMapping("/tvSeries/{tvSeriesId}")
     @Operation(summary = "Remove tv series from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromTvSeriesList(@PathVariable String tvSeriesId){
         User currentUser = userAuthService.getActiveUser().getUser();
@@ -141,7 +141,7 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/tvSeries/categories/{tvSeriesCategoryId}")
+    @DeleteMapping("/tvSeries/categories/{tvSeriesCategoryId}")
     @Operation(summary = "Remove tv series category from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromTvSeriesCategoryList(@PathVariable String tvSeriesCategoryId){
         User currentUser = userAuthService.getActiveUser().getUser();
@@ -150,7 +150,7 @@ public class CharacteristicsController {
     }
 
     //Hobby
-    @PatchMapping("/add/hobby/{hobbyId}")
+    @PatchMapping("/hobby/{hobbyId}")
     @Operation(summary = "Add hobby to user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> addToHobbyList(@PathVariable String hobbyId){
         User currentUser = userAuthService.getActiveUser().getUser();
@@ -159,7 +159,7 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/remove/hobby/{hobbyId}")
+    @DeleteMapping("/hobby/{hobbyId}")
     @Operation(summary = "Remove hobby from user's characteristics")
     public ResponseEntity<CharacteristicsResponseDto> removeFromHobbyList(@PathVariable String hobbyId){
         User currentUser = userAuthService.getActiveUser().getUser();
