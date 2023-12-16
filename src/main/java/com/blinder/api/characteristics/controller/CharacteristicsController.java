@@ -11,8 +11,6 @@ import com.blinder.api.MusicCategory.mapper.MusicCategoryMapper;
 import com.blinder.api.TVSeries.dto.TVSeriesRequestDto;
 import com.blinder.api.TVSeries.mapper.TVSeriesMapper;
 import com.blinder.api.characteristics.dto.CharacteristicsResponseDto;
-import com.blinder.api.characteristics.dto.CreateCharacteristicsRequestDto;
-import com.blinder.api.characteristics.dto.UpdateCharacteristicsRequestDto;
 import com.blinder.api.characteristics.mapper.CharacteristicsMapper;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.characteristics.service.CharacteristicsService;

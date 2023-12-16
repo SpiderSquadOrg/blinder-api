@@ -7,6 +7,7 @@ import com.blinder.api.filter.service.FilterService;
 import com.blinder.api.user.mapper.GenderMapper;
 import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.User;
+import com.blinder.api.user.repository.UserRepository;
 import com.blinder.api.user.security.auth.service.UserAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -22,32 +23,32 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class FilterController {
     private final FilterService filterService;
-    private final UserAuthService userAuthService;
 
-    @GetMapping("/byUser/{userId}")
+    @GetMapping("/{userId}")
     @Operation(summary = "Get filter by userId")
     public ResponseEntity<FilterResponseDto> getFilterByUserId(@PathVariable String userId) {
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterByUserId(userId)), HttpStatus.OK);
     }
 
-    @GetMapping("/{filterId}")
+    @GetMapping("/byFilter/{filterId}")
     @Operation(summary = "Get filter by filter id")
     public ResponseEntity<FilterResponseDto> getFilterById(@PathVariable String filterId) {
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(filterId)), HttpStatus.OK);
     }
 
-    @PutMapping("/{filterId}")
+    @PutMapping("/{userId}")
     @Operation(summary = "Update filter for user")
-    public ResponseEntity<FilterResponseDto> updateFilter(@PathVariable String filterId, @RequestBody UpdateFilterRequestDto updateFilterRequestDto) {
-        Filter updatedFilter = FilterMapper.INSTANCE.updateFilterRequestDtoToFilter(updateFilterRequestDto);
-        Filter updatedFilterResult = filterService.updateFilter(filterId, updatedFilter);
+    public ResponseEntity<FilterResponseDto> updateFilter(@PathVariable String userId, @RequestBody UpdateFilterRequestDto updateFilterRequestDto) {
+        Filter filterToUpdate = FilterMapper.INSTANCE.updateFilterRequestDtoToFilter(updateFilterRequestDto);
+        Filter updatedFilterResult = filterService.updateFilter(userId, filterToUpdate);
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(updatedFilterResult), HttpStatus.OK);
     }
 
-    @PutMapping("/reset/{filterId}")
+
+    @PutMapping("/reset/{userId}")
     @Operation(summary = "Reset filter for user")
-    public ResponseEntity<FilterResponseDto> resetFilter(@PathVariable String filterId) {
-        filterService.resetFilter(filterId);
-        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(filterId)), HttpStatus.OK);
+    public ResponseEntity<FilterResponseDto> resetFilter(@PathVariable String userId) {
+        filterService.resetFilter(userId);
+        return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterByUserId(userId)), HttpStatus.OK);
     }
 }

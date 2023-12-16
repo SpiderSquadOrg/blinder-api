@@ -12,6 +12,7 @@ import com.blinder.api.TVSeries.model.TVSeries;
 import com.blinder.api.TVSeries.repository.TVSeriesRepository;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.characteristics.repository.CharacteristicsRepository;
+import com.blinder.api.characteristics.rules.CharacteristicsBusinessRules;
 import com.blinder.api.characteristics.service.CharacteristicsService;
 import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.hobby.repository.HobbyRepository;
@@ -43,6 +44,7 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     private final MovieCategoryRepository tvSeriesCategoryRepository;
     private final HobbyRepository hobbyRepository;
     private final UserRepository userRepository;
+    private final CharacteristicsBusinessRules characteristicsBusinessRules;
 
     @Override
     public Characteristics addCharacteristics(Characteristics characteristics) {
@@ -93,19 +95,25 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics addToMusicList(String userId, Music music) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMusicAlreadyExistsInList(characteristics, music.getSpotifyId());
+
         Music addedMusic = musicRepository.save(music);
         characteristics.addToMusicList(addedMusic);
         characteristicsRepository.save(characteristics);
+
         return characteristics;
     }
 
     @Override
     public Characteristics removeFromMusicList(String userId, String musicId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMusicExistsInList(characteristics, musicId);
+
         Music musicToRemove = musicRepository.findById(musicId).orElseThrow();
         characteristics.removeFromMusicList(musicToRemove);
         characteristicsRepository.save(characteristics);
         musicRepository.deleteById(musicId);
+
         return characteristics;
     }
 
@@ -113,19 +121,25 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics addToMusicCategoryList(String userId, MusicCategory musicCategory) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMusicCategoryAlreadyExistsInList(characteristics, musicCategory.getName());
+
         MusicCategory addedMusicCategory = musicCategoryRepository.save(musicCategory);
         characteristics.addToMusicCategoryList(addedMusicCategory);
         characteristicsRepository.save(characteristics);
+
         return characteristics;
     }
 
     @Override
     public Characteristics removeFromMusicCategoryList(String userId, String musicCategoryId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMusicCategoryExistsInList(characteristics, musicCategoryId);
+
         MusicCategory musicCategoryToRemove = musicCategoryRepository.findById(musicCategoryId).orElseThrow();
         characteristics.removeFromMusicCategoryList(musicCategoryToRemove);
         characteristicsRepository.save(characteristics);
         musicCategoryRepository.deleteById(musicCategoryId);
+
         return characteristics;
     }
 
@@ -133,15 +147,20 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics addToMovieList(String userId, Movie movie) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMovieAlreadyExistsInList(characteristics, movie.getImdbId());
+
         Movie addedMovie = movieRepository.save(movie);
         characteristics.addToMovieList(addedMovie);
         characteristicsRepository.save(characteristics);
+
         return characteristics;
     }
 
     @Override
     public Characteristics removeFromMovieList(String userId, String movieId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMovieExistsInList(characteristics, movieId);
+
         Movie movieToRemove = movieRepository.findById(movieId).orElseThrow();
         characteristics.removeFromMovieList(movieToRemove);
         characteristicsRepository.save(characteristics);
@@ -153,19 +172,25 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics addToMovieCategoryList(String userId, MovieCategory movieCategory) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMovieCategoryAlreadyExistsInList(characteristics, movieCategory.getName());
+
         MovieCategory addedMovieCategory = movieCategoryRepository.save(movieCategory);
         characteristics.addToMovieCategoryList(addedMovieCategory);
         characteristicsRepository.save(characteristics);
+
         return characteristics;
     }
 
     @Override
     public Characteristics removeFromMovieCategoryList(String userId, String movieCategoryId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfMovieCategoryExistsInList(characteristics, movieCategoryId);
+
         MovieCategory movieCategoryToRemove = movieCategoryRepository.findById(movieCategoryId).orElseThrow();
         characteristics.removeFromMovieCategoryList(movieCategoryToRemove);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(movieCategoryId);
+
         return characteristics;
     }
 
@@ -173,19 +198,25 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics addToTvSeriesList(String userId, TVSeries tvSeries) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfTvSeriesAlreadyExistsInList(characteristics, tvSeries.getImdbId());
+
         TVSeries addedTvSeries = tvSeriesRepository.save(tvSeries);
         characteristics.addToTvSeriesList(addedTvSeries);
         characteristicsRepository.save(characteristics);
+
         return characteristics;
     }
 
     @Override
     public Characteristics removeFromTvSeriesList(String userId, String tvSeriesId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfTvSeriesExistsInList(characteristics, tvSeriesId);
+
         TVSeries tvSeriesToRemove = tvSeriesRepository.findById(tvSeriesId).orElseThrow();
         characteristics.removeFromTvSeriesList(tvSeriesToRemove);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(tvSeriesId);
+
         return characteristics;
     }
 
@@ -193,19 +224,25 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics addToTvSeriesCategoryList(String userId, MovieCategory tvSeriesCategory) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfTvSeriesCategoryAlreadyExistsInList(characteristics, tvSeriesCategory.getName());
+
         MovieCategory addedTvSeriesCategory = tvSeriesCategoryRepository.save(tvSeriesCategory);
         characteristics.addToTvSeriesCategoryList(addedTvSeriesCategory);
         characteristicsRepository.save(characteristics);
+
         return characteristics;
     }
 
     @Override
     public Characteristics removeFromTvSeriesCategoryList(String userId, String tvSeriesCategoryId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfTvSeriesCategoryExistsInList(characteristics, tvSeriesCategoryId);
+
         MovieCategory tvSeriesCategoryToRemove = tvSeriesCategoryRepository.findById(tvSeriesCategoryId).orElseThrow();
         characteristics.removeFromTvSeriesCategoryList(tvSeriesCategoryToRemove);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(tvSeriesCategoryId);
+
         return characteristics;
     }
 
@@ -213,19 +250,25 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     @Override
     public Characteristics addToHobbyList(String userId, Hobby hobby) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfHobbyAlreadyExistsInList(characteristics, hobby.getName());
+
         Hobby addedHobby = hobbyRepository.save(hobby);
         characteristics.addToHobbyList(addedHobby);
         characteristicsRepository.save(characteristics);
+
         return characteristics;
     }
 
     @Override
     public Characteristics removeFromHobbyList(String userId, String hobbyId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
+        characteristicsBusinessRules.checkIfHobbyExistsInList(characteristics, hobbyId);
+
         Hobby hobbyToRemove = hobbyRepository.findById(hobbyId).orElseThrow();
         characteristics.removeFromHobbyList(hobbyToRemove);
         characteristicsRepository.save(characteristics);
         movieRepository.deleteById(hobbyId);
+
         return characteristics;
     }
 }

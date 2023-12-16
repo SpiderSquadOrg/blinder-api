@@ -27,13 +27,13 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     public void findAndAddPotentialMatches(User currentUser, int howManyUser) {
         Characteristics userCharacteristics = currentUser.getCharacteristics();
         List<User> randomUsers = userService.getRandomUsers(howManyUser);
-        //List<User> filteredUsers = userService.getFilteredUsers(currentUser);
+        List<User> filteredUsers = userService.getFilteredUsers(currentUser);
 
         //Intersection of randomUsers and filteredUsers
-        //filteredUsers.retainAll(randomUsers);
+        filteredUsers.retainAll(randomUsers);
 
-        for (User potentialMatchUser : randomUsers) {
-            if (!currentUser.equals(potentialMatchUser)) {
+        for (User potentialMatchUser : filteredUsers) {
+            if (!(currentUser.equals(potentialMatchUser)) && !(potentialMatchUser.getRole().getName().equals("admin"))) {
                 double similarityScore = calculateSimilarityScore(userCharacteristics, potentialMatchUser.getCharacteristics());
                 addOrUpdatePossibleMatch(currentUser, potentialMatchUser, similarityScore);
             }
@@ -185,6 +185,7 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
             newMatch.setTo(userTo);
             newMatch.setSimilarityScore(similarityScore);
             possibleMatchRepository.save(newMatch);
+            userFrom.getPossibleMatches().add(newMatch);
         }
     }
 }

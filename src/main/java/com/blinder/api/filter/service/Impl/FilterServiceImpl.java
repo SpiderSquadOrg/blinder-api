@@ -47,8 +47,11 @@ public class FilterServiceImpl implements FilterService {
 
     @Override
     @Transactional
-    public Filter updateFilter(String id, Filter updatedFilter) {
-        Filter filterToUpdate = this.filterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Filter not found with id: " + id));
+    public Filter updateFilter(String userId, Filter updatedFilter) {
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        String filterId = user.getFilter().getId();
+
+        Filter filterToUpdate = this.filterRepository.findById(filterId).orElseThrow(() -> new EntityNotFoundException("Filter not found with id: " + filterId));
         updateFilterGenders(filterToUpdate, updatedFilter.getGenders());
 
         if (filterBusinessRules.checkLocationTypeIsValid(updatedFilter.getLocationType())) {
@@ -67,8 +70,11 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public void resetFilter(String id) {
-        Filter filter = filterRepository.findById(id).orElseThrow();
+    public void resetFilter(String userId) {
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        String filterId = user.getFilter().getId();
+
+        Filter filter = filterRepository.findById(filterId).orElseThrow(() -> new EntityNotFoundException("Filter not found with id: " + filterId));
         Set<Gender> allGenders = new HashSet<>(genderRepository.findAll());
         Set<Gender> filterGenders = filter.getGenders();
 
