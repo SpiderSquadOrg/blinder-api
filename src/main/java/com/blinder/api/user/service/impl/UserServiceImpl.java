@@ -324,10 +324,10 @@ public class UserServiceImpl implements UserService {
         Set<Gender> allowedGenders = userFilter.getGenders();
         int ageLowerBound = userFilter.getAgeLowerBound();
         int ageUpperBound = userFilter.getAgeUpperBound();
-        LocationType locationType = userFilter.getLocationType();
-        String locationName = userFilter.getLocationId();
+        String countryIso2 = userFilter.getCountryIso2();
+        String stateIso2 = userFilter.getStateIso2();
 
-        return userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, locationType, locationName);
+        return userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, countryIso2, stateIso2);
     }
 
     @Override

@@ -14,5 +14,5 @@ public interface UserCustomRepository {
     Page<User> searchUsersByFilter(String email, String name, String surname, String username, String[] roleNames, String[] genderNames, String ageLowerBound, String ageUpperBound, String region, String country, String city, Boolean isMatched, Boolean isBanned, Pageable pageable, SortCriteria sortCriteria);
     List<User> findFilteredUsers(
             Set<Gender> genders, int ageLowerBound, int ageUpperBound,
-            LocationType locationType, String locationName);
+            String countryIso2, String stateIso2);
 }

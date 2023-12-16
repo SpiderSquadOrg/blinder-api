@@ -14,8 +14,8 @@ import java.util.List;
 public class FilterResponseDto {
     private String id;
     private List<GenderResponseDto> genders;
-    private LocationType locationType;
-    private String locationId;
+    private String countryIso2;
+    private String stateIso2;
     private int ageLowerBound;
     private int ageUpperBound;
 }

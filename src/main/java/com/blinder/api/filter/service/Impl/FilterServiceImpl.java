@@ -52,19 +52,26 @@ public class FilterServiceImpl implements FilterService {
         String filterId = user.getFilter().getId();
 
         Filter filterToUpdate = this.filterRepository.findById(filterId).orElseThrow(() -> new EntityNotFoundException("Filter not found with id: " + filterId));
+
         updateFilterGenders(filterToUpdate, updatedFilter.getGenders());
 
-        if (filterBusinessRules.checkLocationTypeIsValid(updatedFilter.getLocationType())) {
-            if(!updatedFilter.getLocationId().isEmpty()){
-                filterToUpdate.setLocationType(updatedFilter.getLocationType());
-                filterToUpdate.setLocationId(updatedFilter.getLocationId());
+        if(updatedFilter.getCountryIso2() != null && !updatedFilter.getCountryIso2().isEmpty()){
+            filterToUpdate.setCountryIso2(updatedFilter.getCountryIso2());
+        }
+
+        if(updatedFilter.getStateIso2() != null && !updatedFilter.getStateIso2().isEmpty()){
+            filterToUpdate.setStateIso2(updatedFilter.getStateIso2());
+        }
+
+        if(filterBusinessRules.checkAgeRangeIsValid(filterToUpdate, updatedFilter.getAgeLowerBound(), updatedFilter.getAgeUpperBound())){
+            if(updatedFilter.getAgeLowerBound() != 0){
+                filterToUpdate.setAgeLowerBound(updatedFilter.getAgeLowerBound());
+            }
+            if(updatedFilter.getAgeUpperBound() != 0){
+                filterToUpdate.setAgeUpperBound(updatedFilter.getAgeUpperBound());
             }
         }
-        if(filterBusinessRules.checkAgeRangeIsValid(updatedFilter.getAgeLowerBound(), updatedFilter.getAgeUpperBound())){
-            filterToUpdate.setAgeUpperBound(updatedFilter.getAgeUpperBound());
-            filterToUpdate.setAgeLowerBound(updatedFilter.getAgeLowerBound());
 
-        }
         this.filterRepository.save(filterToUpdate);
         return filterToUpdate;
     }
@@ -87,8 +94,8 @@ public class FilterServiceImpl implements FilterService {
         filter.setGenders(filterGenders);
         filter.setAgeLowerBound(Filter.getDefaultAgeLowerBound());
         filter.setAgeUpperBound(Filter.getDefaultAgeUpperBound());
-        filter.setLocationType(Filter.getDefaultLocationType());
-        filter.setLocationId(Filter.getDefaultLocationId());
+        filter.setCountryIso2(Filter.getDefaultCountryIso2());
+        filter.setStateIso2(Filter.getDefaultStateIso2());
 
         filterRepository.save(filter);
     }
