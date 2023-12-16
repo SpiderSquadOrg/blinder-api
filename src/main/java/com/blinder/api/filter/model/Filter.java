@@ -25,7 +25,7 @@ public class Filter extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Gender> genders;
 
     private int ageLowerBound = DEFAULT_AGE_LOWER_BOUND;
