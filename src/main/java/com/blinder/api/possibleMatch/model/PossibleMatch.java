@@ -18,12 +18,12 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "possible_matches")
 public class PossibleMatch extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_user_id", nullable = false)
     @JsonBackReference
     private User from;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_user_id", nullable = false)
     @JsonBackReference
     private User to;
