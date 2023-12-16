@@ -20,8 +20,8 @@ public interface PossibleMatchMapper {
 
     List<PossibleMatchResponseDto> possibleMatchToPossibleMatchResponseDto(List<PossibleMatch> possibleMatches);
 
-    @Mapping(source = "possibleMatch.to.id", target = "to")
-    @Mapping(source = "possibleMatch.from.id", target = "from")
+    //@Mapping(source = "possibleMatch.to.id", target = "to")
+    //@Mapping(source = "possibleMatch.from.id", target = "from")
     PossibleMatchResponseDto possibleMatchToPossibleMatchResponseDto(PossibleMatch possibleMatch);
 
     List<PossibleMatch> possibleMatchRequestDtoToPossibleMatch(List<PossibleMatchRequestDto> possibleMatchRequestDtos);
