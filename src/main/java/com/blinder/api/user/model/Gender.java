@@ -18,14 +18,11 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @SuperBuilder
 public class Gender extends BaseEntity {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "gender")
-    private List<User> users = new ArrayList<>();
 
     public Gender(String name) {
         this.name = name;

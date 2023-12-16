@@ -4,6 +4,7 @@ import com.blinder.api.possibleMatch.dto.PossibleMatchRequestDto;
 import com.blinder.api.possibleMatch.dto.PossibleMatchResponseDto;
 import com.blinder.api.possibleMatch.model.PossibleMatch;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
@@ -19,6 +20,8 @@ public interface PossibleMatchMapper {
 
     List<PossibleMatchResponseDto> possibleMatchToPossibleMatchResponseDto(List<PossibleMatch> possibleMatches);
 
+    @Mapping(source = "possibleMatch.to.id", target = "to")
+    @Mapping(source = "possibleMatch.from.id", target = "from")
     PossibleMatchResponseDto possibleMatchToPossibleMatchResponseDto(PossibleMatch possibleMatch);
 
     List<PossibleMatch> possibleMatchRequestDtoToPossibleMatch(List<PossibleMatchRequestDto> possibleMatchRequestDtos);

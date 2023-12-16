@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PossibleMatchResponseDto {
     private String id;
-    private User to;
-    private User from;
+    private String to;
+    private String from;
     private double similarityScore;
     private PossibleMatchStatus status;
 }
