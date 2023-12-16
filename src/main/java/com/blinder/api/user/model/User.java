@@ -50,7 +50,7 @@ public class User extends BaseEntity {
 
     private Date birthDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -58,7 +58,7 @@ public class User extends BaseEntity {
     private List<String> images = new ArrayList<>();
 
     //@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "filter_id")
     private Filter filter;
 

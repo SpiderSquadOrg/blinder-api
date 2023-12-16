@@ -245,10 +245,10 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(String userId) {
         this.userBusinessRules.checkIfUserExists(userId);
 
-        User userToDelete = this.userRepository.findById(userId).orElseThrow();
-        userToDelete.setLocation(null);
+        //User userToDelete = this.userRepository.findById(userId).orElseThrow();
+        //userToDelete.setLocation(null);
 
-        this.userRepository.save(userToDelete);
+        //this.userRepository.save(userToDelete);
         this.userRepository.deleteById(userId);
     }
 
