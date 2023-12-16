@@ -44,7 +44,6 @@ public class FilterController {
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(updatedFilterResult), HttpStatus.OK);
     }
 
-
     @PutMapping("/reset/{userId}")
     @Operation(summary = "Reset filter for user")
     public ResponseEntity<FilterResponseDto> resetFilter(@PathVariable String userId) {

@@ -5,6 +5,7 @@ import com.blinder.api.MovieCategory.model.MovieCategory;
 import com.blinder.api.Music.model.Music;
 import com.blinder.api.MusicCategory.model.MusicCategory;
 import com.blinder.api.TVSeries.model.TVSeries;
+import com.blinder.api.TVSeriesCategories.model.TVSeriesCategory;
 import com.blinder.api.characteristics.model.Characteristics;
 import com.blinder.api.hobby.model.Hobby;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public interface CharacteristicsService {
 
     //Tv series and tv series category
     Characteristics addToTvSeriesList(String userId, TVSeries tvSeries);
-    Characteristics addToTvSeriesCategoryList(String userId, MovieCategory tvSeriesCategory);
+    Characteristics addToTvSeriesCategoryList(String userId, TVSeriesCategory tvSeriesCategory);
     Characteristics removeFromTvSeriesList(String userId, String tvSeriesId);
     Characteristics removeFromTvSeriesCategoryList(String userId, String tvSeriesCategoryId);
 

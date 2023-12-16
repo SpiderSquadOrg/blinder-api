@@ -10,6 +10,8 @@ import com.blinder.api.MusicCategory.dto.MusicCategoryRequestDto;
 import com.blinder.api.MusicCategory.mapper.MusicCategoryMapper;
 import com.blinder.api.TVSeries.dto.TVSeriesRequestDto;
 import com.blinder.api.TVSeries.mapper.TVSeriesMapper;
+import com.blinder.api.TVSeriesCategories.dto.TVSeriesCategoryRequestDto;
+import com.blinder.api.TVSeriesCategories.mapper.TVSeriesCategoryMapper;
 import com.blinder.api.characteristics.dto.CharacteristicsResponseDto;
 import com.blinder.api.characteristics.mapper.CharacteristicsMapper;
 import com.blinder.api.characteristics.model.Characteristics;
@@ -135,9 +137,9 @@ public class CharacteristicsController {
     //Tv series category
     @PatchMapping("/tvSeries/categories")
     @Operation(summary = "Add tv series category to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToTvSeriesCategoryList(@RequestBody MovieCategoryRequestDto tvSeriesCategoryRequestDto){
+    public ResponseEntity<CharacteristicsResponseDto> addToTvSeriesCategoryList(@RequestBody TVSeriesCategoryRequestDto tvSeriesCategoryRequestDto){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.addToTvSeriesCategoryList(currentUser.getId(), MovieCategoryMapper.INSTANCE.movieCategoryRequestDtoToMovieCategory(tvSeriesCategoryRequestDto));
+        Characteristics characteristics = characteristicsService.addToTvSeriesCategoryList(currentUser.getId(), TVSeriesCategoryMapper.INSTANCE.tvSeriesCategoryRequestDtoToTvSeriesCategory(tvSeriesCategoryRequestDto));
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
@@ -150,20 +152,20 @@ public class CharacteristicsController {
     }
 
     //Hobby
-    @PatchMapping("/hobby/{hobbyId}")
+    @PatchMapping("/hobby/{name}")
     @Operation(summary = "Add hobby to user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> addToHobbyList(@PathVariable String hobbyId){
+    public ResponseEntity<CharacteristicsResponseDto> addToHobbyList(@PathVariable String name){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Hobby hobby = hobbyService.getHobbyById(hobbyId);
+        Hobby hobby = hobbyService.getHobbyByName(name);
         Characteristics characteristics = characteristicsService.addToHobbyList(currentUser.getId(), hobby);
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/hobby/{hobbyId}")
+    @DeleteMapping("/hobby/{name}")
     @Operation(summary = "Remove hobby from user's characteristics")
-    public ResponseEntity<CharacteristicsResponseDto> removeFromHobbyList(@PathVariable String hobbyId){
+    public ResponseEntity<CharacteristicsResponseDto> removeFromHobbyList(@PathVariable String name){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.removeFromHobbyList(currentUser.getId(), hobbyId);
+        Characteristics characteristics = characteristicsService.removeFromHobbyList(currentUser.getId(), name);
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.NO_CONTENT);
     }
 
