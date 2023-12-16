@@ -124,7 +124,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     @Override
     public List<User> findFilteredUsers(
             Set<Gender> genders, int ageLowerBound, int ageUpperBound,
-            LocationType locationType, String locationName) {
+            String countryIso2, String stateIso2) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> query = cb.createQuery(User.class);
@@ -136,11 +136,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         Expression<Integer> userBirthYear = cb.function("date_part", Integer.class, cb.literal("year"), root.get("birthDate"));
         predicates.add(cb.between(userBirthYear, calculateBirthYear(ageLowerBound), calculateBirthYear(ageUpperBound)));
 
-        if (locationType != LocationType.NONE) {
-            switch (locationType) {
-                case COUNTRY -> predicates.add(cb.equal(root.join("location").get("countryName"), locationName));
-                case STATE -> predicates.add(cb.equal(root.join("location").get("stateName"), locationName));
-            }
+        if (!countryIso2.isEmpty()) {
+            predicates.add(cb.equal(root.join("location").get("countryIso2"), countryIso2));
+        }
+
+        if(!stateIso2.isEmpty()){
+            predicates.add(cb.equal(root.join("location").get("stateIso2"), stateIso2));
         }
 
         query.where(predicates.toArray(new Predicate[0]));

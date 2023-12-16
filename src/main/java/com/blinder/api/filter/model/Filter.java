@@ -18,8 +18,7 @@ import java.util.Set;
 public class Filter extends BaseEntity {
     private static final int DEFAULT_AGE_LOWER_BOUND = 18;
     private static final int DEFAULT_AGE_UPPER_BOUND = 99;
-    private static final LocationType DEFAULT_LOCATION_TYPE = LocationType.NONE;
-    private static final String DEFAULT_LOCATION_ID = "";
+    private static final String DEFAULT_LOCATION = "";
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -30,8 +29,8 @@ public class Filter extends BaseEntity {
 
     private int ageLowerBound = DEFAULT_AGE_LOWER_BOUND;
     private int ageUpperBound = DEFAULT_AGE_UPPER_BOUND;
-    private LocationType locationType = DEFAULT_LOCATION_TYPE;
-    private String locationId = DEFAULT_LOCATION_ID;
+    private String countryIso2 = DEFAULT_LOCATION;
+    private String stateIso2 = DEFAULT_LOCATION;
 
     public Filter(User user, Set<Gender> allGenders) {
         this.user = user;
@@ -46,7 +45,7 @@ public class Filter extends BaseEntity {
         return DEFAULT_AGE_UPPER_BOUND;
     }
 
-    public static LocationType getDefaultLocationType(){ return DEFAULT_LOCATION_TYPE; }
+    public static String getDefaultCountryIso2(){ return DEFAULT_LOCATION; }
 
-    public static String getDefaultLocationId(){ return DEFAULT_LOCATION_ID; }
+    public static String getDefaultStateIso2(){ return DEFAULT_LOCATION; }
 }

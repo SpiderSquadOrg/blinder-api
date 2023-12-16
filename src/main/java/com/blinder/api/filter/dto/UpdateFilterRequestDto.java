@@ -15,8 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UpdateFilterRequestDto {
     private List<GenderRequestDto> genders;
-    private LocationType locationType;
-    private String locationId;
+    private String countryIso2;
+    private String stateIso2;
     private int ageLowerBound;
     private int ageUpperBound;
 }
