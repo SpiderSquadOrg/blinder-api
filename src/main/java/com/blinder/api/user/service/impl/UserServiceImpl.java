@@ -327,14 +327,44 @@ public class UserServiceImpl implements UserService {
         String countryIso2 = userFilter.getCountryIso2();
         String stateIso2 = userFilter.getStateIso2();
 
+        //return userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, countryIso2, stateIso2);
+        //List<User> a = userRepository.findFilteredUsersWithQuery(calculateBirthYear(ageLowerBound), calculateBirthYear(ageUpperBound));
         return userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, countryIso2, stateIso2);
+        /*
+        List<User> filteredUsers = userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, countryIso2, stateIso2);
+
+        // Sonuçları inceleme
+        for (User _user : filteredUsers) {
+            System.out.println("User ID: " + _user.getId() + ", Name: " + _user.getName() + ", Birth Date: " + _user.getBirthDate());
+            // Diğer kullanıcı özellikleri üzerinde de aynı şekilde işlem yapabilirsiniz.
+        }
+
+        return userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, countryIso2, stateIso2);
+         */
     }
 
     @Override
-    public List<User> getRandomUsers(int howManyUser) {
-        List<User> allUsers = userRepository.findAll();
-        Collections.shuffle(allUsers);
+    public List<User> getFilteredUsers(User user, int maxUsers, int numberOfUsers) {
+        Filter userFilter = user.getFilter();
 
-        return allUsers.subList(0, Math.min(howManyUser, allUsers.size()));
+        List<String> allowedGenders = userFilter.getGenders().stream().map(Gender::getName).toList();
+        int ageLowerBound = userFilter.getAgeLowerBound();
+        int ageUpperBound = userFilter.getAgeUpperBound();
+        String countryIso2 = userFilter.getCountryIso2();
+        String stateIso2 = userFilter.getStateIso2();
+
+        List<User> filteredUsers = userCustomRepository.findFilteredUsers(allowedGenders, ageLowerBound, ageUpperBound, countryIso2, stateIso2, maxUsers);
+
+        Collections.shuffle(filteredUsers);
+
+        int numberOfUsersToReturn = Math.min(numberOfUsers, filteredUsers.size());
+        return filteredUsers.subList(0, numberOfUsersToReturn);
     }
+
+    private int calculateBirthYear(int age) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -age);
+        return cal.get(Calendar.YEAR);
+    }
+
 }
