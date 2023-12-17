@@ -128,4 +128,10 @@ public class UserController {
     public ResponseEntity<String> getRemainingChatTime(@PathVariable String chatId, @RequestHeader("Authorization") String token) throws JsonProcessingException {
         return new ResponseEntity<>(this.userService.getRemainingChatTime(chatId, token), HttpStatus.OK);
     }
+
+    @GetMapping("/filter/{userId}")
+    @Operation(summary = "Get filtered users by user id")
+    public ResponseEntity<List<UserResponseDto>> getFilteredUsers(@PathVariable String userId) {
+        return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.getFilteredUsers(userService.getUserById(userId))), HttpStatus.OK);
+    }
 }

@@ -28,8 +28,7 @@ public interface UserService {
     Page<User> getUsers(Integer page, Integer size);
 
     List<User> getFilteredUsers(User user);
-
-    List<User> getRandomUsers(int howManyUser);
+    List<User> getFilteredUsers(User user, int maxUsers, int numberOfUsers);
 
     User updateUserById(String userId, User user);
 

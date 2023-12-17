@@ -6,6 +6,7 @@ import com.blinder.api.filter.model.LocationType;
 import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserCustomRepository;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
@@ -133,16 +134,39 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         List<Predicate> predicates = new ArrayList<>();
 
         //Filtering conditions
-        Expression<Integer> userBirthYear = cb.function("date_part", Integer.class, cb.literal("year"), root.get("birthDate"));
-        predicates.add(cb.between(userBirthYear, calculateBirthYear(ageLowerBound), calculateBirthYear(ageUpperBound)));
+        Date dateUpperBound = new Date();
+        dateUpperBound.setYear(calculateBirthYear(ageLowerBound) - 1900);
 
-        if (!countryIso2.isEmpty()) {
+        Date dateLowerBound = new Date();
+        dateLowerBound.setYear(calculateBirthYear(ageUpperBound) - 1900);
+
+        //Expression<Integer> userBirthYear = cb.function("date_part", Integer.class, cb.literal("year"), root.get("birthDate"));
+
+        predicates.add(cb.between(root.get("birthDate"), dateLowerBound, dateUpperBound));
+
+        if (StringUtils.isNotEmpty(countryIso2)) {
             predicates.add(cb.equal(root.join("location").get("countryIso2"), countryIso2));
         }
 
-        if(!stateIso2.isEmpty()){
+        if(StringUtils.isNotEmpty(stateIso2)){
             predicates.add(cb.equal(root.join("location").get("stateIso2"), stateIso2));
         }
+
+        if (genderNames != null && genderNames.size() > 0) {
+            // Create a list to store the gender predicates
+            List<Predicate> genderPredicates = new ArrayList<>();
+
+            for (String genderName : genderNames) {
+                genderPredicates.add(cb.equal(root.get("gender").get("name"), genderName));
+            }
+
+            // Combine gender predicates with OR
+            Predicate genderPredicate = cb.or(genderPredicates.toArray(new Predicate[0]));
+
+            // Add the combined gender predicate to the main list of predicates
+            predicates.add(genderPredicate);
+        }
+
 
         query.where(predicates.toArray(new Predicate[0]));
 

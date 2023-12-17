@@ -23,18 +23,17 @@ import java.util.*;
 public class PossibleMatchServiceImpl implements PossibleMatchService {
     private final UserService userService;
     private final PossibleMatchRepository possibleMatchRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void findAndAddPotentialMatches(User currentUser, int howManyUser) {
         Characteristics userCharacteristics = currentUser.getCharacteristics();
-        List<User> randomUsers = userService.getRandomUsers(howManyUser);
-        List<User> filteredUsers = userService.getFilteredUsers(currentUser);
+        deletePossibleMatches(currentUser);
 
-        //Intersection of randomUsers and filteredUsers
-        filteredUsers.retainAll(randomUsers);
+        List<User> filteredUsers = userService.getFilteredUsers(currentUser,1000, 30);
 
         for (User potentialMatchUser : filteredUsers) {
-            if (!(currentUser.equals(potentialMatchUser)) && !(potentialMatchUser.getRole().getName().equals("admin"))) {
+            if (!(currentUser.getId().equals(potentialMatchUser.getId())) && !(potentialMatchUser.getRole().getName().equals("admin"))) { // TO DO: Filtered user'da bak kendisi gelmesin diye
                 double similarityScore = calculateSimilarityScore(userCharacteristics, potentialMatchUser.getCharacteristics());
                 addOrUpdatePossibleMatch(currentUser, potentialMatchUser, similarityScore);
             }
@@ -89,10 +88,10 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     public List<PossibleMatch> getAllPossibleMatches(User currentUser) {
         List<PossibleMatch> possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
 
-        if(possibleMatches.size() == 0){
+        //if(possibleMatches.size() == 0){
             findAndAddPotentialMatches(currentUser, 100);
             possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
-        }
+        //}
 
         return possibleMatches;
     }
@@ -130,13 +129,13 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         List<Hobby> hobbies1 = characteristics1.getHobbies();
         List<Hobby> hobbies2 = characteristics2.getHobbies();
 
-        double musicSimilarity = calculateSimilarity(musics1, musics2);
-        double musicCategorySimilarity = calculateSimilarity(musicCategories1, musicCategories2);
-        double movieSimilarity = calculateSimilarity(movies1, movies2);
-        double movieCategorySimilarity = calculateSimilarity(movieCategories1, movieCategories2);
-        double tvSeriesSimilarity = calculateSimilarity(tvSeries1, tvSeries2);
-        double tvSeriesCategorySimilarity = calculateSimilarity(tvSeriesCategories1, tvSeriesCategories2);
-        double HobbySimilarity = calculateSimilarity(hobbies1, hobbies2);
+        double musicSimilarity = calculateSimilarityForMusics(musics1, musics2);
+        double musicCategorySimilarity = calculateSimilarityForMusicCategories(musicCategories1, musicCategories2);
+        double movieSimilarity = calculateSimilarityForMovies(movies1, movies2);
+        double movieCategorySimilarity = calculateSimilarityForMovieCategories(movieCategories1, movieCategories2);
+        double tvSeriesSimilarity = calculateSimilarityForTVSeries(tvSeries1, tvSeries2);
+        double tvSeriesCategorySimilarity = calculateSimilarityForTVSeriesCategories(tvSeriesCategories1, tvSeriesCategories2);
+        double HobbySimilarity = calculateSimilarityForHobbies(hobbies1, hobbies2);
 
         // adjust the weights
         double musicWeight = 0.7;
@@ -154,7 +153,154 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
                 (hobbyWeight * HobbySimilarity);
     }
 
-    private  <T> double calculateSimilarity(List<T> list1, List<T> list2) {
+    private double calculateSimilarityForMusics(List<Music> list1, List<Music> list2) {
+        int commonItemCount = 0;
+
+        for (Music music : list1) {
+            for (Music otherMusic : list2) {
+                if (music.getSpotifyId().equals(otherMusic.getSpotifyId())) {
+                    commonItemCount++;
+                    break;
+                }
+            }
+        }
+
+        double totalItemCount = list1.size() + list2.size();
+
+        if (commonItemCount == 0 && totalItemCount == 0) {
+            return 0;
+        }
+
+        return commonItemCount / totalItemCount;
+    }
+
+    private double calculateSimilarityForMusicCategories(List<MusicCategory> list1, List<MusicCategory> list2) {
+        int commonItemCount = 0;
+
+        for (MusicCategory musicCategory : list1) {
+            for (MusicCategory otherMusicCategory : list2) {
+                if (musicCategory.getName().equals(otherMusicCategory.getName())) {
+                    commonItemCount++;
+                    break;
+                }
+            }
+        }
+
+        double totalItemCount = list1.size() + list2.size();
+
+        if (commonItemCount == 0 && totalItemCount == 0) {
+            return 0;
+        }
+
+        return commonItemCount / totalItemCount;
+    }
+
+    private double calculateSimilarityForMovies(List<Movie> list1, List<Movie> list2) {
+        int commonItemCount = 0;
+
+        for (Movie movie : list1) {
+            for (Movie otherMovie : list2) {
+                if (movie.getImdbId().equals(otherMovie.getImdbId())) {
+                    commonItemCount++;
+                    break;
+                }
+            }
+        }
+
+        double totalItemCount = list1.size() + list2.size();
+
+        if (commonItemCount == 0 && totalItemCount == 0) {
+            return 0;
+        }
+
+        return commonItemCount / totalItemCount;
+    }
+
+    private double calculateSimilarityForMovieCategories(List<MovieCategory> list1, List<MovieCategory> list2) {
+        int commonItemCount = 0;
+
+        for (MovieCategory movieCategory : list1) {
+            for (MovieCategory otherMovieCategory : list2) {
+                if (movieCategory.getName().equals(otherMovieCategory.getName())) {
+                    commonItemCount++;
+                    break;
+                }
+            }
+        }
+
+        double totalItemCount = list1.size() + list2.size();
+
+        if (commonItemCount == 0 && totalItemCount == 0) {
+            return 0;
+        }
+
+        return commonItemCount / totalItemCount;
+    }
+
+    private double calculateSimilarityForTVSeries(List<TVSeries> list1, List<TVSeries> list2) {
+        int commonItemCount = 0;
+
+        for (TVSeries tvSeries : list1) {
+            for (TVSeries otherTVSeries : list2) {
+                if (tvSeries.getImdbId().equals(otherTVSeries.getImdbId())) {
+                    commonItemCount++;
+                    break;
+                }
+            }
+        }
+
+        double totalItemCount = list1.size() + list2.size();
+
+        if (commonItemCount == 0 && totalItemCount == 0) {
+            return 0;
+        }
+
+        return commonItemCount / totalItemCount;
+    }
+
+    private double calculateSimilarityForTVSeriesCategories(List<TVSeriesCategory> list1, List<TVSeriesCategory> list2) {
+        int commonItemCount = 0;
+
+        for (TVSeriesCategory tvSeriesCategory : list1) {
+            for (TVSeriesCategory otherTVSeriesCategory : list2) {
+                if (tvSeriesCategory.getName().equals(otherTVSeriesCategory.getName())) {
+                    commonItemCount++;
+                    break;
+                }
+            }
+        }
+
+        double totalItemCount = list1.size() + list2.size();
+
+        if (commonItemCount == 0 && totalItemCount == 0) {
+            return 0;
+        }
+
+        return commonItemCount / totalItemCount;
+    }
+
+    private double calculateSimilarityForHobbies(List<Hobby> list1, List<Hobby> list2) {
+        int commonItemCount = 0;
+
+        for (Hobby hobby : list1) {
+            for (Hobby otherHobby : list2) {
+                if (hobby.getName().equals(otherHobby.getName())) {
+                    commonItemCount++;
+                    break;
+                }
+            }
+        }
+
+        double totalItemCount = list1.size() + list2.size();
+
+        if (commonItemCount == 0 && totalItemCount == 0) {
+            return 0;
+        }
+
+        return commonItemCount / totalItemCount;
+    }
+
+    /*private  <T> double calculateSimilarityForMusics(List<T> list1, List<T> list2) {
         Set<T> set1 = new HashSet<>(list1);
         Set<T> set2 = new HashSet<>(list2);
 
@@ -167,8 +313,14 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         }
 
         double totalItemCount = set1.size() + set2.size();
+
+        if((commonItemCount == 0 && totalItemCount == 0)){
+            return 0;
+        }
+
+        System.out.println(commonItemCount / totalItemCount);
         return commonItemCount / totalItemCount;
-    }
+    }*/
 
     private void addOrUpdatePossibleMatch(User userFrom, User userTo, double similarityScore) {
 
@@ -180,13 +332,38 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
                 existingMatch.get().setSimilarityScore(similarityScore);
             }
         } else {
-            // Add the new match to the database
             PossibleMatch newMatch = new PossibleMatch();
             newMatch.setFrom(userFrom);
             newMatch.setTo(userTo);
             newMatch.setSimilarityScore(similarityScore);
             possibleMatchRepository.save(newMatch);
-            userFrom.getPossibleMatches().add(newMatch);
+
+            List<PossibleMatch> possibleMatches = userFrom.getPossibleMatches();
+            possibleMatches.add(newMatch);
+            userFrom.setPossibleMatches(possibleMatches);
+            userRepository.save(userFrom);
         }
     }
+
+    private void deletePossibleMatch(User userFrom,User userTo)
+    {
+        PossibleMatch possibleMatch = possibleMatchRepository.findPossibleMatchByFromAndTo(userFrom, userTo).orElseThrow();
+        possibleMatchRepository.delete(possibleMatch);
+
+        userFrom.setPossibleMatches(userFrom.getPossibleMatches().stream().filter((match)->
+                (!Objects.equals(possibleMatch.getTo().getId(), userTo.getId()))).toList());
+
+        userRepository.save(userFrom);
+    }
+
+    private void deletePossibleMatches(User userFrom)
+    {
+        List<PossibleMatch> possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(userFrom);
+        possibleMatchRepository.deleteAll(possibleMatches);
+
+        userFrom.setPossibleMatches(new ArrayList<>());
+
+        userRepository.save(userFrom);
+    }
+
 }
