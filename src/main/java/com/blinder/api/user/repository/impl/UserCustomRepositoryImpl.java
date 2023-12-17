@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Repository
@@ -124,7 +125,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
     @Override
     public List<User> findFilteredUsers(
-            Set<Gender> genders, int ageLowerBound, int ageUpperBound,
+            List<String> genderNames, int ageLowerBound, int ageUpperBound,
             String countryIso2, String stateIso2) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -177,6 +178,55 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
         return typedQuery.getResultList();
     }
+
+    @Override
+    public List<User> findFilteredUsers(
+            List<String> genderNames, int ageLowerBound, int ageUpperBound,
+            String countryIso2, String stateIso2, int maxUsers) {
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        Date dateUpperBound = new Date();
+        dateUpperBound.setYear(calculateBirthYear(ageLowerBound) - 1900);
+
+        Date dateLowerBound = new Date();
+        dateLowerBound.setYear(calculateBirthYear(ageUpperBound) - 1900);
+
+        predicates.add(cb.between(root.get("birthDate"), dateLowerBound, dateUpperBound));
+
+        if (StringUtils.isNotEmpty(countryIso2)) {
+            predicates.add(cb.equal(root.join("location").get("countryIso2"), countryIso2));
+        }
+
+        if (StringUtils.isNotEmpty(stateIso2)) {
+            predicates.add(cb.equal(root.join("location").get("stateIso2"), stateIso2));
+        }
+
+        if (genderNames != null && genderNames.size() > 0) {
+            List<Predicate> genderPredicates = new ArrayList<>();
+
+            for (String genderName : genderNames) {
+                genderPredicates.add(cb.equal(root.get("gender").get("name"), genderName));
+            }
+
+            Predicate genderPredicate = cb.or(genderPredicates.toArray(new Predicate[0]));
+            predicates.add(genderPredicate);
+        }
+
+        query.where(predicates.toArray(new Predicate[0]));
+
+        TypedQuery<User> typedQuery = entityManager.createQuery(query);
+
+        // MaxUsers değeri kadar kullanıcı döndür
+        typedQuery.setMaxResults(maxUsers);
+
+        return typedQuery.getResultList();
+    }
+
 
     private int calculateBirthYear(int age) {
         Calendar cal = Calendar.getInstance();
