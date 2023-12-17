@@ -321,7 +321,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getFilteredUsers(User user) {
         Filter userFilter = user.getFilter();
 
-        Set<Gender> allowedGenders = userFilter.getGenders();
+        List<String> allowedGenders = userFilter.getGenders().stream().map(Gender::getName).toList();
         int ageLowerBound = userFilter.getAgeLowerBound();
         int ageUpperBound = userFilter.getAgeUpperBound();
         String countryIso2 = userFilter.getCountryIso2();
