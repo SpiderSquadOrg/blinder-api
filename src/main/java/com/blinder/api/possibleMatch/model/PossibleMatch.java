@@ -17,6 +17,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Table(name = "possible_matches")
 public class PossibleMatch extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_user_id", nullable = false)

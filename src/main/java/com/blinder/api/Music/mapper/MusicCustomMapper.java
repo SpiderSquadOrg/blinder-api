@@ -29,7 +29,7 @@ public class MusicCustomMapper {
 
             List<String> artists = new ArrayList<>();
             item.get("artists").forEach((artist) -> artists.add(artist.get("name").asText()));
-            musicResponseDto.setArtists(artists);
+            musicResponseDto.setArtist(artists.get(0));
             musicResponseDto.setAlbum(item.get("album").get("name").asText());
             musicResponseDto.setImage(item.get("album").get("images").get(0).get("url").asText());
 
@@ -51,7 +51,7 @@ public class MusicCustomMapper {
 
         List<String> artists = new ArrayList<>();
         item.get("artists").forEach((artist) -> artists.add(artist.get("name").asText()));
-        musicResponseDto.setArtists(artists);
+        musicResponseDto.setArtist(artists.get(0));
         musicResponseDto.setAlbum(item.get("album").get("name").asText());
         musicResponseDto.setImage(item.get("album").get("images").get(0).get("url").asText());
 

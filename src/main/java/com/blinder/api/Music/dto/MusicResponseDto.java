@@ -12,7 +12,7 @@ import java.util.List;
 public class MusicResponseDto {
     private String spotifyId;
     private String name;
-    private List<String> artists;
+    private String artist;
     private String album;
     private String image;
 

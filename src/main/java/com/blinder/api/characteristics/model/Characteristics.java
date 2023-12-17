@@ -9,10 +9,7 @@ import com.blinder.api.TVSeriesCategories.model.TVSeriesCategory;
 import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +24,9 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Characteristics extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @OneToOne
     private User user;

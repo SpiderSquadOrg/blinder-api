@@ -2,9 +2,7 @@ package com.blinder.api.report.model;
 
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +14,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class Report extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @ManyToOne(fetch = FetchType.EAGER)
     private User reporter;
     @ManyToOne(fetch = FetchType.EAGER)

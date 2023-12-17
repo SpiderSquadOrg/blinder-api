@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class BaseEntity implements Serializable {
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private String id;*/
 
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
