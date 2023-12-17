@@ -16,7 +16,7 @@ public class MusicRequestDto {
     @NotNull
     private String spotifyId;
     private String name;
-    private List<String> artists;
+    private String artist;
     private String album;
     private String image;
 }

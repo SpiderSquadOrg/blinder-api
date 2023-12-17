@@ -6,8 +6,6 @@ import com.blinder.api.location.model.Location;
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.possibleMatch.model.PossibleMatch;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +25,10 @@ import java.util.List;
 @SuperBuilder
 @Table(name = "users")
 public class User extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     private String name;
     private String surname;
     private String nickname;

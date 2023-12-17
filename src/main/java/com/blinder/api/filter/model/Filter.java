@@ -16,6 +16,10 @@ import java.util.Set;
 @SuperBuilder
 @Table(name = "filters")
 public class Filter extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     private static final int DEFAULT_AGE_LOWER_BOUND = 18;
     private static final int DEFAULT_AGE_UPPER_BOUND = 99;
     private static final String DEFAULT_LOCATION = "";

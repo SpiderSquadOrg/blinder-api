@@ -1,10 +1,7 @@
 package com.blinder.api.user.model;
 
 import com.blinder.api.model.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Gender extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(unique = true)
     private String name;
 

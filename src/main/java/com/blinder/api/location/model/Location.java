@@ -2,9 +2,7 @@ package com.blinder.api.location.model;
 
 import com.blinder.api.model.BaseEntity;
 import com.blinder.api.user.model.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +16,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class Location extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
     private String countryId;
