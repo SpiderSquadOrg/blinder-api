@@ -2,11 +2,11 @@ version: 0.2
 phases:
  pre_build:
    commands:
-     -echo logging in to Amazon ECR started on `date`
-     -aws --version
-     -aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 625014590211.dkr.ecr.eu-north-1.amazonaws.com
-     -REPOSITORY_URI=625014590211.dkr.ecr.eu-north-1.amazonaws.com/blinder-api
-     -IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+     - echo "logging in to Amazon ECR started on $(date)"
+       - aws --version
+       - $(aws ecr get-login-password --region eu-north-1) | docker login --username AWS --password-stdin 625014590211.dkr.ecr.eu-north-1.amazonaws.com
+       - export REPOSITORY_URI=625014590211.dkr.ecr.eu-north-1.amazonaws.com/blinder-api
+       - export IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
  build:
    commands:
      -echo building and tagging started image on `date`
