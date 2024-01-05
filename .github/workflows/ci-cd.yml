@@ -29,11 +29,12 @@ jobs:
 
     steps:
     - name: Deploy to server
-      uses: appleboy/scp-action@v0.2.0
+      uses: appleboy/scp-action@v2
       with:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_KEY }}
         port: ${{ secrets.DEPLOY_PORT }}
-        source: '/home/ubuntu/blinder-api/target/api-0.0.1-SNAPSHOT.jar'  # Maven output directory
+        source: 'blinder-api/target/api-0.0.1-SNAPSHOT.jar'  # Maven output directory
         target: '/path/to/deployment/directory/'
+
