@@ -30,10 +30,9 @@ jobs:
     steps:
     - name: Connect with SSH
       run: |
-        mkdir -p ~/.ssh
         echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
-        ssh -i ~/.ssh/deploy_key ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com
     - name: Restart Blinder API
       run: sudo systemctl restart blinderapi
     - name: Restart NGINX
