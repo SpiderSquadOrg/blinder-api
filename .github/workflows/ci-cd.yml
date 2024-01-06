@@ -28,11 +28,15 @@ jobs:
     needs: build
 
     steps:
-    - name: Connect with SSH
+    - name: Setup key
+      id: setup-key
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
       run: |
-        echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
-        chmod 600 ~/.ssh/deploy_key
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com
+          echo "$DEPLOY_KEY" >> $HOME/key.pem
+          chmod 400 $HOME/key.pem
+    - name: Connect SSH
+      run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com
     - name: Restart Blinder API
       run: sudo systemctl restart blinderapi
     - name: Restart NGINX
