@@ -35,5 +35,8 @@ jobs:
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_KEY }}
         port: ${{ secrets.DEPLOY_PORT }}
-        source: 'path/to/your/maven/project/target/api-0.0.1-SNAPSHOT.jar'  # Maven output directory
-        target: '/path/to/deployment/directory/'
+        source: '/home/ubuntu/blinder-api/target/api-0.0.1-SNAPSHOT.jar'  # Maven output directory
+        target: '/'  # NGINX deployment directory
+
+    - name: Restart NGINX
+      run: sudo systemctl restart nginx
