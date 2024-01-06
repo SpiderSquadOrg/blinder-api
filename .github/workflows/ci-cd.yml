@@ -21,6 +21,6 @@ jobs:
           chmod 400 $HOME/key.pem
     - name: Connect SSH and Restart Services
       run: |
-        ssh -o StrictHostKeyChecking=no -i $HOME/key.pem ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com 'cd /home/ubuntu/blinder-api/ && git pull && mvn clean package && sudo systemctl restart blinderapi && sudo systemctl restart nginx' &
+        ssh -o StrictHostKeyChecking=no -i $HOME/key.pem ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com 'cd /home/ubuntu/blinder-api/ && git pull && /home/ubuntu/.sdkman/candidates/maven/current/bin/mvn clean package && sudo systemctl restart blinderapi && sudo systemctl restart nginx' &
         sleep 5  # Allow some time for the SSH command to initiate before moving to the next step
          
