@@ -20,7 +20,7 @@ jobs:
         java-version: '17'
 
     - name: Build with Maven
-      run: mvn clean install
+      run: mvn clean package
 
   deploy:
     runs-on: ubuntu-latest
@@ -36,7 +36,6 @@ jobs:
         key: ${{ secrets.DEPLOY_KEY }}
         port: ${{ secrets.DEPLOY_PORT }}
         source: '/home/ubuntu/blinder-api/target/api-0.0.1-SNAPSHOT.jar'  # Maven output directory
-        target: '/home/ubuntu/blinder-api-deployment/'  # NGINX deployment directory
 
     - name: Restart NGINX
       run: sudo systemctl restart nginx
