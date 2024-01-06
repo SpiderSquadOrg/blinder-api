@@ -24,8 +24,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i $HOME/key.pem ubuntu@ec2-16-171-144-25.eu-north-1.compute.amazonaws.com '
           cd /home/ubuntu/blinder-api/ &&
           git pull &&
-          /home/ubuntu/.sdkman/candidates/maven/current/bin/mvn clean &&
-          /home/ubuntu/.sdkman/candidates/maven/current/bin/mvn package &&
+          mvn clean package &&
           sudo systemctl restart blinderapi &&
           sudo systemctl restart nginx
         '
