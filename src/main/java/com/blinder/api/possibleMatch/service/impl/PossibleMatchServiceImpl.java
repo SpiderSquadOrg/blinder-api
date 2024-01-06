@@ -88,10 +88,10 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     public List<PossibleMatch> getAllPossibleMatches(User currentUser) {
         List<PossibleMatch> possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
 
-        //if(possibleMatches.size() == 0){
+        if(possibleMatches.size() == 0){
             findAndAddPotentialMatches(currentUser, 100);
             possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
-        //}
+        }
 
         return possibleMatches;
     }
