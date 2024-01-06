@@ -6,21 +6,7 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '17'
-
-    - name: Build with Maven
-      run: mvn clean package
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,6 +23,6 @@ jobs:
           chmod 400 $HOME/key.pem
     - name: Connect SSH and Restart Services
       run: |
-        ssh -o StrictHostKeyChecking=no -i $HOME/key.pem ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com 'git clone https://github.com/CameLoopers/blinder-api.git && sudo systemctl restart blinderapi && sudo systemctl restart nginx' &
+        ssh -o StrictHostKeyChecking=no -i $HOME/key.pem ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com 'git clone https://github.com/CameLoopers/blinder-api.git && cd /home/ubuntu/blinder-api/ && mvn clean package && sudo systemctl restart blinderapi && sudo systemctl restart nginx' &
         sleep 5  # Allow some time for the SSH command to initiate before moving to the next step
          
