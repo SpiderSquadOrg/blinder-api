@@ -11,8 +11,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    needs: build
-
     steps:
     - name: Setup key
       id: setup-key
