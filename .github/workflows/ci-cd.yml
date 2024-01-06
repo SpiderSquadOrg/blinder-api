@@ -21,6 +21,15 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean package
+      
+    - name: Copy JAR to EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.DEPLOY_KEY }}
+        source: "target/api-0.0.1-SNAPSHOT.jar"
+        target: "/home/ubuntu/blinder-api/target/api-0.0.1-SNAPSHOT.jar"
 
   deploy:
     runs-on: ubuntu-latest
