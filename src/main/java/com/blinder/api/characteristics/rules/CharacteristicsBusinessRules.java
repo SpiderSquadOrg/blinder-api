@@ -17,8 +17,8 @@ public class CharacteristicsBusinessRules {
         }
     }
 
-    public void checkIfMusicExistsInList(Characteristics characteristics, String musicId) {
-        if (characteristics.getMusics().stream().noneMatch(existingMusic -> existingMusic.getId().equals(musicId))) {
+    public void checkIfMusicExistsInList(Characteristics characteristics, String spotifyId) {
+        if (characteristics.getMusics().stream().noneMatch(existingMusic -> existingMusic.getSpotifyId().equals(spotifyId))) {
             throw new NotExistsException("Music couldn't find in your list");
         }
     }

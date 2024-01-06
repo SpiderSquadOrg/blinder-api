@@ -107,14 +107,14 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
     }
 
     @Override
-    public Characteristics removeFromMusicList(String userId, String musicId) {
+    public Characteristics removeFromMusicList(String userId, String spotifyId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        characteristicsBusinessRules.checkIfMusicExistsInList(characteristics, musicId);
+        characteristicsBusinessRules.checkIfMusicExistsInList(characteristics, spotifyId);
 
-        Music musicToRemove = musicRepository.findById(musicId).orElseThrow();
+        Music musicToRemove = musicRepository.findBySpotifyId(spotifyId).orElseThrow();
         characteristics.removeFromMusicList(musicToRemove);
         characteristicsRepository.save(characteristics);
-        musicRepository.deleteById(musicId);
+        musicRepository.deleteBySpotifyId(spotifyId);
 
         return characteristics;
     }
