@@ -1,7 +1,4 @@
 package com.blinder.api.image.controller;
-
-
-
 import com.blinder.api.image.service.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +11,8 @@ public class ImageController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/upload")
+    // TO DO: Security
     public String uploadImage(@RequestParam("image") MultipartFile image,
                               @RequestParam("publicId") String publicId) {
         try {
@@ -28,6 +25,7 @@ public class ImageController {
     }
 
     @GetMapping("/{publicId}")
+    // TO DO: Security
     public String getImageUrl(@PathVariable(name ="publicId") String publicId) {
         try {
             return cloudinaryService.getImageUrl(publicId);

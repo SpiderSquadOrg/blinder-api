@@ -1,9 +1,11 @@
 package com.blinder.api.user.security.config;
 
+import com.blinder.api.common.Constants;
 import com.blinder.api.user.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +41,32 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).anonymous()
                 .requestMatchers("/**").permitAll()
-                /*.requestMatchers("/auth/**").permitAll()
+                // GET
+                //.requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET, "/users/**", "/hobbies", "/genders", "/filter",
+                        "/possibleMatches", "/auth/**", "/tvSeries", "/characteristics", "/musics",
+                        "/musicCategories", "/movies", "movieCatehories", "/locations", "/images").permitAll()
+                .requestMatchers(HttpMethod.GET, "/roles", "/reports").hasAuthority(Constants.Roles.ADMIN)
+                //.requestMatchers(HttpMethod.GET, "/users").hasRole(Constants.Roles.ADMIN)
+                // PUT
+                .requestMatchers(HttpMethod.PUT, "/users", "/filter", "/reports").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/hobbies", "/roles",
+                        "/genders").hasAuthority(Constants.Roles.ADMIN)
+                // POST
+                .requestMatchers(HttpMethod.POST, "/reports", "/possibleMatches",
+                        "/auth/**", "/images").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users", "/roles", "/hobbies",
+                        "/genders").hasAuthority(Constants.Roles.ADMIN)
+                // PATCH
+                .requestMatchers(HttpMethod.PATCH, "/users", "/characteristics").permitAll()
+                // DELETE
+                .requestMatchers(HttpMethod.DELETE, "/users", "/characteristics").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/roles", "/reports",
+                        "/hobbies", "/genders").hasAuthority(Constants.Roles.ADMIN)
+                /*
+                .requestMatchers(HttpMethod.GET,"/roles", "/genders").permitAll()
+                .requestMatchers("/roles","/roles").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/api/v1/images/**").permitAll()
                 .requestMatchers("/api/v1/admins/**").hasAuthority(Constants.Roles.ADMIN)
                 .requestMatchers("/api/v1/trainers/**").permitAll()

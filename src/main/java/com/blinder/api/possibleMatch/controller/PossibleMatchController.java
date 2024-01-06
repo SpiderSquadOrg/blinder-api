@@ -24,6 +24,7 @@ public class PossibleMatchController {
 
     @GetMapping
     @Operation(summary = "Get all possible matches")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<List<PossibleMatchResponseDto>> getAllPossibleMatches(){
         User currentUser = userAuthService.getActiveUser().getUser();
         return new ResponseEntity<>(PossibleMatchMapper.INSTANCE.possibleMatchToPossibleMatchResponseDto(
@@ -32,6 +33,7 @@ public class PossibleMatchController {
 
     @GetMapping("/{status}")
     @Operation(summary = "Get all possible matches by status")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<List<PossibleMatchResponseDto>> getAllPossibleMatchesByStatus(@PathVariable PossibleMatchStatus status){
         User currentUser = userAuthService.getActiveUser().getUser();
         return new ResponseEntity<>(PossibleMatchMapper.INSTANCE.possibleMatchToPossibleMatchResponseDto(
@@ -40,6 +42,7 @@ public class PossibleMatchController {
 
     @GetMapping("/matched")
     @Operation(summary = "Get matched users")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<List<UserResponseDto>> getMatchedUsers(){
         User currentUser = userAuthService.getActiveUser().getUser();
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(
@@ -48,6 +51,7 @@ public class PossibleMatchController {
 
     @GetMapping("/liked")
     @Operation(summary = "Get liked users")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<List<UserResponseDto>> getLikedUsers(){
         User currentUser = userAuthService.getActiveUser().getUser();
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(
@@ -56,6 +60,7 @@ public class PossibleMatchController {
 
     @GetMapping("/users_who_like")
     @Operation(summary = "Get users who like")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<List<UserResponseDto>> getUsersWhoLike(){
         User currentUser = userAuthService.getActiveUser().getUser();
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(
@@ -64,6 +69,7 @@ public class PossibleMatchController {
 
     @GetMapping("/disliked")
     @Operation(summary = "Get disliked users")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<List<UserResponseDto>> getDislikedUsers(){
         User currentUser = userAuthService.getActiveUser().getUser();
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(
@@ -72,6 +78,7 @@ public class PossibleMatchController {
 
     @PostMapping("/like/{possibleMatchId}")
     @Operation(summary = "Like possible match")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<PossibleMatchResponseDto> likeUser(@PathVariable String possibleMatchId) {
         return new ResponseEntity<>(PossibleMatchMapper.INSTANCE.possibleMatchToPossibleMatchResponseDto(
                 possibleMatchService.likePossibleMatch(possibleMatchId)), HttpStatus.OK);
@@ -79,6 +86,7 @@ public class PossibleMatchController {
 
     @PostMapping("/dislike/{possibleMatchId}")
     @Operation(summary = "Dislike possible match")
+    // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     public ResponseEntity<String> dislikeUser(@PathVariable String possibleMatchId) {
         possibleMatchService.dislikePossibleMatch(possibleMatchId);
         return new ResponseEntity<>("User disliked successfully", HttpStatus.OK);
