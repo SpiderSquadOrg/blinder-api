@@ -28,6 +28,9 @@ jobs:
     needs: build
 
     steps:
+    - name: Debug - List files in target directory
+      run: ls -al target/
+
     - name: Setup key
       id: setup-key
       env:
