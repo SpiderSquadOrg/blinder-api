@@ -36,7 +36,7 @@ jobs:
           echo "$DEPLOY_KEY" >> $HOME/key.pem
           chmod 400 $HOME/key.pem
     - name: Connect SSH
-      run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com
+      run: ssh -o StrictHostKeyChecking=no -i $HOME/key.pem ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com
     - name: Restart Blinder API
       run: sudo systemctl restart blinderapi
     - name: Restart NGINX
