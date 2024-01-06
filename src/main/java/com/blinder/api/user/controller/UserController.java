@@ -48,31 +48,14 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        if (authorities.stream().noneMatch(a -> a.getAuthority().equals(Constants.Roles.ADMIN))) {
-            // ROLE_ADMIN yetkisine sahip değilse hata dönebilir veya başka bir işlem yapabilirsiniz.
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+        System.out.println("Current user authorities: " + authorities);
 
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.getUsers(page, size)), HttpStatus.OK);
     }
 
-    /*@GetMapping
-    @Operation(summary = "Get all users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<UserResponseDto>> getAllUsers(@RequestParam(name = "page", required = false) Integer page,
-                                                             @RequestParam(name = "size", required = false) Integer size) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-        System.out.println("Current user authorities: " + authorities);
-
-        return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.getUsers(page, size)), HttpStatus.OK);
-    }*/
-
     @GetMapping("/search")
     @Operation(summary = "Search users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<UserResponseDto>> searchUsers(@RequestParam(name = "page", required = false) Integer page,
                                                              @RequestParam(name = "size", required = false) Integer size,
                                                              @RequestParam(name = "email", required = false) String email,
@@ -105,7 +88,7 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Add user")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<CreateUserRequestDto> addUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) throws JsonProcessingException {
         User user =UserMapper.INSTANCE.createUserRequestDtoToUser(createUserRequestDto);
         user.setLocation(locationCustomMapper.createLocationDtoToLocation(createUserRequestDto.getLocation()));
@@ -131,14 +114,14 @@ public class UserController {
 
     @PatchMapping("/{userId}/ban")
     @Operation(summary = "Ban user by id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDto> banUserById(@PathVariable String userId) {
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.banUserById(userId)), HttpStatus.OK);
     }
 
     @PatchMapping("/{userId}/unban")
     @Operation(summary = "Unban user by id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDto> unbanUserById(@PathVariable String userId) {
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.unbanUserById(userId)), HttpStatus.OK);
     }
@@ -159,7 +142,7 @@ public class UserController {
 
     @GetMapping("/{userId}/images")
     @Operation(summary = "Get user images by id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<String>> getUserImagesByChatInfo(@PathVariable String userId, @RequestParam String chatId, @RequestHeader("Authorization") String token) throws JsonProcessingException {
         return new ResponseEntity<>(this.userService.getUserImagesByChatInfo(userId, chatId, token), HttpStatus.OK);
     }

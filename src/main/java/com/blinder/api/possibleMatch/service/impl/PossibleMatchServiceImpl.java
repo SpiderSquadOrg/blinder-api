@@ -33,7 +33,8 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         List<User> filteredUsers = userService.getFilteredUsers(currentUser,1000, 30);
 
         for (User potentialMatchUser : filteredUsers) {
-            if (!(currentUser.getId().equals(potentialMatchUser.getId())) && !(potentialMatchUser.getRole().getName().equals("admin"))) { // TO DO: Filtered user'da bak kendisi gelmesin diye
+            if (!(currentUser.getId().equals(potentialMatchUser.getId())) &&
+                    !(potentialMatchUser.getRole().getName().equals("admin"))) {
                 double similarityScore = calculateSimilarityScore(userCharacteristics, potentialMatchUser.getCharacteristics());
                 addOrUpdatePossibleMatch(currentUser, potentialMatchUser, similarityScore);
             }
@@ -47,7 +48,6 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         if (possibleMatches.size() > 30) {
             possibleMatches.subList(30, possibleMatches.size()).clear();
         }
-
     }
 
     @Override
@@ -55,6 +55,10 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         PossibleMatch possibleMatch = possibleMatchRepository.findById(possibleMatchId).orElseThrow();
         possibleMatch.setStatus(PossibleMatchStatus.LIKED);
         possibleMatchRepository.save(possibleMatch);
+
+        // Current user can be seen in the possible match list of the user who liked:
+        addOrUpdatePossibleMatch(possibleMatch.getTo(), possibleMatch.getFrom(), possibleMatch.getSimilarityScore());
+
         return possibleMatch;
     }
 
@@ -67,17 +71,18 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
 
     @Override
     public void updateMatchStatus(User user1, User user2) {
-        Optional<PossibleMatch> match1 = possibleMatchRepository.findPossibleMatchByFromAndTo(user1, user2)
-                .filter(match -> match.getStatus() == PossibleMatchStatus.LIKED);
+        PossibleMatch match1 = possibleMatchRepository.findPossibleMatchByFromAndTo(user1, user2)
+                .orElse(null);
 
-        Optional<PossibleMatch> match2 = possibleMatchRepository.findPossibleMatchByFromAndTo(user2, user1)
-                .filter(match -> match.getStatus() == PossibleMatchStatus.LIKED);
+        PossibleMatch match2 = possibleMatchRepository.findPossibleMatchByFromAndTo(user2, user1)
+                .orElse(null);
 
-        if (match1.isPresent() && match2.isPresent()) {
-            match1.get().setStatus(PossibleMatchStatus.MATCHED);
-            match2.get().setStatus(PossibleMatchStatus.MATCHED);
+        if (match1 != null && match1.getStatus() == PossibleMatchStatus.LIKED &&
+                match2 != null && match2.getStatus() == PossibleMatchStatus.LIKED) {
+            match1.setStatus(PossibleMatchStatus.MATCHED);
+            match2.setStatus(PossibleMatchStatus.MATCHED);
 
-            possibleMatchRepository.saveAll(Arrays.asList(match1.get(), match2.get()));
+            possibleMatchRepository.saveAll(Arrays.asList(match1, match2));
 
             user1.setMatched(true);
             user2.setMatched(true);
@@ -91,6 +96,13 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         if(possibleMatches.size() == 0){
             findAndAddPotentialMatches(currentUser, 100);
             possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
+        }else{
+            for (PossibleMatch potentialMatch : possibleMatches) {
+                User potentialMatchUser = potentialMatch.getTo();
+                double similarityScore = potentialMatch.getSimilarityScore();
+                addOrUpdatePossibleMatch(currentUser, potentialMatchUser, similarityScore);
+            }
+            //TO DO: Update işi diğer özellikler için de yapılmalı (username vs) ayrı bir update eklenebilir.
         }
 
         return possibleMatches;
@@ -102,16 +114,16 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     }
 
     @Override
-    public List<User> getMatchedUsers(User currentUser) { return possibleMatchRepository.findMatchedUsers(currentUser); }
+    public List<PossibleMatch> getMatchedUsers(User currentUser) { return possibleMatchRepository.findMatchedUsers(currentUser); }
 
     @Override
-    public List<User> getLikedUsers(User currentUser) { return possibleMatchRepository.findLikedUsers(currentUser);}
+    public List<PossibleMatch> getLikedUsers(User currentUser) { return possibleMatchRepository.findLikedUsers(currentUser);}
 
     @Override
-    public List<User> getUsersWhoLike(User currentUser) { return possibleMatchRepository.findUsersWhoLike(currentUser);}
+    public List<PossibleMatch> getUsersWhoLike(User currentUser) { return possibleMatchRepository.findUsersWhoLike(currentUser);}
 
     @Override
-    public List<User> getDislikedUsers(User currentUser) {return possibleMatchRepository.findDislikedUsers(currentUser);}
+    public List<PossibleMatch> getDislikedUsers(User currentUser) {return possibleMatchRepository.findDislikedUsers(currentUser);}
 
     private double calculateSimilarityScore(Characteristics characteristics1, Characteristics characteristics2) {
         List<Music> musics1 = characteristics1.getMusics();
@@ -324,13 +336,19 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
 
     private void addOrUpdatePossibleMatch(User userFrom, User userTo, double similarityScore) {
 
-        Optional<PossibleMatch> existingMatch = possibleMatchRepository.findPossibleMatchByFromAndTo(userFrom, userTo);
+        PossibleMatch existingMatch = possibleMatchRepository.findPossibleMatchByFromAndTo(userFrom, userTo)
+                .orElse(null);
 
-        if (existingMatch.isPresent()) {
-            // Update the existing match if the new score is higher or lower
-            if (similarityScore != existingMatch.get().getSimilarityScore()) {
-                existingMatch.get().setSimilarityScore(similarityScore);
+        if (existingMatch != null) {
+            if(existingMatch.getStatus() == PossibleMatchStatus.UNMATCHED){
+                // Update the existing match if the new score is higher or lower
+                if (similarityScore != existingMatch.getSimilarityScore()) {
+                    existingMatch.setSimilarityScore(similarityScore);
+                }
+            }else{
+                deletePossibleMatch(userFrom, userTo);
             }
+
         } else {
             PossibleMatch newMatch = new PossibleMatch();
             newMatch.setFrom(userFrom);

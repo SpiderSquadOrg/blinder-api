@@ -42,11 +42,27 @@ public class SecurityConfiguration {
                 .requestMatchers(AUTH_WHITELIST).anonymous()
                 .requestMatchers("/**").permitAll()
                 // GET
-                //.requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
+
+                .requestMatchers(HttpMethod.GET, "/users/{userId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET, "/users/search").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET, "/users/chats/{chatId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.GET, "/users/{userId}/images").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET, "/users/filter/{userId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.POST, "/users").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.PUT, "/users/{userId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.DELETE, "/users/{userId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/ban").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/unban").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/block").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/unblock").hasAuthority(Constants.Roles.ADMIN)
+
+
+                /*.requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
                 .requestMatchers(HttpMethod.GET, "/users/**", "/hobbies", "/genders", "/filter",
                         "/possibleMatches", "/auth/**", "/tvSeries", "/characteristics", "/musics",
                         "/musicCategories", "/movies", "movieCatehories", "/locations", "/images").permitAll()
-                .requestMatchers(HttpMethod.GET, "/roles", "/reports").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET, "/roles", "/reports").hasAuthority(Constants.Roles.ADMIN)*/
                 //.requestMatchers(HttpMethod.GET, "/users").hasRole(Constants.Roles.ADMIN)
                 // PUT
                 .requestMatchers(HttpMethod.PUT, "/users", "/filter", "/reports").permitAll()
