@@ -28,9 +28,9 @@ jobs:
     needs: build
 
     steps:
-    - name: Connect with SSH
-      run: ssh -i ${{ secrets.DEPLOY_KEY }} ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com
-    - name: Restart Blinder API
-      run: sudo systemctl restart blinderapi
-    - name: Restart NGINX
-      run: sudo systemctl restart nginx
+    - name: Connect with SSH and Restart Services
+      run: |
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh -i ~/.ssh/deploy_key ubuntu@ec2-51-20-55-82.eu-north-1.compute.amazonaws.com "sudo systemctl restart blinderapi && sudo systemctl restart nginx"
+
