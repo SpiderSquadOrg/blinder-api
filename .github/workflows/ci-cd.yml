@@ -41,7 +41,7 @@ jobs:
       with:
         host: ${{ secrets.DEPLOY_HOST }}
         username: ubuntu
-        key: $HOME/key.pem
+        key: ${{ secrets.DEPLOY_KEY }}
         source: "target/api-0.0.1-SNAPSHOT.jar"
         target: "/home/ubuntu/blinder-api-deployment/"
 
