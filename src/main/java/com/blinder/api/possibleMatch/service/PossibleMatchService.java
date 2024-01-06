@@ -17,9 +17,9 @@ public interface PossibleMatchService {
     List<PossibleMatch> getAllPossibleMatches(User currentUser);
     List<PossibleMatch> getAllPossibleMatchesByStatus(User currentUser, PossibleMatchStatus status);
 
-    List<User> getMatchedUsers(User currentUser);
-    List<User> getLikedUsers(User currentUser);
-    List<User> getUsersWhoLike(User currentUser);
-    List<User> getDislikedUsers(User currentUser);
+    List<PossibleMatch> getMatchedUsers(User currentUser);
+    List<PossibleMatch> getLikedUsers(User currentUser);
+    List<PossibleMatch> getUsersWhoLike(User currentUser);
+    List<PossibleMatch> getDislikedUsers(User currentUser);
 
 }
