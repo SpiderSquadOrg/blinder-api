@@ -62,6 +62,9 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         // Current user can be seen in the possible match list of the user who liked:
         addOrUpdatePossibleMatch(possibleMatch.getTo(), possibleMatch.getFrom(), possibleMatch.getSimilarityScore());
 
+        // Update the match status if the other user also liked:
+        updateMatchStatus(possibleMatch.getFrom(), possibleMatch.getTo());
+
         return possibleMatch;
     }
 
