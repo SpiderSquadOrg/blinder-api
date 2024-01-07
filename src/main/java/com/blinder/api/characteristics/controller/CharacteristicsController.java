@@ -60,12 +60,12 @@ public class CharacteristicsController {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/musics/{musicId}")
+    @DeleteMapping("/musics/{spotifyId}")
     @Operation(summary = "Remove music from user's characteristics")
     // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
-    public ResponseEntity<CharacteristicsResponseDto> removeFromMusicList(@PathVariable String musicId){
+    public ResponseEntity<CharacteristicsResponseDto> removeFromMusicList(@PathVariable String spotifyId){
         User currentUser = userAuthService.getActiveUser().getUser();
-        Characteristics characteristics = characteristicsService.removeFromMusicList(currentUser.getId(), musicId);
+        Characteristics characteristics = characteristicsService.removeFromMusicList(currentUser.getId(), spotifyId);
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.NO_CONTENT);
     }
 

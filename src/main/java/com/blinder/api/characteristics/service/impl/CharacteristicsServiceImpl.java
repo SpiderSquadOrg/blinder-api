@@ -26,6 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,15 +107,16 @@ public class CharacteristicsServiceImpl implements CharacteristicsService {
         return characteristics;
     }
 
+    @Transactional
     @Override
-    public Characteristics removeFromMusicList(String userId, String musicId) {
+    public Characteristics removeFromMusicList(String userId, String spotifyId) {
         Characteristics characteristics = characteristicsRepository.findCharacteristicsByUserId(userId).orElseThrow();
-        characteristicsBusinessRules.checkIfMusicExistsInList(characteristics, musicId);
+        characteristicsBusinessRules.checkIfMusicExistsInList(characteristics, spotifyId);
 
-        Music musicToRemove = musicRepository.findById(musicId).orElseThrow();
+        Music musicToRemove = musicRepository.findBySpotifyId(spotifyId).orElseThrow();
         characteristics.removeFromMusicList(musicToRemove);
         characteristicsRepository.save(characteristics);
-        musicRepository.deleteById(musicId);
+        musicRepository.deleteBySpotifyId(spotifyId);
 
         return characteristics;
     }
