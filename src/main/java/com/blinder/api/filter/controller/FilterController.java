@@ -1,4 +1,5 @@
 package com.blinder.api.filter.controller;
+
 import com.blinder.api.filter.dto.UpdateFilterRequestDto;
 import com.blinder.api.filter.dto.FilterResponseDto;
 import com.blinder.api.filter.mapper.FilterMapper;
@@ -8,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/filter")
@@ -26,7 +26,6 @@ public class FilterController {
 
     @GetMapping("/byFilter/{filterId}")
     @Operation(summary = "Get filter by filter id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<FilterResponseDto> getFilterById(@PathVariable String filterId) {
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(filterService.getFilterById(filterId)), HttpStatus.OK);
     }

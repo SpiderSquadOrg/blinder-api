@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/characteristics")
@@ -38,7 +37,6 @@ public class CharacteristicsController {
 
     @GetMapping
     @Operation(summary = "Get all characteristics")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<CharacteristicsResponseDto>> getAllCharacteristics(@RequestParam(name = "page", required = false) Integer page,
                                                                                   @RequestParam(name = "size", required = false) Integer size) {
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristicsService.getCharacteristics(page, size)), HttpStatus.OK);
@@ -185,27 +183,4 @@ public class CharacteristicsController {
         Characteristics characteristics = characteristicsService.removeFromHobbyList(currentUser.getId(), name);
         return new ResponseEntity<>(CharacteristicsMapper.INSTANCE.characteristicsToCharacteristicsResponseDto(characteristics), HttpStatus.NO_CONTENT);
     }
-
-    /*
-    @PostMapping
-    @Operation(summary = "Add new characteristics")
-    public ResponseEntity<CreateCharacteristicsRequestDto> addNewCharacteristic(@RequestBody CreateCharacteristicsRequestDto createCharacteristicsRequestDto) {
-        characteristicsService.addCharacteristics(CharacteristicsMapper.INSTANCE.createCharacteristicsRequestDtoToCharacteristics(createCharacteristicsRequestDto));
-        return new ResponseEntity<>(createCharacteristicsRequestDto, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{characteristicsId}")
-    @Operation(summary = "Update characteristics")
-    public ResponseEntity<UpdateCharacteristicsRequestDto> updateCharacteristics(@PathVariable(name = "characteristicsId") String characteristicsId,
-                                                                        @RequestBody UpdateCharacteristicsRequestDto updateCharacteristicsRequestDto) {
-        characteristicsService.updateCharacteristics(characteristicsId, CharacteristicsMapper.INSTANCE.updateCharacteristicsRequestDtoToCharacteristics(updateCharacteristicsRequestDto));
-        return new ResponseEntity<>(updateCharacteristicsRequestDto, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{characteristicsId}")
-    @Operation(summary = "Delete characteristics")
-    public ResponseEntity<HttpStatus> deleteCharacteristics(@PathVariable(name = "characteristicsId") String characteristicsId) {
-        characteristicsService.deleteCharacteristics(characteristicsId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }*/
 }

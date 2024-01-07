@@ -20,6 +20,7 @@ import java.util.List;
 public class TVSeriesController {
     private final TVSeriesService tvSeriesService;
     private final TVSeriesCustomMapper tvSeriesCustomMapper;
+
     @GetMapping("/search")
     public ResponseEntity<List<TVSeriesResponseDto>> searchTVSeries(@RequestParam(name = "tvSeriesName") String tvSeriesName, @RequestParam(name = "limit", defaultValue = "50") int limit) throws JsonProcessingException {
         return new ResponseEntity<>(tvSeriesCustomMapper.tvSeriesDataToTvSeriesResponseDto(tvSeriesService.searchTVSeries(tvSeriesName, limit)), HttpStatus.OK);

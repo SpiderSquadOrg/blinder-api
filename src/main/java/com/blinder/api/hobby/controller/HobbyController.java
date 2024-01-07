@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class HobbyController {
 private final HobbyService hobbyService;
+
     @GetMapping
     @Operation(summary = "Get all hobbies")
     public ResponseEntity<Page<HobbyResponseDto>> getAllHobbies(@RequestParam(name = "page", required = false) Integer page,
                                                                  @RequestParam(name = "size", required = false) Integer size) {
         return new ResponseEntity<>(HobbyMapper.INSTANCE.hobbyToHobbyResponseDto(hobbyService.getHobbies(page, size)), HttpStatus.OK);
     }
-
 
     @GetMapping("/{hobbyId}")
     @Operation(summary = "Get hobby by id")

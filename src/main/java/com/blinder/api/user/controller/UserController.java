@@ -1,6 +1,5 @@
 package com.blinder.api.user.controller;
 
-import com.blinder.api.common.Constants;
 import com.blinder.api.location.mapper.LocationCustomMapper;
 import com.blinder.api.user.dto.CreateUserRequestDto;
 import com.blinder.api.user.dto.UpdateUserRequestDto;
@@ -16,12 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.access.annotation.Secured;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -54,7 +50,6 @@ public class UserController {
 
     @GetMapping("/search")
     @Operation(summary = "Search users")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<UserResponseDto>> searchUsers(@RequestParam(name = "page", required = false) Integer page,
                                                              @RequestParam(name = "size", required = false) Integer size,
                                                              @RequestParam(name = "email", required = false) String email,
@@ -87,7 +82,6 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Add user")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<CreateUserRequestDto> addUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) throws JsonProcessingException {
         User user =UserMapper.INSTANCE.createUserRequestDtoToUser(createUserRequestDto);
         user.setLocation(locationCustomMapper.createLocationDtoToLocation(createUserRequestDto.getLocation()));
@@ -113,14 +107,12 @@ public class UserController {
 
     @PatchMapping("/{userId}/ban")
     @Operation(summary = "Ban user by id")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDto> banUserById(@PathVariable String userId) {
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.banUserById(userId)), HttpStatus.OK);
     }
 
     @PatchMapping("/{userId}/unban")
     @Operation(summary = "Unban user by id")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDto> unbanUserById(@PathVariable String userId) {
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.unbanUserById(userId)), HttpStatus.OK);
     }
@@ -141,7 +133,6 @@ public class UserController {
 
     @GetMapping("/{userId}/images")
     @Operation(summary = "Get user images by id")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<String>> getUserImagesByChatInfo(@PathVariable String userId, @RequestParam String chatId, @RequestHeader("Authorization") String token) throws JsonProcessingException {
         return new ResponseEntity<>(this.userService.getUserImagesByChatInfo(userId, chatId, token), HttpStatus.OK);
     }

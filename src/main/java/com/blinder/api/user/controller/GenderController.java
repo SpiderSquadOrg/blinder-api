@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/genders")
@@ -27,7 +26,6 @@ public class GenderController {
 
     @GetMapping("/{genderId}")
     @Operation(summary = "Get gender by id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<GenderResponseDto> getReportById(@PathVariable String genderId) {
         return new ResponseEntity<>(GenderMapper.INSTANCE.genderToGenderResponseDto(genderService.getGenderById(genderId)), HttpStatus.OK);
     }
