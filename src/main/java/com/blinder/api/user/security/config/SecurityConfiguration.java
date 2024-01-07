@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .cors(Customizer.withDefaults())
                 .authorizeRequests()
+                .requestMatchers("/**").permitAll()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
 
                 // USER
@@ -83,10 +84,10 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.DELETE, "/genders/{genderId}").hasAnyAuthority("admin")
 
                 // FILTER
-                .requestMatchers(HttpMethod.GET, "/filters/{userId}").permitAll()  // TO DO: Stronger security
-                .requestMatchers(HttpMethod.GET, "/filters/byFilter/{filterId}").hasAnyAuthority("admin")
-                .requestMatchers(HttpMethod.PUT, "/filters/{userId}").permitAll()  // TO DO: Stronger security
-                .requestMatchers(HttpMethod.PUT, "/filters/reset/{userId}").permitAll()  // TO DO: Stronger security
+                .requestMatchers(HttpMethod.GET, "/filter/{userId}").permitAll()  // TO DO: Stronger security
+                .requestMatchers(HttpMethod.GET, "/filter/byFilter/{filterId}").hasAnyAuthority("admin")
+                .requestMatchers(HttpMethod.PUT, "/filter/{userId}").permitAll()  // TO DO: Stronger security
+                .requestMatchers(HttpMethod.PUT, "/filter/reset/{userId}").permitAll()  // TO DO: Stronger security
 
                 // POSSIBLE MATCH
                 .requestMatchers(HttpMethod.GET, "/possibleMatches").permitAll()  // TO DO: Stronger security
@@ -122,7 +123,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.DELETE, "/characteristics/tvSeries/{tvSeriesId}").permitAll()
                 .requestMatchers(HttpMethod.PATCH, "/characteristics/tvSeries/categories").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/characteristics/tvSeries/categories/{tvSeriesCategoryId}").permitAll()
-                .requestMatchers(HttpMethod.PATCH, "/characteristics//hobby/{name}").permitAll()
+                .requestMatchers(HttpMethod.PATCH, "/characteristics/hobby/{name}").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/characteristics/hobby/{name}").permitAll()
 
                 // TVSERIES

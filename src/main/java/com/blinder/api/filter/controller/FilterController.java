@@ -9,7 +9,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RequestMapping("/filter")
 @RestController
@@ -36,6 +41,12 @@ public class FilterController {
     public ResponseEntity<FilterResponseDto> updateFilter(@PathVariable String userId, @RequestBody UpdateFilterRequestDto updateFilterRequestDto) {
         Filter filterToUpdate = FilterMapper.INSTANCE.updateFilterRequestDtoToFilter(updateFilterRequestDto);
         Filter updatedFilterResult = filterService.updateFilter(userId, filterToUpdate);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        System.out.println("Current user authorities: " + authorities);
+
         return new ResponseEntity<>(FilterMapper.INSTANCE.filterToFilterResponseDto(updatedFilterResult), HttpStatus.OK);
     }
 
