@@ -41,6 +41,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST).anonymous()
                 .requestMatchers("/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET,"/users/**", "/auth/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                //.requestMatchers("/users/**").hasAnyAuthority(Constants.Roles.ADMIN)
+
+                /*
                 // GET
 
                 .requestMatchers(HttpMethod.GET, "/users/{userId}").permitAll()  // TO DO:
@@ -49,20 +55,30 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/users/chats/{chatId}").permitAll()  // TO DO:
                 .requestMatchers(HttpMethod.GET, "/users/{userId}/images").hasAuthority(Constants.Roles.ADMIN)
                 .requestMatchers(HttpMethod.GET, "/users/filter/{userId}").permitAll()  // TO DO:
-                .requestMatchers(HttpMethod.POST, "/users").hasAuthority(Constants.Roles.ADMIN)
-                .requestMatchers(HttpMethod.PUT, "/users/{userId}").permitAll()  // TO DO:
-                .requestMatchers(HttpMethod.DELETE, "/users/{userId}").permitAll()  // TO DO:
-                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/ban").permitAll()  // TO DO:
-                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/unban").permitAll()  // TO DO:
-                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/block").hasAuthority(Constants.Roles.ADMIN)
-                .requestMatchers(HttpMethod.PATCH, "/users/{userId}/unblock").hasAuthority(Constants.Roles.ADMIN)
+                //.requestMatchers(HttpMethod.POST, "/users").hasAuthority(Constants.Roles.ADMIN)
+                //.requestMatchers(HttpMethod.PUT, "/users/{userId}").permitAll()  // TO DO:
+                //.requestMatchers(HttpMethod.DELETE, "/users/{userId}").permitAll()  // TO DO:
+                //.requestMatchers(HttpMethod.PATCH, "/users/{userId}/ban").permitAll()  // TO DO:
+                //.requestMatchers(HttpMethod.PATCH, "/users/{userId}/unban").permitAll()  // TO DO:
+                //.requestMatchers(HttpMethod.PATCH, "/users/{userId}/block").hasAuthority(Constants.Roles.ADMIN)
+                //.requestMatchers(HttpMethod.PATCH, "/users/{userId}/unblock").hasAuthority(Constants.Roles.ADMIN)
+
+                //.requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
 
 
-                /*.requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
-                .requestMatchers(HttpMethod.GET, "/users/**", "/hobbies", "/genders", "/filter",
+                //.requestMatchers(HttpMethod.GET, "/users/search").hasAuthority(Constants.Roles.ADMIN)
+                //.requestMatchers(HttpMethod.GET, "/users/{userId}/images").hasAuthority(Constants.Roles.ADMIN)
+                .requestMatchers(HttpMethod.GET, "/users/chats/{chatId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.GET, "/users/filter/{userId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.GET, "/users/{userId}").permitAll()  // TO DO:
+                .requestMatchers(HttpMethod.GET, "/users").hasAuthority(Constants.Roles.ADMIN)
+
+
+
+                .requestMatchers(HttpMethod.GET, "/users", "/hobbies", "/genders", "/filter",
                         "/possibleMatches", "/auth/**", "/tvSeries", "/characteristics", "/musics",
-                        "/musicCategories", "/movies", "movieCatehories", "/locations", "/images").permitAll()
-                .requestMatchers(HttpMethod.GET, "/roles", "/reports").hasAuthority(Constants.Roles.ADMIN)*/
+                        "/musicCategories", "/movies", "movieCategories", "/locations", "/images").permitAll()
+                .requestMatchers(HttpMethod.GET, "/roles", "/reports").hasAuthority(Constants.Roles.ADMIN)
                 //.requestMatchers(HttpMethod.GET, "/users").hasRole(Constants.Roles.ADMIN)
                 // PUT
                 .requestMatchers(HttpMethod.PUT, "/users", "/filter", "/reports").permitAll()
@@ -78,18 +94,8 @@ public class SecurityConfiguration {
                 // DELETE
                 .requestMatchers(HttpMethod.DELETE, "/users", "/characteristics").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/roles", "/reports",
-                        "/hobbies", "/genders").hasAuthority(Constants.Roles.ADMIN)
-                /*
-                .requestMatchers(HttpMethod.GET,"/roles", "/genders").permitAll()
-                .requestMatchers("/roles","/roles").hasAuthority(Constants.Roles.ADMIN)
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/v1/images/**").permitAll()
-                .requestMatchers("/api/v1/admins/**").hasAuthority(Constants.Roles.ADMIN)
-                .requestMatchers("/api/v1/trainers/**").permitAll()
-                .requestMatchers(HttpMethod.GET,"/api/v1/pokemons/**").permitAll()
-                .requestMatchers("/api/v1/pokemons/**").hasAnyAuthority(Constants.Roles.ADMIN)
-                .requestMatchers(HttpMethod.GET,"/api/v1/types/**").permitAll()
-                .requestMatchers("/api/v1/types/**").hasAnyAuthority(Constants.Roles.ADMIN)*/
+                        "/hobbies", "/genders").hasAuthority(Constants.Roles.ADMIN) */
+
                 .anyRequest()
                 .authenticated()
                 .and()
