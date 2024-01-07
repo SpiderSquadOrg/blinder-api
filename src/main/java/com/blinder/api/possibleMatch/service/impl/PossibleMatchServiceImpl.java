@@ -30,7 +30,7 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     @Override
     public void findAndAddPotentialMatches(User currentUser, int howManyUser) {
         Characteristics userCharacteristics = currentUser.getCharacteristics();
-        possibleMatchManagementService.deletePossibleMatches(currentUser);
+        //possibleMatchManagementService.deletePossibleMatches(currentUser);
 
         List<User> filteredUsers = userService.getFilteredUsers(currentUser,1000, 30);
 
