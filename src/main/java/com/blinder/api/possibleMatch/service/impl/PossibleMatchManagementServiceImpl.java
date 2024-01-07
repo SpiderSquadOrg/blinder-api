@@ -25,6 +25,13 @@ public class PossibleMatchManagementServiceImpl implements PossibleMatchManageme
         userFrom.setPossibleMatches(new ArrayList<>());
 
         userRepository.save(userFrom);
+
+        List<PossibleMatch> pos = possibleMatchRepository.findAllPossibleMatchesByFrom(userFrom);
+        if(pos != null){
+            System.out.println("bla");
+        }
+
+
     }
 
     public void deletePossibleMatch(User userFrom,User userTo)
