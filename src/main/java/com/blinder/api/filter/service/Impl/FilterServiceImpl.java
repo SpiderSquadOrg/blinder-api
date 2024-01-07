@@ -75,10 +75,11 @@ public class FilterServiceImpl implements FilterService {
             }
         }
 
+        /*
         // Reset possible matches if filter is updated
         if(filterToUpdate != updatedFilter){
             possibleMatchManagementService.deletePossibleMatches(user);
-        }
+        }*/
 
         this.filterRepository.save(filterToUpdate);
         return filterToUpdate;
