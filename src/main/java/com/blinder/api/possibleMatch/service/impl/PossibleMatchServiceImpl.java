@@ -336,7 +336,8 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         return commonItemCount / totalItemCount;
     }*/
 
-    private void addOrUpdatePossibleMatch(User userFrom, User userTo, double similarityScore) {
+
+    private synchronized void addOrUpdatePossibleMatch(User userFrom, User userTo, double similarityScore) {
 
         PossibleMatch existingMatch = possibleMatchRepository.findPossibleMatchByFromAndTo(userFrom, userTo)
                 .orElse(null);
