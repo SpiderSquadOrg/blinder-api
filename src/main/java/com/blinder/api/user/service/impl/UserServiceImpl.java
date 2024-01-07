@@ -255,7 +255,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User banUserById(String userId) {
         this.userBusinessRules.checkIfUserExists(userId);
-        this.userBusinessRules.checkIfUserIsNotBanned(userId);
+        this.userBusinessRules.checkIfUserIsBanned(userId);
 
         User user = this.userRepository.findById(userId).orElseThrow();
         user.setBanned(true);
@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User unbanUserById(String userId) {
         this.userBusinessRules.checkIfUserExists(userId);
-        this.userBusinessRules.checkIfUserIsBanned(userId);
+        this.userBusinessRules.checkIfUserIsNotBanned(userId);
 
         User user = this.userRepository.findById(userId).orElseThrow();
         user.setBanned(false);
@@ -277,7 +277,7 @@ public class UserServiceImpl implements UserService {
         String activeUserId = this.userAuthService.getActiveUser().getId();
 
         this.userBusinessRules.checkIfUserExists(userId);
-        this.userBusinessRules.checkIfUserIsNotBlocked(activeUserId,userId);
+        this.userBusinessRules.checkIfUserIsBlocked(activeUserId,userId);
 
         User user = this.userRepository.findById(activeUserId).orElseThrow();
         User toBeBlockedUser = this.userRepository.findById(userId).orElseThrow();
@@ -291,7 +291,7 @@ public class UserServiceImpl implements UserService {
         String activeUserId = this.userAuthService.getActiveUser().getId();
 
         this.userBusinessRules.checkIfUserExists(userId);
-        this.userBusinessRules.checkIfUserIsBlocked(activeUserId,userId);
+        this.userBusinessRules.checkIfUserIsNotBlocked(activeUserId,userId);
 
         User user = this.userRepository.findById(activeUserId).orElseThrow();
         User toBeUnblockedUser = this.userRepository.findById(userId).orElseThrow();

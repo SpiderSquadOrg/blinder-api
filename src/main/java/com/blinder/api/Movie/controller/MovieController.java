@@ -2,15 +2,12 @@ package com.blinder.api.Movie.controller;
 
 import com.blinder.api.Movie.dto.MovieResponseDto;
 import com.blinder.api.Movie.mapper.MovieCustomMapper;
-import com.blinder.api.Movie.model.Movie;
 import com.blinder.api.Movie.service.MovieService;
-import com.blinder.api.Music.dto.MusicResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
