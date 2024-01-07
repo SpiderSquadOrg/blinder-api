@@ -4,6 +4,8 @@ import com.blinder.api.filter.model.Filter;
 import com.blinder.api.filter.repository.FilterRepository;
 import com.blinder.api.filter.rules.FilterBusinessRules;
 import com.blinder.api.filter.service.FilterService;
+import com.blinder.api.possibleMatch.service.PossibleMatchManagementService;
+import com.blinder.api.possibleMatch.service.PossibleMatchService;
 import com.blinder.api.user.model.Gender;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.GenderRepository;
@@ -24,6 +26,7 @@ public class FilterServiceImpl implements FilterService {
     private final GenderRepository genderRepository;
     private final UserRepository userRepository;
     private final FilterBusinessRules filterBusinessRules;
+    private final PossibleMatchManagementService possibleMatchManagementService;
 
     @Override
     public Filter createDefaultFilterForUser(String userId) {
@@ -70,6 +73,11 @@ public class FilterServiceImpl implements FilterService {
             if(updatedFilter.getAgeUpperBound() != 0){
                 filterToUpdate.setAgeUpperBound(updatedFilter.getAgeUpperBound());
             }
+        }
+
+        // Reset possible matches if filter is updated
+        if(filterToUpdate != updatedFilter){
+            possibleMatchManagementService.deletePossibleMatches(user);
         }
 
         this.filterRepository.save(filterToUpdate);
