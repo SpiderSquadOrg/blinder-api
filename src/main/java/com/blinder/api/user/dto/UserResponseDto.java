@@ -17,6 +17,7 @@ public class UserResponseDto {
     private String name;
     private String surname;
     private String phoneNumber;
+    private String nickname;
     private LocationDto location;
     private boolean isMatched;
     private boolean isBanned;

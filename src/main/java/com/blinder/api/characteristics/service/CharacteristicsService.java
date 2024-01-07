@@ -21,7 +21,7 @@ public interface CharacteristicsService {
     //Music and music category
     Characteristics addToMusicList(String userId, Music music);
     Characteristics addToMusicCategoryList(String userId, MusicCategory musicCategory);
-    Characteristics removeFromMusicList(String userId, String musicId);
+    Characteristics removeFromMusicList(String userId, String spotifyId);
     Characteristics removeFromMusicCategoryList(String userId, String musicCategoryId);
 
     //Movie and movie category

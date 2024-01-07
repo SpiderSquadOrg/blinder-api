@@ -20,6 +20,7 @@ public class PossibleMatchManagementServiceImpl implements PossibleMatchManageme
 
     public void deletePossibleMatches(User userFrom)
     {
+
         //userFrom.setPossibleMatches(new ArrayList<>());
         //userRepository.save(userFrom);
 
