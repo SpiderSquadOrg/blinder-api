@@ -16,6 +16,7 @@ import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserRepository;
 import com.blinder.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -95,7 +96,8 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     public List<PossibleMatch> getAllPossibleMatches(User currentUser) {
         List<PossibleMatch> possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
 
-        if(possibleMatches.size() == 0){
+        if(possibleMatches.stream().filter((possibleMatch) ->
+                possibleMatch.getStatus() == PossibleMatchStatus.UNMATCHED).toList().size() == 0){
             findAndAddPotentialMatches(currentUser, 100);
             possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(currentUser);
         }else{
@@ -336,7 +338,6 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         return commonItemCount / totalItemCount;
     }*/
 
-
     private synchronized void addOrUpdatePossibleMatch(User userFrom, User userTo, double similarityScore) {
 
         PossibleMatch existingMatch = possibleMatchRepository.findPossibleMatchByFromAndTo(userFrom, userTo)
@@ -348,8 +349,6 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
                 if (similarityScore != existingMatch.getSimilarityScore()) {
                     existingMatch.setSimilarityScore(similarityScore);
                 }
-            }else{
-                possibleMatchManagementService.deletePossibleMatch(userFrom, userTo);
             }
 
         } else {
