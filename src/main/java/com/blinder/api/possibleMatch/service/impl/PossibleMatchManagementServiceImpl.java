@@ -1,6 +1,7 @@
 package com.blinder.api.possibleMatch.service.impl;
 
 import com.blinder.api.possibleMatch.model.PossibleMatch;
+import com.blinder.api.possibleMatch.model.PossibleMatchStatus;
 import com.blinder.api.possibleMatch.repository.PossibleMatchRepository;
 import com.blinder.api.possibleMatch.service.PossibleMatchManagementService;
 import com.blinder.api.user.model.User;
@@ -19,18 +20,18 @@ public class PossibleMatchManagementServiceImpl implements PossibleMatchManageme
 
     public void deletePossibleMatches(User userFrom)
     {
-        List<PossibleMatch> possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(userFrom);
+        //userFrom.setPossibleMatches(new ArrayList<>());
+        //userRepository.save(userFrom);
+
+        List<PossibleMatch> possibleMatches = possibleMatchRepository.findAllPotentialMatchesByFromAndStatus(userFrom,
+                PossibleMatchStatus.UNMATCHED);
+
         possibleMatchRepository.deleteAll(possibleMatches);
-
-        userFrom.setPossibleMatches(new ArrayList<>());
-
-        userRepository.save(userFrom);
 
         List<PossibleMatch> pos = possibleMatchRepository.findAllPossibleMatchesByFrom(userFrom);
         if(pos != null){
             System.out.println("bla");
         }
-
 
     }
 
