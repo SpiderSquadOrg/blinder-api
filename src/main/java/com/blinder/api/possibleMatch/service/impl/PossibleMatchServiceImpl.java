@@ -10,6 +10,7 @@ import com.blinder.api.hobby.model.Hobby;
 import com.blinder.api.possibleMatch.model.PossibleMatch;
 import com.blinder.api.possibleMatch.model.PossibleMatchStatus;
 import com.blinder.api.possibleMatch.repository.PossibleMatchRepository;
+import com.blinder.api.possibleMatch.service.PossibleMatchManagementService;
 import com.blinder.api.possibleMatch.service.PossibleMatchService;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.repository.UserRepository;
@@ -24,11 +25,12 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     private final UserService userService;
     private final PossibleMatchRepository possibleMatchRepository;
     private final UserRepository userRepository;
+    private final PossibleMatchManagementService possibleMatchManagementService;
 
     @Override
     public void findAndAddPotentialMatches(User currentUser, int howManyUser) {
         Characteristics userCharacteristics = currentUser.getCharacteristics();
-        deletePossibleMatches(currentUser);
+        possibleMatchManagementService.deletePossibleMatches(currentUser);
 
         List<User> filteredUsers = userService.getFilteredUsers(currentUser,1000, 30);
 
@@ -346,7 +348,7 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
                     existingMatch.setSimilarityScore(similarityScore);
                 }
             }else{
-                deletePossibleMatch(userFrom, userTo);
+                possibleMatchManagementService.deletePossibleMatch(userFrom, userTo);
             }
 
         } else {
@@ -361,27 +363,6 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
             userFrom.setPossibleMatches(possibleMatches);
             userRepository.save(userFrom);
         }
-    }
-
-    private void deletePossibleMatch(User userFrom,User userTo)
-    {
-        PossibleMatch possibleMatch = possibleMatchRepository.findPossibleMatchByFromAndTo(userFrom, userTo).orElseThrow();
-        possibleMatchRepository.delete(possibleMatch);
-
-        userFrom.setPossibleMatches(userFrom.getPossibleMatches().stream().filter((match)->
-                (!Objects.equals(possibleMatch.getTo().getId(), userTo.getId()))).toList());
-
-        userRepository.save(userFrom);
-    }
-
-    private void deletePossibleMatches(User userFrom)
-    {
-        List<PossibleMatch> possibleMatches = possibleMatchRepository.findAllPossibleMatchesByFrom(userFrom);
-        possibleMatchRepository.deleteAll(possibleMatches);
-
-        userFrom.setPossibleMatches(new ArrayList<>());
-
-        userRepository.save(userFrom);
     }
 
 }

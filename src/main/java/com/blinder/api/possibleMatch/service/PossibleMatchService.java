@@ -1,6 +1,5 @@
 package com.blinder.api.possibleMatch.service;
-import com.blinder.api.characteristics.model.Characteristics;
-import com.blinder.api.possibleMatch.dto.PossibleMatchResponseDto;
+
 import com.blinder.api.possibleMatch.model.PossibleMatch;
 import com.blinder.api.possibleMatch.model.PossibleMatchStatus;
 import com.blinder.api.user.model.User;
