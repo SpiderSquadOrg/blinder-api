@@ -14,16 +14,16 @@ public interface PossibleMatchRepository extends JpaRepository<PossibleMatch, St
 
     Optional<PossibleMatch> findPossibleMatchByFromAndTo(User from, User to);
 
-    @Query("SELECT pm.to FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'MATCHED')")
+    @Query("SELECT pm FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'MATCHED')")
     List<PossibleMatch> findMatchedUsers(@Param("user") User user);
 
-    @Query("SELECT pm.to FROM PossibleMatch pm WHERE (pm.from = :user AND pm.status = 'LIKED')")
+    @Query("SELECT pm FROM PossibleMatch pm WHERE (pm.from = :user AND pm.status = 'LIKED')")
     List<PossibleMatch> findLikedUsers(@Param("user") User user);
 
-    @Query("SELECT pm.from FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'LIKED')")
+    @Query("SELECT pm FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'LIKED')")
     List<PossibleMatch> findUsersWhoLike(@Param("user") User user);
 
-    @Query("SELECT pm.to FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'DISLIKED')")
+    @Query("SELECT pm FROM PossibleMatch pm WHERE (pm.to = :user AND pm.status = 'DISLIKED')")
     List<PossibleMatch> findDislikedUsers(@Param("user") User user);
 
     List<PossibleMatch> findAllPossibleMatchesByFrom(User from);

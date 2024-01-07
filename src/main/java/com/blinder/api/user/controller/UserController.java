@@ -41,7 +41,6 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Get all users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<UserResponseDto>> getAllUsers(@RequestParam(name = "page", required = false) Integer page,
                                                              @RequestParam(name = "size", required = false) Integer size) {
 

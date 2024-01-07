@@ -17,10 +17,19 @@ public class UserAuthDetails implements UserDetails {
     public UserAuthDetails(User user) {
         this.user = user;
     }
-    @Override
+    /*@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (Objects.nonNull(user) && Objects.nonNull(user.getRole())) {
             return List.of(new SimpleGrantedAuthority(user.getRole().getName()));
+        }
+
+        return Collections.emptyList();
+    }*/
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (Objects.nonNull(user) && Objects.nonNull(user.getRole())) {
+            String roleName = user.getRole().getName();
+            return List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
         }
 
         return Collections.emptyList();
