@@ -133,10 +133,10 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
         List<PossibleMatch> usersWhoLikedWithUnmatchedStatus = new ArrayList<>();
 
         for(PossibleMatch possibleMatch : usersWhoLiked){
-            User userFrom = possibleMatch.getFrom();
-            possibleMatchRepository.findPossibleMatchByFromAndTo(currentUser, userFrom).ifPresent((match) -> {
+            User userTo = possibleMatch.getFrom();
+            possibleMatchRepository.findPossibleMatchByFromAndTo(currentUser, userTo).ifPresent((match) -> {
                 if(match.getStatus() == PossibleMatchStatus.UNMATCHED){
-                    usersWhoLikedWithUnmatchedStatus.add(possibleMatch);
+                    usersWhoLikedWithUnmatchedStatus.add(match);
                 }
             });
         }
