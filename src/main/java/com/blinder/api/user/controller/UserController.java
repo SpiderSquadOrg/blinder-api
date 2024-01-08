@@ -3,6 +3,7 @@ package com.blinder.api.user.controller;
 import com.blinder.api.location.mapper.LocationCustomMapper;
 import com.blinder.api.user.dto.CreateUserRequestDto;
 import com.blinder.api.user.dto.UpdateUserRequestDto;
+import com.blinder.api.user.dto.UserBasicResponseDto;
 import com.blinder.api.user.dto.UserResponseDto;
 import com.blinder.api.user.mapper.UserMapper;
 import com.blinder.api.user.model.User;
@@ -149,5 +150,12 @@ public class UserController {
     // TO DO: @PreAuthorize("hasRole('ROLE_ADMIN') or principal. == ")
     public ResponseEntity<List<UserResponseDto>> getFilteredUsers(@PathVariable String userId) {
         return new ResponseEntity<>(UserMapper.INSTANCE.userToUserResponseDto(this.userService.getFilteredUsers(userService.getUserById(userId))), HttpStatus.OK);
+    }
+
+    //get user by username
+    @GetMapping("/username/basic/{username}")
+    @Operation(summary = "Get user basic by username")
+    public ResponseEntity<UserBasicResponseDto> getUserBasicByUsername(@PathVariable String username) {
+        return new ResponseEntity<>(UserMapper.INSTANCE.userToUserBasicResponseDto(this.userService.findByUsername(username).orElseThrow()), HttpStatus.OK);
     }
 }

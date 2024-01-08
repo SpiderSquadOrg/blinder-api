@@ -2,6 +2,7 @@ package com.blinder.api.user.mapper;
 
 import com.blinder.api.user.dto.CreateUserRequestDto;
 import com.blinder.api.user.dto.UpdateUserRequestDto;
+import com.blinder.api.user.dto.UserBasicResponseDto;
 import com.blinder.api.user.dto.UserResponseDto;
 import com.blinder.api.user.model.User;
 import com.blinder.api.user.security.UserAuthDetails;
@@ -27,6 +28,9 @@ public interface UserMapper {
 
     @Mapping(target = "age", ignore = true) // Ignore the age field in the main mapping
     UserResponseDto userToUserResponseDto(User user);
+
+    @Mapping(target = "age", ignore = true) // Ignore the age field in the main mapping
+    UserBasicResponseDto userToUserBasicResponseDto(User user);
 
     @AfterMapping // This method will be called after the main mapping
     default void calculateAge(@MappingTarget UserResponseDto dto, User user) {
