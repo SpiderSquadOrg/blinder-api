@@ -76,7 +76,7 @@ public class FilterServiceImpl implements FilterService {
         }
 
         // Reset possible matches if filter is updated
-        //possibleMatchManagementService.deletePossibleMatches(user);
+        // possibleMatchManagementService.deletePossibleMatches(user);
 
         this.filterRepository.save(filterToUpdate);
         return filterToUpdate;
