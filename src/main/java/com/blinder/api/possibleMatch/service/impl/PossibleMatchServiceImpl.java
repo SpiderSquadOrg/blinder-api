@@ -127,7 +127,22 @@ public class PossibleMatchServiceImpl implements PossibleMatchService {
     public List<PossibleMatch> getLikedUsers(User currentUser) { return possibleMatchRepository.findLikedUsers(currentUser);}
 
     @Override
-    public List<PossibleMatch> getUsersWhoLike(User currentUser) { return possibleMatchRepository.findUsersWhoLike(currentUser);}
+    public List<PossibleMatch> getUsersWhoLike(User currentUser) {
+        List<PossibleMatch> usersWhoLiked = possibleMatchRepository.findUsersWhoLike(currentUser);
+        // usersWhoLiked -> userTo = currentUser, userFrom = userWhoLikedCurrentUser, status = LIKED
+        List<PossibleMatch> usersWhoLikedWithUnmatchedStatus = new ArrayList<>();
+
+        for(PossibleMatch possibleMatch : usersWhoLiked){
+            User userFrom = possibleMatch.getFrom();
+            possibleMatchRepository.findPossibleMatchByFromAndTo(currentUser, userFrom).ifPresent((match) -> {
+                if(match.getStatus() == PossibleMatchStatus.UNMATCHED){
+                    usersWhoLikedWithUnmatchedStatus.add(possibleMatch);
+                }
+            });
+        }
+
+        return usersWhoLikedWithUnmatchedStatus;
+    }
 
     @Override
     public List<PossibleMatch> getDislikedUsers(User currentUser) {return possibleMatchRepository.findDislikedUsers(currentUser);}
